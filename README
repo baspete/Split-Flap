@@ -1,0 +1,66 @@
+SPLIT FLAP README
+
+NOTE: This is definitly a work in progress!
+
+INSTALLATION INSTRUCTIONS: 
+
+1. Unzip the file "split-flap.zip" and put it in your web server's root htdocs directory.
+   (if you put it somewhere else, you'll need to edit the eos.chart.dataBaseUrl 
+   line in the file "activity_tracker.html")
+   
+2. Make sure your web server knows about the .json file extension. On the mac, add
+   
+   "text/json   json
+   
+   to /Library/Apache2/conf/mime.types and restart apache (turning web sharing off
+   and back on will do that)
+   
+
+USAGE: 
+
+1. In a web browser (preferably Chrome because it's fast) load:
+   
+   http://localhost/split-flap/activity_tracker.html
+   
+   (or wherever you put split-flap/). Go to full-screen (splat-shift-F).
+   
+2. In an editor, open split-flap/json/category/index.json.
+
+3. Edit any values in index.json and see the results automagically load into the browser
+   a few seconds later.
+
+4. Extra credit: figure out how to dynamically create index.json on the fly from real Eos data.
+
+DISCUSSION:
+
+The goal here was to create a visually interesting display of information--in the form of
+a simulated Solari board.
+
+You can add/subtract as many <li class="row"> blocks as you'd like to match the size of the
+desired display. You can also vary the number of <div class='character'> display elements within
+each block as needed (for example, if it doesn't fit on your screen).
+
+Here's how it works:
+
+1. when activity_tracker.html loads, it creates all the DOM elements it needs for a split-flap
+   display, laying them out in an unordered list, with skinnable CSS.
+   
+2. on document.ready() it sets an interval timer which re-renders the chart from the data
+   in index.json every 10 seconds using sf.chart.render().
+   
+3. sf.chart.render() picks up the chart parameters from the hidden input fields in the chartPrefs 
+   div, sees that it needs to render a splitflap chart (based on the class of the container DOM 
+   element) and gets the right json ( using sf.chart.formatData() ). It then calls
+   
+4. sf.chart.splitFlap(), which uses a sprite (background image) to simulate the position of 
+   a split flap wheel (as in a solari board) and the animations involved in changing from one
+   wheel position to another. One particularly cool note here is that each character's DOM element 
+   has an internal data structure with an array representing the current position of that
+   character's flap drum. This is a neat utilization of jQuery's $.data() method.
+
+TODO: 
+
+As currently written, this code is horribly inefficient, and there are likely significant 
+optimizations to be had. One elegant way to fix this would be to progressively load lines, 
+rather than loading them all at once (in fact, this is what a real solari board does).
+
