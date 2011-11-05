@@ -46,7 +46,7 @@ Here's how it works:
    display, laying them out in an unordered list, with skinnable CSS.
    
 2. on document.ready() it sets an interval timer which re-renders the chart from the data
-   in index.json every 10 seconds using sf.chart.render().
+   in index.json every 20 seconds using sf.chart.render().
    
 3. sf.chart.render() picks up the chart parameters from the hidden input fields in the chartPrefs 
    div, sees that it needs to render a splitflap chart (based on the class of the container DOM 
