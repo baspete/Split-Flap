@@ -252,7 +252,6 @@
           </div>
         </li>
 
-<!--
        <li class="row">
           <div class="group data2">
             <div class="number"><span></span></div>
@@ -780,7 +779,6 @@
             <div class="red"></div>
           </div>
         </li>
--->
 
       </ul>
 
@@ -813,8 +811,7 @@
       
       $(document).ready(function() {
         sf.local.updateChart();
-        // Get the json data and re-render the chart every 10 seconds
-        setInterval("sf.local.updateChart()", 10000);
+        setInterval("sf.local.updateChart()", 10000); // Re-render interval
       });
       
       

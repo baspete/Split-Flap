@@ -70,7 +70,7 @@ sf.chart = {
         if(data.length > 0) {
           formattedData = sf.chart.formatData(data, "category", dataOptions);
           if(formattedData.length > 0) {
-            sf.chart.splitFlap.loadJson(formattedData, container);
+            sf.chart.splitFlap.render(formattedData, container);
           }  else {  // OTHERWISE, NO DATA!
             container.html("<div class='empty'>No Data</div>");
           }
@@ -113,16 +113,24 @@ sf.chart = {
       this.order = [' ','0','1','2','3','4','5','6','7','8','9','.',','];
     },
     
-    loadJson: function() {
+    render: function() {
       var input = arguments[0],
           container = arguments[1],
           rows = container.find(".row"),
-          i;
-      for(i=0;i<rows.length;i++) {
-        if(input[i]) {
-          sf.chart.splitFlap.loadRow(input[i],$(rows[i]));
-        }
-      }
+          i=0;
+      var loop = function() {
+        setTimeout(function () {
+          if(input[i]) {
+            console.log("loading row "+i)
+            sf.chart.splitFlap.loadRow(input[i],$(rows[i]));
+          }
+          i++;
+          if (i < rows.length) {
+            loop(i); 
+          }
+         }, 500);
+      };
+      loop();
     },
     
     loadRow: function() {
@@ -143,7 +151,6 @@ sf.chart = {
           group.data("contents",input.data[j]);
         }
       }
-    
     },
     
     loadGroup: function() {
