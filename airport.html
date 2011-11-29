@@ -8,7 +8,7 @@
         font-family: helvetica;
       }
       .splitflap {
-        width: 1250px;
+        width: 1350px;
         overflow: none;
       }
       .splitflap h1 {
@@ -33,7 +33,7 @@
       }
       .splitflap .group {
         float: left;
-        margin-right: 40px;
+        margin-right: 30px;
       }
       .splitflap .separator {
         float: left;
@@ -187,62 +187,70 @@
       <!-- Chart parameters -->
       <div class="chartPrefs" style="display:none;">
         <input type="hidden" name="chartStyle" value="splitflap" />
-        <input type="hidden" name="sort" value="desc" />
+        <input type="hidden" name="sort" value="asc" />
         <input type="hidden" name="truncate" value="12" />
       </div>
       
       <!-- the actual chart -->
       <ul id="chart1" class="chart">
         
-        <div class="header" style="width:130px;margin-left:0px;">Last Update</div>
-        <div class="header" style="width:595px;margin-left:45px;">Site</div>
-        <div class="header" style="width:115px;margin-left:45px;">Last Hour</div>
-        <div class="header" style="width:115px;margin-left:45px;">24 Hr Avg</div>
-        <div class="header" style="width:75px;margin-left:37px;">Trend</div>
+
+        <!-- 30px/char, 15px/separator -->
+        <div class="header" style="width:120px;margin-left:0px;">Flight</div>
+        <div class="header" style="width:120px;margin-left:30px;">Airline</div>
+        <div class="header" style="width:360px;margin-left:30px;">City</div>
+        <div class="header" style="width:90px;margin-left:30px;">Gate</div>
+        <div class="header" style="width:135px;margin-left:30px;">Scheduled</div>
+        <div class="header" style="width:135px;margin-left:30px;">Estimated</div>
+        <div class="header" style="width:130px;margin-left:30px;">On&nbsp;Time</div>
         
         
         <!-- You can put an arbirtary number of rows, groups,   -->
         <!-- and display elements here. sf.chart.render() will -->
         <!-- do the right thing.                                -->
         <li class="row">
-          <div class="group data2">
+          <div class="group category"> <!-- flight number -->
+            <div class="number"><span></span></div>
+            <div class="number"><span></span></div>
+            <div class="number"><span></span></div>
+            <div class="number"><span></span></div>
+          </div>
+          <div class="group data2"> <!-- airline -->
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+          </div>
+          <div class="group data1"> <!-- city -->
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+          </div>
+          <div class="group data3"> <!-- gate -->
+            <div class="character"><span></span></div>
+            <div class="number"><span></span></div>
+            <div class="number"><span></span></div>
+          </div>
+          <div class="group data0"> <!-- scheduled -->
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
             <div class="separator">:</div>
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
           </div>
-          <div class="group category">
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-          </div>
-          <div class="group data0">
+          <div class="group data4"> <!-- estimated -->
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
-            <div class="number"><span></span></div>
-            <div class="number"><span></span></div>
-          </div>
-          <div class="group data1">
-            <div class="number"><span></span></div>
-            <div class="number"><span></span></div>
+            <div class="separator">:</div>
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
           </div>
@@ -252,45 +260,49 @@
           </div>
         </li>
 
-       <li class="row">
-          <div class="group data2">
+         <li class="row">
+          <div class="group category"> <!-- flight number -->
+            <div class="number"><span></span></div>
+            <div class="number"><span></span></div>
+            <div class="number"><span></span></div>
+            <div class="number"><span></span></div>
+          </div>
+          <div class="group data2"> <!-- airline -->
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+          </div>
+          <div class="group data1"> <!-- city -->
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+          </div>
+          <div class="group data3"> <!-- gate -->
+            <div class="character"><span></span></div>
+            <div class="number"><span></span></div>
+            <div class="number"><span></span></div>
+          </div>
+          <div class="group data0"> <!-- scheduled -->
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
             <div class="separator">:</div>
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
           </div>
-          <div class="group category">
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-          </div>
-          <div class="group data0">
+          <div class="group data4"> <!-- estimated -->
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
-            <div class="number"><span></span></div>
-            <div class="number"><span></span></div>
-          </div>
-          <div class="group data1">
-            <div class="number"><span></span></div>
-            <div class="number"><span></span></div>
+            <div class="separator">:</div>
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
           </div>
@@ -300,45 +312,49 @@
           </div>
         </li>
 
-       <li class="row">
-          <div class="group data2">
+         <li class="row">
+          <div class="group category"> <!-- flight number -->
+            <div class="number"><span></span></div>
+            <div class="number"><span></span></div>
+            <div class="number"><span></span></div>
+            <div class="number"><span></span></div>
+          </div>
+          <div class="group data2"> <!-- airline -->
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+          </div>
+          <div class="group data1"> <!-- city -->
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+          </div>
+          <div class="group data3"> <!-- gate -->
+            <div class="character"><span></span></div>
+            <div class="number"><span></span></div>
+            <div class="number"><span></span></div>
+          </div>
+          <div class="group data0"> <!-- scheduled -->
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
             <div class="separator">:</div>
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
           </div>
-          <div class="group category">
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-          </div>
-          <div class="group data0">
+          <div class="group data4"> <!-- estimated -->
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
-            <div class="number"><span></span></div>
-            <div class="number"><span></span></div>
-          </div>
-          <div class="group data1">
-            <div class="number"><span></span></div>
-            <div class="number"><span></span></div>
+            <div class="separator">:</div>
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
           </div>
@@ -348,45 +364,49 @@
           </div>
         </li>
 
-       <li class="row">
-          <div class="group data2">
+         <li class="row">
+          <div class="group category"> <!-- flight number -->
+            <div class="number"><span></span></div>
+            <div class="number"><span></span></div>
+            <div class="number"><span></span></div>
+            <div class="number"><span></span></div>
+          </div>
+          <div class="group data2"> <!-- airline -->
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+          </div>
+          <div class="group data1"> <!-- city -->
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+          </div>
+          <div class="group data3"> <!-- gate -->
+            <div class="character"><span></span></div>
+            <div class="number"><span></span></div>
+            <div class="number"><span></span></div>
+          </div>
+          <div class="group data0"> <!-- scheduled -->
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
             <div class="separator">:</div>
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
           </div>
-          <div class="group category">
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-          </div>
-          <div class="group data0">
+          <div class="group data4"> <!-- estimated -->
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
-            <div class="number"><span></span></div>
-            <div class="number"><span></span></div>
-          </div>
-          <div class="group data1">
-            <div class="number"><span></span></div>
-            <div class="number"><span></span></div>
+            <div class="separator">:</div>
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
           </div>
@@ -396,45 +416,49 @@
           </div>
         </li>
 
-       <li class="row">
-          <div class="group data2">
+         <li class="row">
+          <div class="group category"> <!-- flight number -->
+            <div class="number"><span></span></div>
+            <div class="number"><span></span></div>
+            <div class="number"><span></span></div>
+            <div class="number"><span></span></div>
+          </div>
+          <div class="group data2"> <!-- airline -->
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+          </div>
+          <div class="group data1"> <!-- city -->
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+          </div>
+          <div class="group data3"> <!-- gate -->
+            <div class="character"><span></span></div>
+            <div class="number"><span></span></div>
+            <div class="number"><span></span></div>
+          </div>
+          <div class="group data0"> <!-- scheduled -->
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
             <div class="separator">:</div>
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
           </div>
-          <div class="group category">
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-          </div>
-          <div class="group data0">
+          <div class="group data4"> <!-- estimated -->
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
-            <div class="number"><span></span></div>
-            <div class="number"><span></span></div>
-          </div>
-          <div class="group data1">
-            <div class="number"><span></span></div>
-            <div class="number"><span></span></div>
+            <div class="separator">:</div>
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
           </div>
@@ -444,45 +468,49 @@
           </div>
         </li>
 
-       <li class="row">
-          <div class="group data2">
+         <li class="row">
+          <div class="group category"> <!-- flight number -->
+            <div class="number"><span></span></div>
+            <div class="number"><span></span></div>
+            <div class="number"><span></span></div>
+            <div class="number"><span></span></div>
+          </div>
+          <div class="group data2"> <!-- airline -->
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+          </div>
+          <div class="group data1"> <!-- city -->
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+          </div>
+          <div class="group data3"> <!-- gate -->
+            <div class="character"><span></span></div>
+            <div class="number"><span></span></div>
+            <div class="number"><span></span></div>
+          </div>
+          <div class="group data0"> <!-- scheduled -->
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
             <div class="separator">:</div>
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
           </div>
-          <div class="group category">
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-          </div>
-          <div class="group data0">
+          <div class="group data4"> <!-- estimated -->
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
-            <div class="number"><span></span></div>
-            <div class="number"><span></span></div>
-          </div>
-          <div class="group data1">
-            <div class="number"><span></span></div>
-            <div class="number"><span></span></div>
+            <div class="separator">:</div>
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
           </div>
@@ -492,45 +520,49 @@
           </div>
         </li>
 
-       <li class="row">
-          <div class="group data2">
+         <li class="row">
+          <div class="group category"> <!-- flight number -->
+            <div class="number"><span></span></div>
+            <div class="number"><span></span></div>
+            <div class="number"><span></span></div>
+            <div class="number"><span></span></div>
+          </div>
+          <div class="group data2"> <!-- airline -->
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+          </div>
+          <div class="group data1"> <!-- city -->
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+          </div>
+          <div class="group data3"> <!-- gate -->
+            <div class="character"><span></span></div>
+            <div class="number"><span></span></div>
+            <div class="number"><span></span></div>
+          </div>
+          <div class="group data0"> <!-- scheduled -->
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
             <div class="separator">:</div>
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
           </div>
-          <div class="group category">
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-          </div>
-          <div class="group data0">
+          <div class="group data4"> <!-- estimated -->
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
-            <div class="number"><span></span></div>
-            <div class="number"><span></span></div>
-          </div>
-          <div class="group data1">
-            <div class="number"><span></span></div>
-            <div class="number"><span></span></div>
+            <div class="separator">:</div>
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
           </div>
@@ -540,45 +572,49 @@
           </div>
         </li>
 
-       <li class="row">
-          <div class="group data2">
+         <li class="row">
+          <div class="group category"> <!-- flight number -->
+            <div class="number"><span></span></div>
+            <div class="number"><span></span></div>
+            <div class="number"><span></span></div>
+            <div class="number"><span></span></div>
+          </div>
+          <div class="group data2"> <!-- airline -->
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+          </div>
+          <div class="group data1"> <!-- city -->
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+          </div>
+          <div class="group data3"> <!-- gate -->
+            <div class="character"><span></span></div>
+            <div class="number"><span></span></div>
+            <div class="number"><span></span></div>
+          </div>
+          <div class="group data0"> <!-- scheduled -->
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
             <div class="separator">:</div>
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
           </div>
-          <div class="group category">
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-          </div>
-          <div class="group data0">
+          <div class="group data4"> <!-- estimated -->
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
-            <div class="number"><span></span></div>
-            <div class="number"><span></span></div>
-          </div>
-          <div class="group data1">
-            <div class="number"><span></span></div>
-            <div class="number"><span></span></div>
+            <div class="separator">:</div>
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
           </div>
@@ -588,45 +624,49 @@
           </div>
         </li>
 
-       <li class="row">
-          <div class="group data2">
+         <li class="row">
+          <div class="group category"> <!-- flight number -->
+            <div class="number"><span></span></div>
+            <div class="number"><span></span></div>
+            <div class="number"><span></span></div>
+            <div class="number"><span></span></div>
+          </div>
+          <div class="group data2"> <!-- airline -->
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+          </div>
+          <div class="group data1"> <!-- city -->
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+          </div>
+          <div class="group data3"> <!-- gate -->
+            <div class="character"><span></span></div>
+            <div class="number"><span></span></div>
+            <div class="number"><span></span></div>
+          </div>
+          <div class="group data0"> <!-- scheduled -->
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
             <div class="separator">:</div>
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
           </div>
-          <div class="group category">
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-          </div>
-          <div class="group data0">
+          <div class="group data4"> <!-- estimated -->
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
-            <div class="number"><span></span></div>
-            <div class="number"><span></span></div>
-          </div>
-          <div class="group data1">
-            <div class="number"><span></span></div>
-            <div class="number"><span></span></div>
+            <div class="separator">:</div>
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
           </div>
@@ -636,45 +676,49 @@
           </div>
         </li>
 
-       <li class="row">
-          <div class="group data2">
+         <li class="row">
+          <div class="group category"> <!-- flight number -->
+            <div class="number"><span></span></div>
+            <div class="number"><span></span></div>
+            <div class="number"><span></span></div>
+            <div class="number"><span></span></div>
+          </div>
+          <div class="group data2"> <!-- airline -->
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+          </div>
+          <div class="group data1"> <!-- city -->
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+          </div>
+          <div class="group data3"> <!-- gate -->
+            <div class="character"><span></span></div>
+            <div class="number"><span></span></div>
+            <div class="number"><span></span></div>
+          </div>
+          <div class="group data0"> <!-- scheduled -->
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
             <div class="separator">:</div>
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
           </div>
-          <div class="group category">
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-          </div>
-          <div class="group data0">
+          <div class="group data4"> <!-- estimated -->
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
-            <div class="number"><span></span></div>
-            <div class="number"><span></span></div>
-          </div>
-          <div class="group data1">
-            <div class="number"><span></span></div>
-            <div class="number"><span></span></div>
+            <div class="separator">:</div>
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
           </div>
@@ -684,45 +728,49 @@
           </div>
         </li>
 
-       <li class="row">
-          <div class="group data2">
+         <li class="row">
+          <div class="group category"> <!-- flight number -->
+            <div class="number"><span></span></div>
+            <div class="number"><span></span></div>
+            <div class="number"><span></span></div>
+            <div class="number"><span></span></div>
+          </div>
+          <div class="group data2"> <!-- airline -->
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+          </div>
+          <div class="group data1"> <!-- city -->
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+          </div>
+          <div class="group data3"> <!-- gate -->
+            <div class="character"><span></span></div>
+            <div class="number"><span></span></div>
+            <div class="number"><span></span></div>
+          </div>
+          <div class="group data0"> <!-- scheduled -->
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
             <div class="separator">:</div>
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
           </div>
-          <div class="group category">
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-          </div>
-          <div class="group data0">
+          <div class="group data4"> <!-- estimated -->
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
-            <div class="number"><span></span></div>
-            <div class="number"><span></span></div>
-          </div>
-          <div class="group data1">
-            <div class="number"><span></span></div>
-            <div class="number"><span></span></div>
+            <div class="separator">:</div>
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
           </div>
@@ -732,45 +780,49 @@
           </div>
         </li>
 
-       <li class="row">
-          <div class="group data2">
+         <li class="row">
+          <div class="group category"> <!-- flight number -->
+            <div class="number"><span></span></div>
+            <div class="number"><span></span></div>
+            <div class="number"><span></span></div>
+            <div class="number"><span></span></div>
+          </div>
+          <div class="group data2"> <!-- airline -->
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+          </div>
+          <div class="group data1"> <!-- city -->
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+            <div class="character"><span></span></div>
+          </div>
+          <div class="group data3"> <!-- gate -->
+            <div class="character"><span></span></div>
+            <div class="number"><span></span></div>
+            <div class="number"><span></span></div>
+          </div>
+          <div class="group data0"> <!-- scheduled -->
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
             <div class="separator">:</div>
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
           </div>
-          <div class="group category">
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-            <div class="character"><span></span></div>
-          </div>
-          <div class="group data0">
+          <div class="group data4"> <!-- estimated -->
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
-            <div class="number"><span></span></div>
-            <div class="number"><span></span></div>
-          </div>
-          <div class="group data1">
-            <div class="number"><span></span></div>
-            <div class="number"><span></span></div>
+            <div class="separator">:</div>
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
           </div>
@@ -779,6 +831,8 @@
             <div class="red"></div>
           </div>
         </li>
+
+ 
 
       </ul>
 
@@ -793,19 +847,6 @@
       sf.local.updateChart = function() {
         // update the display
         sf.chart.render($("#display1"));
-        // figure out if the trend is positive or negative by looking at
-        // the data0 and data1 $.data() values and and illuminate 
-        // the corresponding trend light
-        $(".row .lights").each(function() {
-          var t0 = $(this).siblings(".data0").data("contents");
-          var t1 = $(this).siblings(".data1").data("contents");
-          $(this).find(".green, .red").removeClass("on");
-          if(t0 - t1 >= 0) {
-            $(this).find(".green").addClass("on");
-          } else {
-            $(this).find(".red").addClass("on");
-          }
-        });
       };
       
       $(document).ready(function() {
