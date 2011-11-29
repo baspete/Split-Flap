@@ -93,6 +93,8 @@ sf.chart = {
           var drum = new sf.chart.splitFlap.NumDrum(); // Numbers only
         } else if(parent.hasClass("character")) {
           var drum = new sf.chart.splitFlap.CharDrum(); // Characters only
+        } else if(parent.hasClass("logo")) {
+          var drum = new sf.chart.splitFlap.LogoDrum(); // Logos
         } else {
           var drum = new sf.chart.splitFlap.FullDrum(); // The full set
         }
@@ -111,6 +113,9 @@ sf.chart = {
     },
     NumDrum: function() {
       this.order = [' ','0','1','2','3','4','5','6','7','8','9','.',','];
+    },
+    LogoDrum: function() {
+      this.order = [' ','0','1','2','3','4','5','6','7','8','9'];
     },
     
     render: function() {
