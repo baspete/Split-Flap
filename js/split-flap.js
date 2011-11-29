@@ -121,7 +121,6 @@ sf.chart = {
       var loop = function() {
         setTimeout(function () {
           if(input[i]) {
-            console.log("loading row "+i)
             sf.chart.splitFlap.loadRow(input[i],$(rows[i]));
           }
           i++;
