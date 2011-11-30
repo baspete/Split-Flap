@@ -27,7 +27,7 @@ sf.chart = {
     sf.chart.splitFlap.init();
   },
 
-  dataSrc: "data/category.php", // change this if you want to get data from somewhere else
+  dataSrc: "data/category.php", // optionally override in template
   
   dataUrl: function() {
     var params = arguments[0];
@@ -55,7 +55,7 @@ sf.chart = {
     var input = arguments[0],
         format = arguments[1],
         options = arguments[2],
-        series = input[0].data,
+        series = input.data,
         i=0, j=0, k=0, index=0, value=0,
         output = [],
         truncatedOutput = [],
@@ -71,22 +71,28 @@ sf.chart = {
         }
       }
     }
-    // pick up any sorting options
-    if(options.sort && options.order) {
+    // pick up any sorting options (default is ascending)
+    if(options.sort) {
       if(options.order === "desc") {
         output.sort(function(a,b){
           return a.data[options.sort]>b.data[options.sort]?-1:1;
         });
-      } else if(options.order === "asc") {
+      } else {
         output.sort(function(a,b){
           return a.data[options.sort]>b.data[options.sort]?1:-1;
         });
       }
     } else {
-      // otherwise use data index 0, ascending
-      output.sort(function(a,b){
-        return a.data[0]>b.data[0]?1:-1;
-      });
+      // otherwise use the label
+      if(options.order === "desc") {
+        output.sort(function(a,b){
+          return a.label>b.label?-1:1;
+        });
+      } else {
+        output.sort(function(a,b){
+          return a.label>b.label?1:-1;
+        });
+      }
     }
     // second pass: truncate/maxResults
     for(i=0;i < output.length; i++){
@@ -116,7 +122,24 @@ sf.chart = {
     return truncatedOutput;
   },
 
-  render: function() {
+  load: function() {
+    // Given a DOM object, this method retrieves the data from the server
+    // and passes it to the correct chart type render() method. 
+    // 
+    // The JSON model we're expecting from the data source is (for example):
+    // {
+    //   "response": { 
+    //     "results": [ 
+    //       { 
+    //         "data" : { 
+    //           "101" : ["0728", "London", "0", "C21", "1", "est 2130+"], 
+    //           "96"  : ["0952", "Madrid", "1", "A7", "0", ""]
+    //         }
+    //       } 
+    //     ] 
+    //   }
+    // }
+    // 
     var container = arguments[0]; // expects the container object
     // make an array containing the values we're going to ignore
     var ignores = [];
@@ -133,10 +156,11 @@ sf.chart = {
     var params = container.find(".chartPrefs input").serialize();
     $.getJSON(
       sf.chart.dataUrl(params),
-      function(data) {
-        var formattedData;
-        if(data.length > 0) {
-          formattedData = sf.chart.formatData(data, "category", dataOptions);
+      function(json) {
+        var i,
+            results = json.response.results;
+        for(i=0;i<results.length;i++){
+          var formattedData = sf.chart.formatData(results[i], "category", dataOptions);
           if(formattedData.length > 0) {
             sf.chart.splitFlap.render(formattedData, container);
           }  else {  // OTHERWISE, NO DATA!
@@ -177,9 +201,8 @@ sf.chart = {
 
     init: function() {
       
-      // for each character, construct a drum array and
+      // For each character, construct a drum array and
       // attach that array to the element's .data() object
-      // finally, set each character to a space.
       $(".splitflap span").each(function() {
         var parent = $(this).closest("div");
         if(parent.hasClass("number")){
@@ -192,7 +215,7 @@ sf.chart = {
           var drum = new sf.chart.splitFlap.FullDrum(); // The full set
         }
         $(this).data("order", drum.order);
-        // set them to spaces initially
+        // Finally, set each character to a space.
         sf.chart.splitFlap.change($(this), " ");
       });
     
@@ -245,7 +268,7 @@ sf.chart = {
           elements = target.find(".character, .number, .full, .logo"),
           strLen = elements.size(),
           i, characters;
-      if(target.hasClass("status")) { // status renders differently, just add the class "on" to the correct element
+      if(target.hasClass("status")) { // status renders differently--it just adds the class "on" to the correct element
         target.find("div").removeClass("on");
         target.find(".s"+input).addClass("on");
       } else {  // otherwise, this group is composed of split-flap elements

@@ -8,16 +8,16 @@
 
       <!-- Chart parameters -->
       <div class="chartPrefs" style="display:none;">
-        <input type="hidden" name="data" value="departures" />
-        <input type="hidden" name="sort" value="0" />           <!-- the data index to sort from -->
-        <input type="hidden" name="order" value="asc" />        <!-- sort order -->
+        <input type="hidden" name="data" value="departures" />  <!-- the type of data you want from the service -->
+        <input type="hidden" name="sort" value="0" />           <!-- the data group to sort from (default uses the label)-->
+        <input type="hidden" name="order" value="asc" />        <!-- sort order (default is ascending) -->
         <input type="hidden" name="maxResults" value="12" />    <!-- ignore results past this -->
       </div>
       
       <!-- the actual chart -->
       <ul id="chart1" class="chart">
         
-        <!-- 30px/char, 15px/separator -->
+        <!-- 30px/char, 15px/separator, 120px/logo -->
         <div class="header" style="width:120px;margin-left:0px;">Flight</div>
         <div class="header" style="width:120px;margin-left:30px;">Airline</div>
         <div class="header" style="width:360px;margin-left:30px;text-align:left;">City</div>
@@ -676,10 +676,13 @@
     <script type="text/javascript" src="js/split-flap.js"></script>
     <script type="text/javascript">
 
+      // Set the data source
+      sf.chart.dataSrc = "data/airport_schedule.php";
+
       // When the DOM is ready, render the chart into the chart container
       $(document).ready(function() {
-        sf.chart.render($("#display1"));
-        setInterval("sf.chart.render($('#display1'))", 30000); // refresh inteval
+        sf.chart.load($("#display1"));
+        setInterval("sf.chart.load($('#display1'))", 30000); // refresh inteval
 
         $("#clear").click(function(){
           sf.chart.splitFlap.clear($('#display1'));
