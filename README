@@ -1,7 +1,7 @@
 INTRODUCTION
 ------------
 
-This is a simulation of a split-flap display (often called Solari boards) designed to run in a web browser. It dynamically loads JSON data from a data source and renders that data as characters and images on the board. Individual characters are animated using CSS sprites. 
+This is a simulation of a split-flap display (often called a Solari board) designed to run in a web browser. It dynamically loads JSON data from a data source and renders that data as characters and images on the board. Individual characters are animated using CSS sprites. 
 
 The look and feel are fully configurable by changing the markup and using different sprite images. 
 
@@ -25,13 +25,13 @@ to /Library/Apache2/conf/mime.types and restart apache (turning web sharing off 
 OPERATION
 ---------
 
-When the DOM is loaded in airport.html, the function sf.chart.splitFlap.init() finds every display element and creates an array representing the current position of the virtual "drum" containing all the possible characters for that element. It stores this array in the $.data() object for that node. 
+When the browser finishes loading airport.html, sf.chart.splitFlap.init() is called and finds every display element, creating an array representing the current position of the virtual "drum" containing all the possible characters for that element. It stores this array in the $.data() object for that element. 
 
 Next, sf.chart.load() is called and passed the DOM element for the chart itself. This function uses the hidden <input> elements in that DOM element to construct and execute an AJAX request to the data source defined in sf.chart.dataSrc. 
 
-The results of that request are passed to sf.chart.formatData(), which returns an map containing the rows of chararacters to show. 
+The results of that request are passed to sf.chart.formatData(), which returns an array containing the ordered rows of chararacters to show based on the sort/order/maxResults parameters. 
 
-Rows are loaded sequentially and each display element which needs to change is animated by hiding its sprite, advancing its drum one position, and showing the sprite again--repeating until the new character is reached.
+Rows are loaded sequentially and each display element which needs to change is animated by hiding its sprite, advancing its drum array one position, and showing the sprite again--repeating until the new character is reached.
 
 Lights are simply controlled by setting an "on" class on the proper DOM element.
 
