@@ -3,8 +3,13 @@ body {
   color: #FFF;
   font-family: helvetica;
 }
+a {
+  color: #FFF;
+  text-decoration: none;
+}
 .splitflap {
   overflow: none;
+  white-space: nowrap;
   margin: 20px 10px;
 }
 .splitflap h1 {

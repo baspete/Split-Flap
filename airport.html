@@ -8,9 +8,10 @@
 
       <!-- Chart parameters -->
       <div class="chartPrefs" style="display:none;">
-        <input type="hidden" name="chartStyle" value="splitflap" />
-        <input type="hidden" name="sort" value="asc" />
-        <input type="hidden" name="truncate" value="12" />
+        <input type="hidden" name="data" value="departures" />
+        <input type="hidden" name="sort" value="0" />           <!-- the data index to sort from -->
+        <input type="hidden" name="order" value="asc" />        <!-- sort order -->
+        <input type="hidden" name="maxResults" value="12" />    <!-- ignore results past this -->
       </div>
       
       <!-- the actual chart -->
@@ -24,12 +25,11 @@
         <div class="header" style="width:135px;margin-left:30px;">Scheduled</div>
         <div class="header" style="width:270px;margin-left:30px;text-align:left;">Remarks</div>
         
-        
         <!-- You can put an arbirtary number of rows, groups,   -->
         <!-- and display elements here. sf.chart.render() will -->
         <!-- do the right thing.                                -->
         <li class="row">
-          <div class="group category"> <!-- flight number -->
+          <div class="group label"> <!-- flight number -->
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
@@ -82,7 +82,7 @@
         </li>
 
         <li class="row">
-          <div class="group category"> <!-- flight number -->
+          <div class="group label"> <!-- flight number -->
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
@@ -135,7 +135,7 @@
         </li>
 
         <li class="row">
-          <div class="group category"> <!-- flight number -->
+          <div class="group label"> <!-- flight number -->
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
@@ -188,7 +188,7 @@
         </li>
 
         <li class="row">
-          <div class="group category"> <!-- flight number -->
+          <div class="group label"> <!-- flight number -->
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
@@ -241,7 +241,7 @@
         </li>
 
         <li class="row">
-          <div class="group category"> <!-- flight number -->
+          <div class="group label"> <!-- flight number -->
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
@@ -294,7 +294,7 @@
         </li>
 
         <li class="row">
-          <div class="group category"> <!-- flight number -->
+          <div class="group label"> <!-- flight number -->
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
@@ -347,7 +347,7 @@
         </li>
 
         <li class="row">
-          <div class="group category"> <!-- flight number -->
+          <div class="group label"> <!-- flight number -->
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
@@ -400,7 +400,7 @@
         </li>
 
         <li class="row">
-          <div class="group category"> <!-- flight number -->
+          <div class="group label"> <!-- flight number -->
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
@@ -453,7 +453,7 @@
         </li>
 
         <li class="row">
-          <div class="group category"> <!-- flight number -->
+          <div class="group label"> <!-- flight number -->
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
@@ -506,7 +506,7 @@
         </li>
 
         <li class="row">
-          <div class="group category"> <!-- flight number -->
+          <div class="group label"> <!-- flight number -->
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
@@ -559,7 +559,7 @@
         </li>
 
         <li class="row">
-          <div class="group category"> <!-- flight number -->
+          <div class="group label"> <!-- flight number -->
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
@@ -612,7 +612,7 @@
         </li>
 
         <li class="row">
-          <div class="group category"> <!-- flight number -->
+          <div class="group label"> <!-- flight number -->
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
             <div class="number"><span></span></div>
@@ -666,6 +666,10 @@
 
       </ul>
 
+      <!--
+      <p style="text-align:center;"><a href="#" id="clear">Clear Board</a></p>
+      -->
+
     </div>
 
     <script type="text/javascript" src="js/jquery-1.7.1-min.js"></script>
@@ -675,7 +679,12 @@
       // When the DOM is ready, render the chart into the chart container
       $(document).ready(function() {
         sf.chart.render($("#display1"));
-        setInterval("sf.chart.render($('#display1'))", 20000); // refresh inteval
+        setInterval("sf.chart.render($('#display1'))", 30000); // refresh inteval
+
+        $("#clear").click(function(){
+          sf.chart.splitFlap.clear($('#display1'));
+        });
+
       });
       
     </script>

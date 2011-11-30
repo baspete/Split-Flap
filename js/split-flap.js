@@ -37,7 +37,7 @@ sf.chart = {
   },
   
   formatData: function() {
-    // The "data" node in this map uses category names as keys. Because there 
+    // The "data" node in this map uses category names as labels. Because there 
     // is no impled order in this data structure, we need to output array of 
     // the following format, thus:
     // Input:  data: {
@@ -53,8 +53,6 @@ sf.chart = {
     //
     // NOTE: Only non-zero values are included (so a set of all zero values will return
     //       an empty array.
-    //       
-    // NOTE: 'asc' and 'desc' sort based on the first value in the data array
     // 
     var input = arguments[0],
         format = arguments[1],
@@ -76,20 +74,25 @@ sf.chart = {
       }
     }
     // pick up any sorting options
-    if(options.sort === "desc") {
-      output.sort(function(a,b){
-        return a.data[0]>b.data[0]?-1:1;
-      });
-    } else if(options.sort === "asc") {
+    if(options.sort && options.order) {
+      if(options.order === "desc") {
+        output.sort(function(a,b){
+          return a.data[options.sort]>b.data[options.sort]?-1:1;
+        });
+      } else if(options.order === "asc") {
+        output.sort(function(a,b){
+          return a.data[options.sort]>b.data[options.sort]?1:-1;
+        });
+      }
+    } else {
+      // otherwise use data index 0, ascending
       output.sort(function(a,b){
         return a.data[0]>b.data[0]?1:-1;
       });
     }
     // second pass: truncate/maxResults
     for(i=0;i < output.length; i++){
-      if(i < options.truncate) {
-        truncatedOutput.push(output[i]);
-      } else {
+      if(i >= options.truncate) {
         for(j=0;j<output[i].data.length;j++){
           // 'other[]' will be empty on the first trip
           // through this loop, so give it
@@ -100,9 +103,11 @@ sf.chart = {
             other[j] = 0;
           }
         }
+      } else { // note that this case also covers "undefined" 
+        truncatedOutput.push(output[i]);
       }
       // bail if we hit maxResults
-      if(i === parseInt(options.maxResults,10)) {
+      if(i+1 === parseInt(options.maxResults,10)) { // note counting starts with 1
         break;
       }
     }
@@ -123,6 +128,7 @@ sf.chart = {
     });
     var dataOptions = {
       "sort": container.find("input[name=sort]").val(),
+      "order": container.find("input[name=order]").val(),
       "truncate": container.find("input[name=truncate]").val(),
       "maxResults": container.find("input[name=maxResults]").val(),
       "ignore": ignores
@@ -153,7 +159,25 @@ sf.chart = {
   /* SPLIT FLAP                                                            */
 
   splitFlap: {
-  
+    
+    // DRUM ARRAYS
+    // These contain the character sets for each drum. Each position represents
+    // a character and when prepended by "c" gives the class name which will
+    // be applied to display that character.
+    // Note that the LogoDrum is indexed, so the classes will be like "c0", "c1", etc.
+    FullDrum: function() {
+      this.order = [' ','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','0','1','2','3','4','5','6','7','8','9','.',',','?','!','/','\'','+','-','↑','↓'];
+    },
+    CharDrum: function() {
+      this.order = [' ','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','.',','];
+    },
+    NumDrum: function() {
+      this.order = [' ','0','1','2','3','4','5','6','7','8','9','.',','];
+    },
+    LogoDrum: function() {
+      this.order = [' ','0','1','2','3','4','5','6','7','8','9'];
+    },
+
     init: function() {
       
       // for each character, construct a drum array and
@@ -177,19 +201,6 @@ sf.chart = {
     
     },
   
-    FullDrum: function() {
-      this.order = [' ','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','0','1','2','3','4','5','6','7','8','9','.',',','?','!','/','\'','+','-','↑','↓'];
-    },
-    CharDrum: function() {
-      this.order = [' ','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','.',','];
-    },
-    NumDrum: function() {
-      this.order = [' ','0','1','2','3','4','5','6','7','8','9','.',','];
-    },
-    LogoDrum: function() {
-      this.order = [' ','0','1','2','3','4','5','6','7','8','9'];
-    },
-    
     render: function() {
       var input = arguments[0],
           container = arguments[1],
@@ -213,8 +224,8 @@ sf.chart = {
       var input = arguments[0],
           row = arguments[1], // the row object
           j,group;
-      // first, load the key into the .category group
-      group = row.find(".category");
+      // first, load the label into the .label group
+      group = row.find(".label");
       sf.chart.splitFlap.loadGroup(input.label, group);
       // and put that value into that group's data store
       group.data("contents",input.label);
@@ -297,14 +308,30 @@ sf.chart = {
       container.fadeOut(50, function(){
         container.removeClass().addClass(c);
       }).fadeIn(50);
-    }
+    },
+
+    // Utility function to clear the board
+    clear: function() {
+      var container = arguments[0],
+          rows = container.find(".row"),
+          i=0;
+      var loop = function() {
+        setTimeout(function () {
+          sf.chart.splitFlap.loadRow({"label":"","data":["","","","","","","","","",""]},$(rows[i]));
+          i++;
+          if (i < rows.length) {
+            loop(i); 
+          }
+         }, 500);
+      };
+      loop();
+     }
   
   }
   /* END SPLIT FLAP                                                        */
   /* ********************************************************************* */
   
 };
-
 
 /* ********************************************************************* */
 /* DOCUMENT LOAD                                                         */
