@@ -8,6 +8,7 @@ a {
   text-decoration: none;
 }
 .splitflap {
+  width: 1400px;
   overflow: none;
   white-space: nowrap;
   margin: 20px 10px;
