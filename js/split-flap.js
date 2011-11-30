@@ -27,12 +27,11 @@ sf.chart = {
     sf.chart.splitFlap.init();
   },
 
-  dataBaseUrl: "", // change this if you want to get data from somewhere else
+  dataSrc: "data/category.php", // change this if you want to get data from somewhere else
   
   dataUrl: function() {
-    var params = arguments[0],
-        dataPath = "json/category";
-    return sf.chart.dataBaseUrl + dataPath + "/index.php?" + params;  // NOTE TEMPORARY CHANGE HERE
+    var params = arguments[0];
+    return sf.chart.dataSrc + "?" + params;
   },
   
   formatData: function() {
