@@ -31,7 +31,7 @@ $arrivals = array(
     "flight" => array("scheduled", "city", "airline", "gate", "status", "remarks")
   ),
   "data" => array( 
-    " 101" => array(randomTime(),"Atlanta",rand(0,9),"C21","1","est 2130+"),
+    " 101" => array(randomTime(),"Atlanta",rand(0,9),"C21","1","est 2230+"),
     "  96" => array(randomTime(),"Baltimore",rand(0,9),"A7","0",""),
     "7420" => array(randomTime(),"Charleston",rand(0,9),"A18","0",""),
     "   1" => array(randomTime(),"Durban",rand(0,9),"D44","1","cancelled"),
