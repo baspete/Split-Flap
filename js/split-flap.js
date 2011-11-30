@@ -31,7 +31,6 @@ sf.chart = {
   
   dataUrl: function() {
     var params = arguments[0],
-        chartStyle = arguments[1],
         dataPath = "json/category";
     return sf.chart.dataBaseUrl + dataPath + "/index.php?" + params;  // NOTE TEMPORARY CHANGE HERE
   },
@@ -120,7 +119,6 @@ sf.chart = {
 
   render: function() {
     var container = arguments[0]; // expects the container object
-    var chartStyle = container.find("input[name=chartStyle]").val();
     // make an array containing the values we're going to ignore
     var ignores = [];
     container.find("input[name=ignore]").each(function() {
@@ -135,7 +133,7 @@ sf.chart = {
     };
     var params = container.find(".chartPrefs input").serialize();
     $.getJSON(
-      sf.chart.dataUrl(params, chartStyle),
+      sf.chart.dataUrl(params),
       function(data) {
         var formattedData;
         if(data.length > 0) {
@@ -310,7 +308,7 @@ sf.chart = {
       }).fadeIn(50);
     },
 
-    // Utility function to clear the board
+    // Utility method to clear the board
     clear: function() {
       var container = arguments[0],
           rows = container.find(".row"),
