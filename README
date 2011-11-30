@@ -1,54 +1,85 @@
-INTRODUCTION
+INTRODUCTION 
 ------------
 
-This is a simulation of a split-flap display (often called a Solari board) designed to run in a web browser. It dynamically loads JSON data from a data source and renders that data as characters and images on the board. Individual characters are animated using CSS sprites. 
+This is a simulation of a split-flap display (often called a Solari board)
+designed to run in a web browser. It dynamically loads JSON data from a data
+source and renders that data as characters and images on the board. Individual
+characters are animated using CSS sprites.
 
-The look and feel are fully configurable by changing the markup and using different sprite images. 
+The look and feel are fully configurable by changing the markup and using
+different sprite images.
 
 
-INSTALLATION
+INSTALLATION 
 ------------
 
-1. Place the "split-flap" folder anywhere in your web server's path. The demo uses relative paths to load img/ css/ js/ and data/ (although there's nothing stopping you from using absolute paths). 
+1. Place the "split-flap" folder anywhere in your web server's path. The demo
+uses relative paths to load img/ css/ js/ and data/ (although there's nothing
+stopping you from using absolute paths).
 
-2. Make sure your web server knows about the .json file extension. On a mac, add:
+2. Make sure your web server knows about the .json file extension. On a mac,
+add:
 
    "text/json   json
    
-to /Library/Apache2/conf/mime.types and restart apache (turning web sharing off and back on will do that)
+to /Library/Apache2/conf/mime.types and restart apache (turning web sharing off
+and back on will do that)
 
 3. Make sure data/airport_schedule.php is executable.
 
-4. Navigate to airport.html in your web browser (preferably in full-screen mode--its 1440px wide)
+4. Navigate to airport.html in your web browser (preferably in full-screen mode
+--it's around 1400x850 at the moment).
 
 
-OPERATION
+OPERATION 
 ---------
 
-When the browser finishes loading airport.html, sf.chart.splitFlap.init() is called and finds every display element, creating an array representing the current position of the virtual "drum" containing all the possible characters for that element. It stores this array in the $.data() object for that element. 
+When the browser finishes loading airport.html, sf.chart.splitFlap.init() is
+called and finds every display element, creating an array representing the
+current position of the virtual "drum" containing all the possible characters
+for that element. It stores this array in the $.data() object for that element.
 
-Next, sf.chart.load() is called and passed the DOM element for the chart itself. This function uses the hidden <input> elements in that DOM element to construct and execute an AJAX request to the data source defined in sf.chart.dataSrc. 
+Next, sf.chart.load() is called and passed the DOM element for the chart itself.
+This function uses the hidden <input> elements in that DOM element to construct
+and execute an AJAX request to the data source defined in sf.chart.dataSrc.
 
-The results of that request are passed to sf.chart.formatData(), which returns an array containing the ordered rows of chararacters to show based on the sort/order/maxResults parameters. 
+The results of that request are passed to sf.chart.formatData(), which returns
+an array containing the ordered rows of chararacters to show based on the
+sort/order/maxResults parameters.
 
-Rows are loaded sequentially and each display element which needs to change is animated by hiding its sprite, advancing its drum array one position, and showing the sprite again--repeating until the new character is reached.
+Rows are loaded sequentially and each display element which needs to change is
+animated by hiding its sprite, advancing its drum array one position, and
+showing the sprite again--repeating until the new character is reached.
 
 Lights are simply controlled by setting an "on" class on the proper DOM element.
 
-CUSTOMIZATION
+CUSTOMIZATION 
 -------------
 
-The look and feel is customized by changing the markup, CSS and sprite images. Of course, any size changes you make to the images must be reflected in the sprite images and vice-versa. 
+The look and feel is customized by changing the markup, CSS and sprite images.
+Of course, any size changes you make to the images must be reflected in the
+sprite images and vice-versa.
 
-The display refresh interval and the data source url are set in the <script> block at the bottom of airport.html. Make sure this interval is set long enough so that the entire display has finished rendering before starting again.
+The display refresh interval and the data source url are set in the <script>
+block at the bottom of airport.html. Make sure this interval is set long enough
+so that the entire display has finished rendering before starting again.
 
-The row refresh cascade interval is set in the setTimeout() function in sf.chart.render(). Setting this too low results in a jerky animation as too many elements animate at once and slow your processor.
+The row refresh cascade interval is set in the setTimeout() function in
+sf.chart.render(). Setting this too low results in a jerky animation as too many
+elements animate at once and slow your processor.
 
-The individual elements' animation speed is set in the fadeIn() and fadeOut() functions in sf.chart.splitFlap.show()
+The individual elements' animation speed is set in the fadeIn() and fadeOut()
+functions in sf.chart.splitFlap.show()
 
-The data type, sort criteria, and max number of results are set in the hiddin <input> elements in airport.html
+The data type, sort criteria, and max number of results are set in the hiddin
+<input> elements in airport.html
 
-/data/airport_schedule.php is just an example. Currently it's randomly setting times for each flight to demonstrate the sorting function. Change it to fit your needs, keeping in mind that if you add or remove values from each flight's array you'll need to update your markup accordingly.
+/dataairport_schedule.php is just an example. Currently it's randomly setting
+/times for each flight to demonstrate the sorting function. Change it to fit
+/your needs, keeping in mind that if you add or remove values from each flight's
+/array you'll need to update your markup accordingly.
 
-You can also use any external data sources (provided they return JSONp in the same format as airport_schedule.php. Just modify sf.chart.dataUrl to include "&callback=?" so jQuery knows to expect JSONp. 
+You can also use any external data sources (provided they return JSONp in the
+same format as airport_schedule.php. Just modify sf.chart.dataUrl to include
+"&callback=?" so jQuery knows to expect JSONp.
 
