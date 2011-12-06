@@ -5,10 +5,8 @@
 //     "results": [ 
 //       { 
 //         "source" : "arrivals",
-//         "key" : ["scheduled", "city", "airline", "gate", "status", "remarks"],
 //         "data" : { 
-//           "101" : ["0728", "London", "0", "C21", "1", "est 2130+"], 
-//           "96"  : ["0952", "Madrid", "1", "A7", "0", ""]
+//           "101" : {"scheduled":"0728", "city":"London", "airline":"0", "gate":"C21", "status":"1", "remarks":"est 2130+"}
 //         }
 //       } 
 //     ] 
@@ -27,43 +25,37 @@ function randomTime(){
 
 $arrivals = array(
   "source" => "arrivals",
-  "key" => array(
-    "flight" => array("scheduled", "city", "airline", "gate", "status", "remarks")
-  ),
   "data" => array( 
-    " 101" => array(randomTime(),"Atlanta",rand(0,9),"C21","1","10m early"),
-    "  96" => array(randomTime(),"Baltimore",rand(0,9),"A7","0",""),
-    "7420" => array(randomTime(),"Charleston",rand(0,9),"A18","0",""),
-    "   1" => array(randomTime(),"Durban",rand(0,9),"D44","1","delayed"),
-    "  99" => array(randomTime(),"Edinburgh",rand(0,9),"A12","0",""),
-    " 215" => array(randomTime(),"Frankfurt",rand(0,9),"B2","0",""),
-    " 174" => array(randomTime(),"Galveston",rand(0,9),"B14","0",""),
-    "  41" => array(randomTime(),"Houston",rand(0,9),"C6","0",""),
-    "4476" => array(randomTime(),"Indianapolis",rand(0,9),"D16","0",""),
-    " 112" => array(randomTime(),"Jakarta",rand(0,9),"A6","0",""),
-    "2145" => array(randomTime(),"Karachi",rand(0,9),"C7","0",""),
-    "7772" => array(randomTime(),"Los Angeles",rand(0,9),"B12","0","")
+    " 101" => array("scheduled"=>randomTime(),"city"=>"Atlanta","airline"=>rand(0,9),"gate"=>"C21","status"=>"1","remarks"=>"10m early"),
+    "  96" => array("scheduled"=>randomTime(),"city"=>"Baltimore","airline"=>rand(0,9),"gate"=>"A7","status"=>"0","remarks"=>""),
+    "7420" => array("scheduled"=>randomTime(),"city"=>"Charleston","airline"=>rand(0,9),"gate"=>"A18","status"=>"0","remarks"=>""),
+    "   1" => array("scheduled"=>randomTime(),"city"=>"Durban","airline"=>rand(0,9),"gate"=>"D44","status"=>"1","remarks"=>"delayed"),
+    "  99" => array("scheduled"=>randomTime(),"city"=>"Edinburgh","airline"=>rand(0,9),"gate"=>"A12","status"=>"0","remarks"=>""),
+    " 215" => array("scheduled"=>randomTime(),"city"=>"Frankfurt","airline"=>rand(0,9),"gate"=>"B2","status"=>"0","remarks"=>""),
+    " 174" => array("scheduled"=>randomTime(),"city"=>"Galveston","airline"=>rand(0,9),"gate"=>"B14","status"=>"0","remarks"=>""),
+    "  41" => array("scheduled"=>randomTime(),"city"=>"Houston","airline"=>rand(0,9),"gate"=>"C6","status"=>"0","remarks"=>""),
+    "4476" => array("scheduled"=>randomTime(),"city"=>"Indianapolis","airline"=>rand(0,9),"gate"=>"D16","status"=>"0","remarks"=>""),
+    " 112" => array("scheduled"=>randomTime(),"city"=>"Jakarta","airline"=>rand(0,9),"gate"=>"A6","status"=>"0","remarks"=>""),
+    "2145" => array("scheduled"=>randomTime(),"city"=>"Karachi","airline"=>rand(0,9),"gate"=>"C7","status"=>"0","remarks"=>""),
+    "7772" => array("scheduled"=>randomTime(),"city"=>"Los Angeles","airline"=>rand(0,9),"gate"=>"B12","status"=>"0","remarks"=>"")
   )
 );
 
 $departures = array(
   "source" => "departures",
-  "key" => array(
-    "flight" => array("scheduled", "city", "airline", "gate", "status", "remarks")
-  ),
   "data" => array( 
-    " 101" => array(randomTime(),"Ouagadougou",rand(0,9),"C21","1","est 2130+"),
-    "  96" => array(randomTime(),"Panama City",rand(0,9),"A7","0",""),
-    "7420" => array(randomTime(),"Quanduc",rand(0,9),"A18","0",""),
-    "   1" => array(randomTime(),"Rotterdam",rand(0,9),"D44","1","cancelled"),
-    "  99" => array(randomTime(),"Seoul",rand(0,9),"A12","0",""),
-    " 215" => array(randomTime(),"Tashkent",rand(0,9),"B2","0",""),
-    " 174" => array(randomTime(),"Ulaanbaatar",rand(0,9),"B14","1","weather"),
-    "  41" => array(randomTime(),"Valparaiso",rand(0,9),"C6","0",""),
-    "4476" => array(randomTime(),"Wagga Wagga",rand(0,9),"D16","0",""),
-    " 112" => array(randomTime(),"Xuzhou",rand(0,9),"A6","0",""),
-    "2145" => array(randomTime(),"Yakutsk",rand(0,9),"C7","0",""),
-    "7772" => array(randomTime(),"Zagreb",rand(0,9),"B12","0","")
+    " 101" => array("scheduled"=>randomTime(),"city"=>"Ouagadougou","airline"=>rand(0,9),"gate"=>"C21","status"=>"1","est 2130+"),
+    "  96" => array("scheduled"=>randomTime(),"city"=>"Panama City","airline"=>rand(0,9),"gate"=>"A7","status"=>"0","remarks"=>""),
+    "7420" => array("scheduled"=>randomTime(),"city"=>"Quanduc","airline"=>rand(0,9),"gate"=>"A18","status"=>"0","remarks"=>""),
+    "   1" => array("scheduled"=>randomTime(),"city"=>"Rotterdam","airline"=>rand(0,9),"gate"=>"D44","status"=>"1","cancelled"),
+    "  99" => array("scheduled"=>randomTime(),"city"=>"Seoul","airline"=>rand(0,9),"gate"=>"A12","status"=>"0","remarks"=>""),
+    " 215" => array("scheduled"=>randomTime(),"city"=>"Tashkent","airline"=>rand(0,9),"gate"=>"B2","status"=>"0","remarks"=>""),
+    " 174" => array("scheduled"=>randomTime(),"city"=>"Ulaanbaatar","airline"=>rand(0,9),"gate"=>"B14","status"=>"1","remarks"=>"weather"),
+    "  41" => array("scheduled"=>randomTime(),"city"=>"Valparaiso","airline"=>rand(0,9),"gate"=>"C6","status"=>"0","remarks"=>""),
+    "4476" => array("scheduled"=>randomTime(),"city"=>"Wagga Wagga","airline"=>rand(0,9),"gate"=>"D16","status"=>"0","remarks"=>""),
+    " 112" => array("scheduled"=>randomTime(),"city"=>"Xuzhou","airline"=>rand(0,9),"gate"=>"A6","status"=>"0","remarks"=>""),
+    "2145" => array("scheduled"=>randomTime(),"city"=>"Yakutsk","airline"=>rand(0,9),"gate"=>"C7","status"=>"0","remarks"=>""),
+    "7772" => array("scheduled"=>randomTime(),"city"=>"Zagreb","airline"=>rand(0,9),"gate"=>"B12","status"=>"0","remarks"=>"")
   )
 );
 
