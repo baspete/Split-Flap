@@ -319,25 +319,30 @@ sf.plugins = {
 
   wunderground: {
 
-    /* need a get that looks something like:
-      var station = container.find(".chartPrefs input[name='data']").val();
-      $.ajax({
-        url: sf.chart.dataUrl(station),
-        dataType: 'jsonp',
-        success: function(json){
-          var stations = json.location.nearby_weather_stations.airport.station;
-          console.log("Stations: ",stations)
-        }
-      })
-    */
-
-    url: function(station_code){
+    // get nearby stations
+    stationsUrl: function(station_code){
       var base_url = "http://api.wunderground.com/api/d73bc72d0f231c10/geolookup/q/";
       return base_url + station_code + ".json?" + "callback=myCallback";
     },
 
-    formatData: function(data){
-      return data;
+    // get station weather info
+    stationUrl: function(station_code){
+      var base_url = "http://api.wunderground.com/api/d73bc72d0f231c10/conditions/q/";
+      return base_url + station_code + ".json?" + "callback=myCallback";
+    },
+
+    formatStationsData: function(response){
+      var stations = response.location.nearby_weather_stations.airport.station,
+          i=0, stationNames=[];
+      for(i=0;i<stations.length;i++){
+        stationNames[i] = stations[i]["icao"];
+      }
+      return stationNames;
+    },
+
+    formatStationData: function(response){
+      console.log("raw weather data for station: ",response)
+      return response
     }
 
   }
