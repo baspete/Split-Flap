@@ -159,6 +159,26 @@ sf.display = {
   
   },
 
+  initRow: function(row) { // expects the jQuery DOM object
+    // For each character, construct a drum array and
+    // attach that array to the element's .data() object
+    row.find("span").each(function() {
+      var parent = $(this).closest("div");
+      if(parent.hasClass("number")){
+        var drum = new sf.display.NumDrum(); // Numbers only
+      } else if(parent.hasClass("character")) {
+        var drum = new sf.display.CharDrum(); // Characters only
+      } else if(parent.hasClass("logo")) {
+        var drum = new sf.display.LogoDrum(); // Logos
+      } else {
+        var drum = new sf.display.FullDrum(); // The full set
+      }
+      $(this).data("order", drum.order);
+      // Finally, set each character to a space.
+      sf.display.change($(this), " ");
+    });
+  },
+
   load: function() {
     var input = arguments[0],
         container = arguments[1],
@@ -321,14 +341,18 @@ sf.plugins = {
 
     // get nearby stations
     stationsUrl: function(station_code){
-      var base_url = "http://api.wunderground.com/api/d73bc72d0f231c10/geolookup/q/";
-      return base_url + station_code + ".json?" + "callback=myCallback";
+      // var base_url = "http://api.wunderground.com/api/d73bc72d0f231c10/geolookup/q/";
+      // return base_url + station_code + ".json?" + "callback=myCallback";
+      var base_url = "data/geolookup/";
+      return base_url + station_code + ".json";
     },
 
     // get station weather info
     stationUrl: function(station_code){
-      var base_url = "http://api.wunderground.com/api/d73bc72d0f231c10/conditions/q/";
-      return base_url + station_code + ".json?" + "callback=myCallback";
+      // var base_url = "http://api.wunderground.com/api/d73bc72d0f231c10/conditions/q/";
+      // return base_url + station_code + ".json?" + "callback=myCallback";
+      var base_url = "data/conditions/";
+      return base_url + station_code + ".php";
     },
 
     formatStationsData: function(response){
