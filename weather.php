@@ -1,10 +1,10 @@
+<!DOCTYPE html>
 <html>
   <head>
     <link rel="stylesheet" href="css/airport.css"/>
   </head>
   <body>
   
-
     <!-- ============================================ -->
     <!-- CHART CONTAINER                              -->
     <div id="display1" class="chartContainer splitflap">
@@ -12,6 +12,7 @@
       <!-- parameters -->
       <div class="chartPrefs" style="display:none;">
         <input type="hidden" name="data" value="<?php echo $_GET["data"] ?>" />    <!-- the station identifier -->
+        <input type="hidden" name="sort" value="<?php echo $_GET["sort"] ?>" />
       </div>
       
       <ul id="chart1" class="chart">
@@ -129,6 +130,15 @@
 
       $(document).ready(function() {
  
+        // Get the sort prefs from the markup
+        var container = $("#display1");
+        var dataOptions = {
+          "sort": container.find("input[name=sort]").val(),
+          "order": container.find("input[name=order]").val(),
+          "truncate": container.find("input[name=truncate]").val(),
+          "maxResults": container.find("input[name=maxResults]").val()
+        };
+
         // start by getting the list of nearby stations 
         // and creating a collection of objects
         $.ajax({
@@ -137,9 +147,14 @@
           success: function(response){
             var stations = new Stations; // Create a Collection
 
+            // set up the correct sorting/truncating criteria
+            /*
             stations.comparator = function(station) {
-              return station.get("temp_f");
+              var sort = dataOptions["sort"];
+              console.log(sort)
+              return station.get(sort);
             };
+            */
 
             // create a Model for each station code
             var codes = sf.plugins.wunderground.formatStationsData(response); // Format the response to get just the array of station codes
