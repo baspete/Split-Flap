@@ -41,7 +41,7 @@
     <!-- ROW TEMPLATE                                 -->
     <script type="text/template" id="row_template">
       <li class="row" id="<%= id %>">
-        <div class="group label"> <!-- Station ID -->
+        <div class="group id"> <!-- Station ID -->
           <div class="character"><span></span></div>
           <div class="character"><span></span></div>
           <div class="character"><span></span></div>
@@ -135,12 +135,18 @@
           url: sf.plugins.wunderground.stationsUrl("<?php echo $_GET["data"] ?>", "<?php echo $_GET["apiKey"] ?>"),
           dataType: sf.plugins.wunderground.dataType,
           success: function(response){
-            var stations = new Stations, // Create a Collection
-                codes = sf.plugins.wunderground.formatStationsData(response); // Format the response to get just the array of station codes
+            var stations = new Stations; // Create a Collection
+
+            stations.comparator = function(station) {
+              return station.get("temp_f");
+            };
+
+            // create a Model for each station code
+            var codes = sf.plugins.wunderground.formatStationsData(response); // Format the response to get just the array of station codes
             for (var i=0;i<codes.length;i++){
-              var station = new Station({id:codes[i]}); // Create a Model for this station
-              var stationView = new StationView({model:station}); // Create a view for this station
-              station.url = sf.plugins.wunderground.stationUrl(codes[i], "<?php echo $_GET["apiKey"] ?>"); // Set the data url for this station
+              var station = new Station({id:codes[i]}); 
+              var stationView = new StationView({model:station});
+              station.url = sf.plugins.wunderground.stationUrl(codes[i], "<?php echo $_GET["apiKey"] ?>"); 
               stations.add(station); // Add the station to the Collection
             }
           },

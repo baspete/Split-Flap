@@ -65,20 +65,15 @@ sf.display = {
     var input = arguments[0],
         row = arguments[1], // the row object
         key,group;
-    // first, load the category name into the .label group
-    group = row.find(".label");
-    sf.display.loadGroup(input.label, group);
-    // and put that value into that group's data store
-    group.data("contents",input.label);
-    // load the data array into the .data[key] groups
-    for(key in input.data) {
-      if(input.data.hasOwnProperty(key)){
-      group = row.find("."+key);
-      if(group.length > 0) {
-        sf.display.loadGroup(input.data[key], group);
-        // put that value into that group's data store
-        group.data("contents",input.data[key]);
-      }
+    // load the keys array into the .[key] groups
+    for(key in input) {
+      if(input.hasOwnProperty(key)){
+        group = row.find("."+key);
+        if(group.length > 0) {
+          sf.display.loadGroup(input[key], group);
+          // put that value into that group's data store
+          group.data("contents",input[key]);
+        }
       }
     }
   },
@@ -230,15 +225,7 @@ sf.plugins = {
     },
 
     formatStationData: function(json){
-      var formattedData = {
-        "label":json["current_observation"].station_id,
-        "data":{
-          "temp_f": json["current_observation"].temp_f,
-          "wind_dir": json["current_observation"].wind_dir,
-          "wind_mph": json["current_observation"].wind_mph
-        }
-      };
-      return formattedData;
+      return json["current_observation"];
     }
 
   }
