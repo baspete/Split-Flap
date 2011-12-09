@@ -96,29 +96,16 @@
           fetchModels(stations);
           setInterval(function(){
             fetchModels(stations);
-          }, 5000); // refresh inteval
-
+          }, 60000); // refresh inteval
+          
         } // end initialize
       });
 
-      // Here's the Model for an individual station. It has
-      // one method, "normalize()", which returns an object 
-      // which can be passed directly to sf.display.loadRow()
-      // TODO: perhaps this should be handled through parse()
-      //       so we can just pass the whole model?
+      // Here's the Model for an individual station. It calls the formatStationData() plugin
+      // so its JSON can be passed directly to sf.display.loadRow()
       var Station = Backbone.Model.extend({
-        normalize: function(){
-          var observation = this.get("current_observation");
-          var normalizedData = {}
-          normalizedData = {
-            "label":this.id,
-            "data":{
-              "temp_f": observation.temp_f,
-              "wind_dir": observation.wind_dir,
-              "wind_mph": observation.wind_mph
-            }
-          };
-          return normalizedData;
+        parse: function(json){
+          return(sf.plugins.wunderground.formatStationData(json)); 
         }
       });
 
@@ -136,7 +123,7 @@
           this.model.bind("change", this.render, this);
         },
         render: function(){
-          sf.display.loadRow(this.model.normalize(),this.el);
+          sf.display.loadRow(this.model.toJSON(),this.el);
         }
       });
 
@@ -145,8 +132,7 @@
         // start by getting the list of nearby stations 
         // and creating a collection of objects
         $.ajax({
-          url: sf.plugins.wunderground.stationsUrl("<?php echo $_GET["data"] ?>"),
-          // dataType: 'jsonp',
+          url: sf.plugins.wunderground.stationsUrl("<?php echo $_GET["data"] ?>", "<?php echo $_GET["apiKey"] ?>"),
           dataType: sf.plugins.wunderground.dataType,
           success: function(response){
             var stations = new Stations, // Create a Collection
@@ -154,7 +140,7 @@
             for (var i=0;i<codes.length;i++){
               var station = new Station({id:codes[i]}); // Create a Model for this station
               var stationView = new StationView({model:station}); // Create a view for this station
-              station.url = sf.plugins.wunderground.stationUrl(codes[i]); // Set the data url for this station
+              station.url = sf.plugins.wunderground.stationUrl(codes[i], "<?php echo $_GET["apiKey"] ?>"); // Set the data url for this station
               stations.add(station); // Add the station to the Collection
             }
           },

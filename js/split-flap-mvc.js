@@ -205,16 +205,16 @@ sf.plugins = {
     dataType: 'json',
 
     // get nearby stations
-    stationsUrl: function(station_code){
-      // var base_url = "http://api.wunderground.com/api/d73bc72d0f231c10/geolookup/q/";
+    stationsUrl: function(station_code, api_key){
+      // var base_url = "http://api.wunderground.com/api/"+api_key+"/geolookup/q/";
       // return base_url + station_code + ".json?" + "callback=myCallback";
       var base_url = "data/geolookup/";
       return base_url + station_code + ".json";
     },
 
     // get station weather info
-    stationUrl: function(station_code){
-      // var base_url = "http://api.wunderground.com/api/d73bc72d0f231c10/conditions/q/";
+    stationUrl: function(station_code, api_key){
+      // var base_url = "http://api.wunderground.com/api/"+api_key+"/conditions/q/";
       // return base_url + station_code + ".json?" + "callback=myCallback";
       var base_url = "data/conditions/";
       return base_url + station_code + ".php";
@@ -229,9 +229,16 @@ sf.plugins = {
       return stationNames;
     },
 
-    formatStationData: function(response){
-      console.log("raw weather data for station: ",response)
-      return response
+    formatStationData: function(json){
+      var formattedData = {
+        "label":json["current_observation"].station_id,
+        "data":{
+          "temp_f": json["current_observation"].temp_f,
+          "wind_dir": json["current_observation"].wind_dir,
+          "wind_mph": json["current_observation"].wind_mph
+        }
+      };
+      return formattedData;
     }
 
   }
