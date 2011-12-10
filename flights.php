@@ -1,6 +1,7 @@
 <html>
   <head>
-    <link rel="stylesheet" href="css/airport.css"/>
+    <link rel="stylesheet" href="css/split-flap.css"/>
+    <link rel="stylesheet" href="plugins/airport/custom.css"/>
   </head>
   <body>
   

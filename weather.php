@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" href="css/airport.css"/>
+    <link rel="stylesheet" href="css/split-flap.css"/>
+    <link rel="stylesheet" href="plugins/weather/custom.css"/>
   </head>
   <body>
   
@@ -11,7 +12,7 @@
 
       <!-- parameters -->
       <div class="chartPrefs" style="display:none;">
-        <input type="hidden" name="data" value="<?php echo $_GET["data"] ?>" />    <!-- the station identifier -->
+        <input type="hidden" name="data" value="<?php echo $_GET["data"] ?>" /> <!-- the station identifier -->
         <input type="hidden" name="sort" value="<?php echo $_GET["sort"] ?>" />
       </div>
       
@@ -22,8 +23,10 @@
         <!-- Header: 30px/char, 15px/separator, 120px/logo -->
         <div class="header" style="width:120px;margin-left:0px;">Station</div>
         <div class="header" style="width:90px;margin-left:30px;">Temp</div>
-        <div class="header" style="width:150px;margin-left:30px;">Wind Direction</div>
-        <div class="header" style="width:120px;margin-left:30px;">Wind Speed</div>
+        <div class="header" style="width:90px;margin-left:30px;">Wdir</div>
+        <div class="header" style="width:60px;margin-left:30px;">Wspd</div>
+        <div class="header" style="width:150px;margin-left:30px;">Pressure</div>
+        <div class="header" style="width:470px;margin-left:30px;text-align:left;">Sky</div>
 
         <!-- rows will be placed here dynamically from #row_template -->
         
@@ -37,6 +40,7 @@
     <script type="text/javascript" src="js/underscore.js"></script>
     <script type="text/javascript" src="js/backbone.js"></script>
     <script type="text/javascript" src="js/split-flap-mvc.js"></script>
+    <script type="text/javascript" src="plugins/weather/custom.js"></script>
 
     <!-- ============================================ -->
     <!-- ROW TEMPLATE                                 -->
@@ -53,16 +57,48 @@
           <div class="number"><span></span></div>
           <div class="number"><span></span></div>
         </div>
-        <div class="group wind_dir"> 
+        <div class="group wind_degrees"> 
+          <div class="number"><span></span></div>
+          <div class="number"><span></span></div>
+          <div class="number"><span></span></div>
+        </div>
+        <div class="group wind_mph"> 
+          <div class="number"><span></span></div>
+          <div class="number"><span></span></div>
+        </div>
+        <div class="group pressure_mb" style="margin-right:0;"> 
+          <div class="number"><span></span></div>
+          <div class="number"><span></span></div>
+          <div class="number"><span></span></div>
+          <div class="number"><span></span></div>
+        </div>
+        <div class="group pressure_trend"> 
+          <div class="full"><span></span></div>
+        </div>
+        <div class="group weather_icon"> <!-- sky icon -->
+          <div class="image"><span></span></div>
+        </div>
+        <div class="group weather"> 
+          <div class="character"><span></span></div>
+          <div class="character"><span></span></div>
+          <div class="character"><span></span></div>
+          <div class="character"><span></span></div>
+          <div class="character"><span></span></div>
+          <div class="character"><span></span></div>
+          <div class="character"><span></span></div>
+          <div class="character"><span></span></div>
+          <div class="character"><span></span></div>
+          <div class="character"><span></span></div>
+          <div class="character"><span></span></div>
           <div class="character"><span></span></div>
           <div class="character"><span></span></div>
           <div class="character"><span></span></div>
           <div class="character"><span></span></div>
           <div class="character"><span></span></div>
         </div>
-        <div class="group wind_mph"> 
-          <div class="number"><span></span></div>
-          <div class="number"><span></span></div>
+        <div class="group status" style="margin-right:30px;"> <!-- lights -->
+          <div class="s0"></div>
+          <div class="s1"></div>
         </div>
       </li>
     </script>
@@ -97,8 +133,7 @@
           fetchModels(stations);
           setInterval(function(){
             fetchModels(stations);
-          }, 60000); // refresh inteval
-          
+          }, 30000); // refresh inteval
         } // end initialize
       });
 
@@ -150,8 +185,7 @@
             // set up the correct sorting/truncating criteria
             /*
             stations.comparator = function(station) {
-              var sort = dataOptions["sort"];
-              console.log(sort)
+              var sort = dataOptions["sort"] ? dataOptions["sort"] : "id";
               return station.get(sort);
             };
             */

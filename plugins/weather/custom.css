@@ -1,0 +1,46 @@
+/* WEATHER ICONS DRUM */
+.splitflap .image {
+  float: left;
+  margin-right: 5px;
+  width: 40px;
+  height: 40px;
+  background: url('weather_icons.png') no-repeat;
+  background-position: 0px 0px;
+}
+  .splitflap .image span {
+    width: 40px;
+    height: 40px;
+    display: block;
+    background: url('weather_icons.png') no-repeat;
+    background-position: -40px -200px; /* start with a blank */
+  }
+
+.splitflap .image span.sleet-1 { background-position: -0px -0px;}
+.splitflap .image span.partlycloudy { background-position: -40px -0px;}
+.splitflap .image span.clear { background-position: -80px -0px;}
+.splitflap .image span.cloudy { background-position: -120px -0px;}
+.splitflap .image span.fog { background-position: -160px -0px;}
+.splitflap .image span.sunny { background-position: -0px -40px;}
+.splitflap .image span.partlycloudy-1 { background-position: -40px -40px;}
+.splitflap .image span.tstorms { background-position: -80px -40px;}
+.splitflap .image span.snow { background-position: -120px -40px;}
+.splitflap .image span.chancerain { background-position: -160px -40px;}
+.splitflap .image span.chancetstorms-1 { background-position: -0px -80px;}
+.splitflap .image span.flurries { background-position: -40px -80px;}
+.splitflap .image span.tstorms-1 { background-position: -80px -80px;}
+.splitflap .image span.partlysunny { background-position: -120px -80px;}
+.splitflap .image span.chanceflurries { background-position: -160px -80px;}
+.splitflap .image span.mostlycloudy { background-position: -0px -120px;}
+.splitflap .image span.chancesnow { background-position: -40px -120px;}
+.splitflap .image span.chancesleet { background-position: -80px -120px;}
+.splitflap .image span.tstorms-2 { background-position: -120px -120px;}
+.splitflap .image span.rain { background-position: -160px -120px;}
+.splitflap .image span.sleet { background-position: -0px -160px;}
+.splitflap .image span.hazy { background-position: -40px -160px;}
+.splitflap .image span.mostlysunny { background-position: -80px -160px;}
+.splitflap .image span.chancetstorms { background-position: -120px -160px;}
+.splitflap .image span.cloudy-1 { background-position: -160px -160px;}
+.splitflap .image span.chancesleet-1 { background-position: -0px -200px;}
+.splitflap .image span.csp { background-position: -40px -200px;}
+.splitflap .image span.ctrn { background-position: -80px -200px;}
+

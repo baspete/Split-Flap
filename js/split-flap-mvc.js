@@ -4,6 +4,10 @@ var sf = {};
 // Namespace for objects defined and used locally in templates
 sf.local = {};
 
+// Namespace for plugin-specific javascript,
+// to be loaded later in separate files
+sf.plugins = {}; 
+
 /* ********************************************************************* */
 /* HOUSEKEEPING                                                          */
 
@@ -27,7 +31,6 @@ sf.display = {
   // These contain the character sets for each drum. Each position represents
   // a character and when prepended by "c" gives the class name which will
   // be applied to display that character.
-  // Note that the LogoDrum is indexed, so the classes will be like "c0", "c1", etc.
   FullDrum: function() {
     this.order = [' ','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','0','1','2','3','4','5','6','7','8','9','.',',','?','!','/','\'','+','-','↑','↓'];
   },
@@ -37,9 +40,8 @@ sf.display = {
   NumDrum: function() {
     this.order = [' ','0','1','2','3','4','5','6','7','8','9','.',','];
   },
-  LogoDrum: function() {
-    this.order = [' ','0','1','2','3','4','5','6','7','8','9'];
-  },
+  // ImageDrum is empty here. Override in plugins/<plugin_name>/custom.js
+  ImageDrum: function() {}, 
 
   initRow: function(row) { // expects the jQuery DOM object
     // For each character, construct a drum array and
@@ -50,8 +52,8 @@ sf.display = {
         var drum = new sf.display.NumDrum(); // Numbers only
       } else if(parent.hasClass("character")) {
         var drum = new sf.display.CharDrum(); // Characters only
-      } else if(parent.hasClass("logo")) {
-        var drum = new sf.display.LogoDrum(); // Logos
+      } else if(parent.hasClass("image")) {
+        var drum = new sf.display.ImageDrum(); // Images
       } else {
         var drum = new sf.display.FullDrum(); // The full set
       }
@@ -81,15 +83,29 @@ sf.display = {
   loadGroup: function() {
     // load a string into a group of display elements
     var input = arguments[0], // the input (which may be a string or a int)
-        input = input + '', // force it into a string
-        target = arguments[1], // the object
-        elements = target.find(".character, .number, .full, .logo"),
+        input = input.toString(), // force it into a string
+        target = arguments[1], // the group object
+        elements = target.find("div"),
         strLen = elements.size(),
         i, characters;
-    if(target.hasClass("status")) { // status renders differently--it just adds the class "on" to the correct element
+    
+    // ###################################
+    // STATUS INDICATORS    
+    // Add the class "on" to the correct element
+    if(target.hasClass("status")) { 
       target.find("div").removeClass("on");
       target.find(".s"+input).addClass("on");
-    } else {  // otherwise, this group is composed of split-flap elements
+
+    // ###################################
+    // IMAGES  
+    // Only one display element--no need to iterate
+    } else if(target.find(".image").length > 0){
+      sf.display.change(target.find("span"), input, false);
+
+    // ###################################
+    // NORMAL CHARACTERS    
+    // otherwise, this group is composed of split-flap character or number elements
+    } else {  
       input = input.toUpperCase();
       // get individual characters and pad the array 
       // with spaces (to clear any existing characters)
@@ -104,14 +120,16 @@ sf.display = {
       // assign them to the display elements
       for(var i=0;i<characters.length;i++) {
         // TODO: is there a more efficient way to do this?
-        sf.display.change($(elements[i]).find("span"), characters[i]);
+        sf.display.change($(elements[i]).find("span"), characters[i], true);
       }
     }
+
   },
   
   change: function() {
     var container = arguments[0],
         c = arguments[1], // the new character
+        isChar = arguments[2], // true if this is an character (not an image)
         index, i, j;
     // get the curent order of the display element's drum
     var values = container.data("order");
@@ -119,7 +137,7 @@ sf.display = {
     index = values.indexOf(c);
     // increment the drum
     for(i=0;i<index;i++) {
-      sf.display.show(container, (values[i + 1]));
+      sf.display.show(container, (values[i + 1]), isChar);
     }
     // rotate the dom element's stored array to the new order for next time
     container.data("order", values.rotate(index));
@@ -128,21 +146,24 @@ sf.display = {
   show: function() {
     var container = arguments[0],
         i = arguments[1],
-        c = "c" + (i);
-        // punctuation has special class names
-        switch(i) {
-          case " ": c = "csp"; break;
-          case ".": c = "cper"; break;
-          case ",": c = "ccom"; break;
-          case "?": c = "cque"; break;
-          case "!": c = "cexc"; break;
-          case "/": c = "csla"; break;
-          case "'": c = "capo"; break;
-          case "+": c = "cplu"; break;
-          case "-": c = "cmin"; break;
-          case "↑": c = "cup"; break;
-          case "↓": c = "cdn"; break;
-        }
+        isChar = arguments[2],
+        c;
+    c = isChar ? "c"+(i) : (i); // character class names are preceded by "c"
+    // punctuation has special class names
+    // TODO: can we be more efficient here? This method gets called a lot!
+    switch(i) {
+      case " ": c = "csp"; break;
+      case ".": c = "cper"; break;
+      case ",": c = "ccom"; break;
+      case "?": c = "cque"; break;
+      case "!": c = "cexc"; break;
+      case "/": c = "csla"; break;
+      case "'": c = "capo"; break;
+      case "+": c = "cplu"; break;
+      case "-": c = "cmin"; break;
+      case "↑": c = "cup"; break;
+      case "↓": c = "cdn"; break;
+    }
     container.fadeOut(50, function(){
       container.removeClass().addClass(c);
     }).fadeIn(50);
@@ -173,65 +194,3 @@ sf.display = {
 };
 /* END DISPLAY METHODS                                                   */
 /* ********************************************************************* */
-
-/* ********************************************************************* */
-/* SOURCE-SPECIFIC PLUGINS                                               */
-
-sf.plugins = {
-    
-  airport: {
-    
-    // input: map of parameters
-    // output: url
-    url: function(params){
-      var base_url = "data/airport_schedule.php";
-      return base_url + "?" + params.serialize();
-    },
-
-    formatData: function(data){
-      var formattedData = data.response.results[0].data;
-      return formattedData;
-    }
-
-  },
-
-  wunderground: {
-
-    dataType: 'json',
-
-    // get nearby stations
-    stationsUrl: function(station_code, api_key){
-      // var base_url = "http://api.wunderground.com/api/"+api_key+"/geolookup/q/";
-      // return base_url + station_code + ".json?" + "callback=myCallback";
-      var base_url = "data/geolookup/";
-      return base_url + station_code + ".json";
-    },
-
-    // get station weather info
-    stationUrl: function(station_code, api_key){
-      // var base_url = "http://api.wunderground.com/api/"+api_key+"/conditions/q/";
-      // return base_url + station_code + ".json?" + "callback=myCallback";
-      var base_url = "data/conditions/";
-      return base_url + station_code + ".php";
-    },
-
-    formatStationsData: function(response){
-      var stations = response.location.nearby_weather_stations.airport.station,
-          i=0, stationNames=[];
-      for(i=0;i<stations.length;i++){
-        stationNames[i] = stations[i]["icao"];
-      }
-      return stationNames;
-    },
-
-    formatStationData: function(json){
-      return json["current_observation"];
-    }
-
-  }
-
-};
-
-/* END SOURCE-SPECIFIC PLUGINS                                           */
-/* ********************************************************************* */
-
