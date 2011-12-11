@@ -9,6 +9,18 @@ characters are animated using CSS sprites.
 The look and feel are fully configurable by changing the markup and using
 different sprite images.
 
+There are two example files here, flights.php and weather.php. Flights uses 
+randomly generated data from data/airport_schedule.php, based on the page
+request, like so:
+
+flights.php?data=arrivals
+
+Weather uses live data from the Weather Underground, displaying weather con-
+ditions for nearby weather stations, for example:
+
+weather.php?data=KSFO&apiKey=d73bc72d0f231c10
+
+will show weather for the four airports nearest SFO.
 
 INSTALLATION 
 ------------
@@ -30,28 +42,6 @@ and back on will do that)
 4. Navigate to arrivals.html (or departures.html) in your web browser (preferably 
 in full-screen mode--it's around 1400x850 at the moment).
 
-
-OPERATION 
----------
-
-When the browser finishes loading arrivals.html, sf.chart.splitFlap.init() is
-called and finds every display element, creating an array representing the
-current position of the virtual "drum" containing all the possible characters
-for that element. It stores this array in the $.data() object for that element.
-
-Next, sf.chart.load() is called and passed the DOM element for the chart itself.
-This function uses the hidden <input> elements in that DOM element to construct
-and execute an AJAX request to the data source defined in sf.chart.dataSrc.
-
-The results of that request are passed to sf.chart.formatData(), which returns
-an array containing the ordered rows of chararacters to show based on the
-sort/order/maxResults parameters.
-
-Rows are loaded sequentially and each display element which needs to change is
-animated by hiding its sprite, advancing its drum array one position, and
-showing the sprite again--repeating until the new character is reached.
-
-Lights are simply controlled by setting an "on" class on the proper DOM element.
 
 CUSTOMIZATION 
 -------------
