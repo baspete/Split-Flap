@@ -183,6 +183,9 @@
             var stations = new Stations; // Create a Collection
 
             // set up the correct sorting/truncating criteria
+            // TODO: because the Models are tied to DOM elements which don't
+            // change, there is currently no way to re-sequence them when 
+            // refreshing the data on the page. How to solve this?
             /*
             stations.comparator = function(station) {
               var sort = dataOptions["sort"] ? dataOptions["sort"] : "id";
