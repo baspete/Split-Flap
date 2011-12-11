@@ -8,26 +8,26 @@ sf.display.ImageDrum = function() {
 
 sf.plugins.wunderground = {
  	
- 	dataType: 'json ',
+ 	dataType: 'jsonp',
 
     // get nearby stations
     stationsUrl: function(station_code, api_key){
-      /*
       var base_url = "http://api.wunderground.com/api/"+api_key+"/geolookup/q/";
       return base_url + station_code + ".json?" + "callback=myCallback";
-      */
+      /*
       var base_url = "data/geolookup/";
       return base_url + station_code + ".json";
+      */
     },
 
     // get station weather info
     stationUrl: function(station_code, api_key){
-      /*
       var base_url = "http://api.wunderground.com/api/"+api_key+"/conditions/q/";
       return base_url + station_code + ".json?" + "callback=myCallback";
-      */
+      /*
       var base_url = "data/conditions/";
       return base_url + station_code + ".php";
+      */
     },
 
     formatStationsData: function(response){
@@ -41,7 +41,7 @@ sf.plugins.wunderground = {
 
     formatStationData: function(json){
       var current = json["current_observation"];
-      // Modify "pressure_trend" to show arrows instead of +/-/0
+      // Modify "pressure_trend" to show arrows/space instead of +/-/0
       switch(current.pressure_trend){
         case "+": 
           current["pressure_trend"] = "↑"; 
@@ -64,7 +64,6 @@ sf.plugins.wunderground = {
       }
       // add a weather icon field, based on the image url
       current["weather_icon"] = _.last(current["icon_url"].split("/")).split(".")[0].replace("nt_","");
-      // console.log("weather_icon: ",current["weather_icon"]);
       return current;
     }	
 };
