@@ -198,7 +198,7 @@ sf.display = {
       setTimeout(function () {
         var groups = $(rows[i]).find(".group");
         groups.each(function(){
-          sf.display.loadGroup("",$(this));
+          sf.display.loadGroup(" ",$(this));
         })
         i++;
         if (i < rows.length) {
