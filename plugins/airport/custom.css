@@ -4,14 +4,14 @@
   margin-right: 5px;
   width: 115px;
   height: 40px;
-  background: url('../img/airline_logos.png') no-repeat;
+  background: url('airline_logos.png') no-repeat;
   background-position: 0px 0px;
 }
   .splitflap .image span {
     width: 115px;
     height: 40px;
     display: block;
-    background: url('../img/airline_logos.png') no-repeat;
+    background: url('airline_logos.png') no-repeat;
     background-position: 0px -40px; /* start with a blank */
   }
 

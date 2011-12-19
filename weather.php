@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" href="css/split-flap.css"/>
+    <link rel="stylesheet" href="css/base.css"/>
     <link rel="stylesheet" href="plugins/weather/custom.css"/>
   </head>
   <body>
@@ -18,14 +18,14 @@
       
       <ul id="chart1" class="chart">
         
-        <h1>Stations near <?php echo $_GET["data"] ?></h1>
+        <h1>Airports near <?php echo $_GET["data"] ?></h1>
   
         <!-- Header: 30px/char, 15px/separator, 120px/logo -->
         <div class="header" style="width:120px;margin-left:0px;">Station</div>
         <div class="header" style="width:90px;margin-left:30px;">Temp</div>
         <div class="header" style="width:90px;margin-left:30px;">Wdir</div>
         <div class="header" style="width:60px;margin-left:30px;">Wspd</div>
-        <div class="header" style="width:150px;margin-left:30px;">Pressure</div>
+        <div class="header" style="width:120px;margin-left:30px;">Pressure</div>
         <div class="header" style="width:470px;margin-left:30px;text-align:left;">Sky</div>
 
         <!-- rows will be placed here dynamically from #row_template -->
@@ -39,7 +39,7 @@
     <script type="text/javascript" src="js/jquery-1.7.1-min.js"></script>
     <script type="text/javascript" src="js/underscore.js"></script>
     <script type="text/javascript" src="js/backbone.js"></script>
-    <script type="text/javascript" src="js/split-flap-mvc.js"></script>
+    <script type="text/javascript" src="js/split-flap.js"></script>
     <script type="text/javascript" src="plugins/weather/custom.js"></script>
 
     <!-- ============================================ -->
@@ -66,14 +66,11 @@
           <div class="number"><span></span></div>
           <div class="number"><span></span></div>
         </div>
-        <div class="group pressure_mb" style="margin-right:0;"> 
+        <div class="group pressure_mb"> 
           <div class="number"><span></span></div>
           <div class="number"><span></span></div>
           <div class="number"><span></span></div>
           <div class="number"><span></span></div>
-        </div>
-        <div class="group pressure_trend"> 
-          <div class="full"><span></span></div>
         </div>
         <div class="group weather_icon"> <!-- sky icon -->
           <div class="image"><span></span></div>

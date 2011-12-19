@@ -1,6 +1,6 @@
 <html>
   <head>
-    <link rel="stylesheet" href="css/split-flap.css"/>
+    <link rel="stylesheet" href="css/base.css"/>
     <link rel="stylesheet" href="plugins/airport/custom.css"/>
   </head>
   <body>
@@ -13,9 +13,8 @@
       <!-- parameters -->
       <div class="chartPrefs" style="display:none;">
         <input type="hidden" name="data" value="<?php echo $_GET["data"] ?>" />    <!-- the type of data you want from the service -->
-        <input type="hidden" name="sort" value="scheduled" />   <!-- the data group to sort from -->
-        <input type="hidden" name="order" value="asc" />        <!-- sort order (default is ascending) -->
-        <input type="hidden" name="maxResults" value="12" />    <!-- ignore results past this -->
+        <input type="hidden" name="sort" value="<?php echo $_GET["sort"] ?>" />    <!-- the data group to sort by -->
+        <input type="hidden" name="order" value="<?php echo $_GET["order"] ?>" />  <!-- sort order (default is ascending) -->
       </div>
       
       <ul id="chart1" class="chart">
@@ -23,8 +22,8 @@
         <h1><?php echo $_GET["data"] ?></h1>
   
         <!-- Header: 30px/char, 15px/separator, 120px/logo -->
-        <div class="header" style="width:120px;margin-left:0px;">Flight</div>
-        <div class="header" style="width:120px;margin-left:30px;">Airline</div>
+        <div class="header" style="width:120px;margin-left:0px;">Airline</div>
+        <div class="header" style="width:120px;margin-left:30px;">Flight</div>
         <div class="header" style="width:360px;margin-left:30px;text-align:left;">City</div>
         <div class="header" style="width:90px;margin-left:30px;">Gate</div>
         <div class="header" style="width:135px;margin-left:30px;">Scheduled</div>
@@ -44,19 +43,20 @@
     <script type="text/javascript" src="js/underscore.js"></script>
     <script type="text/javascript" src="js/backbone.js"></script>
     <script type="text/javascript" src="js/split-flap.js"></script>
+    <script type="text/javascript" src="plugins/airport/custom.js"></script>
 
     <!-- ============================================ -->
     <!-- ROW TEMPLATE                                 -->
     <script type="text/template" id="row_template">
       <li class="row">
-        <div class="group label"> <!-- flight number -->
-          <div class="number"><span></span></div>
-          <div class="number"><span></span></div>
-          <div class="number"><span></span></div>
-          <div class="number"><span></span></div>
-        </div>
         <div class="group airline"> <!-- airline -->
-          <div class="logo"><span></span></div>
+          <div class="image"><span></span></div>
+        </div>
+        <div class="group flight"> <!-- flight number -->
+          <div class="number"><span></span></div>
+          <div class="number"><span></span></div>
+          <div class="number"><span></span></div>
+          <div class="number"><span></span></div>
         </div>
         <div class="group city"> <!-- city -->
           <div class="character"><span></span></div>
@@ -113,6 +113,9 @@
         template: _.template($('#row_template').html()),
         initialize: function(){
           this.render();
+          this.el.find(".row").each(function(){
+            sf.display.initRow($(this));
+          })
         },
         render: function() {
           this.el.find(".row").remove();
@@ -128,14 +131,12 @@
         update: function(container){
           this.fetch({
             success: function(response){
-              sf.display.load(response.toJSON(), container) // TODO: should this know about this method?
+               sf.display.loadSequentially(response.toJSON(), container) // TODO: should this know about this method?
             }
           });
         },
         parse: function(json){
-          var formattedData = sf.plugins.airport.formatData(json); // normalize this data
-          var sortedData = sf.data.sortData(formattedData, this.dataOptions); // sort the normalized data
-          return(sortedData); 
+          return(sf.plugins.airport.formatData(json)); // normalize this data 
         }
       });
 
@@ -151,22 +152,26 @@
 
         // generate the empty rows markup (a backbone View)
         var board = new Board;
-        sf.display.init();
         
         // get the sort, etc. params
         var container = $("#display1");
         var params = container.find(".chartPrefs input");
         var dataOptions = {
           "sort": container.find("input[name=sort]").val(),
-          "order": container.find("input[name=order]").val(),
-          "truncate": container.find("input[name=truncate]").val(),
-          "maxResults": container.find("input[name=maxResults]").val()
+          "order": container.find("input[name=order]").val()
         };
         
         // create the chart object (a backbone Collection)
         var flights = new Flights;
         flights.dataOptions = dataOptions;
         flights.url = sf.plugins.airport.url(params);
+        flights.comparator = function(flight){
+          if(dataOptions === "desc"){
+            return -flight.get(dataOptions.sort);
+          } else {
+            return flight.get(dataOptions.sort);
+          }
+        }
         // update the chart (and set a refresh interval)
         flights.update(container);
         setInterval(function(){

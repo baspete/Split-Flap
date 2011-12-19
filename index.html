@@ -1,12 +1,15 @@
 <html>
   <head>
-    <link rel="stylesheet" href="css/split-flap.css"/>
+    <link rel="stylesheet" href="css/base.css"/>
     <style type="text/css">
       body {
         margin: 100px;
       }
+      img {
+        float: left;
+      }
       h1, p, ul{
-        width: 500px;
+        width: 700px;
         margin-left: auto;
         margin-right: auto;
       }
@@ -18,6 +21,8 @@
   </head>
   <body>
   
+<img src="http://dev.basdesign.com/split-flap/img/screen_thumb.png"/>
+
     <h1>Solari Board Simulator</h1>
 
     <p>This is a simulation of a <a href="http://en.wikipedia.org/wiki/Split-flap_display" target="_blank">split-flap</a> display (often called a Solari board)
@@ -28,14 +33,14 @@ characters are animated using CSS sprites.</p>
 <p>The look and feel are fully configurable by changing the markup and using
 different sprite images.</p>
 
-<p>The following two pages differ only in the request sent to the data source:</p>
+<p>Here's an example of the page configured an airport departure board. The data is sorted using the "sort" and "order" query parameters in the URL:</p>
 
 <ul>
-  <li><a href="flights.php?data=arrivals">Arrivals</a></li>
-  <li><a href="flights.php?data=departures">Departures</a></li>
+  <li><a href="flights.php?data=arrivals&amp;sort=scheduled&amp;order=asc">Arrivals</a></li>
+  <li><a href="flights.php?data=departures&amp;sort=scheduled&amp;order=as">Departures</a></li>
 </ul>
 
-<p>Here's a page of weather information</p>
+<p>Here's a different page configured to show real-time weather information from the Weather Underground's <a href="http://www.wunderground.com/weather/api/d/documentation.html" tareget="_blank">Weather API</a>:</p>
 <ul>
   <li><a href="weather.php?data=KSFO&apiKey=d73bc72d0f231c10">Weather Board</a></li>
 </ul>

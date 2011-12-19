@@ -8,26 +8,23 @@ sf.display.ImageDrum = function() {
 
 sf.plugins.wunderground = {
  	
- 	dataType: 'jsonp',
+  dataType: 'jsonp',
+  // dataType: 'json',
 
     // get nearby stations
     stationsUrl: function(station_code, api_key){
       var base_url = "http://api.wunderground.com/api/"+api_key+"/geolookup/q/";
       return base_url + station_code + ".json?" + "callback=myCallback";
-      /*
-      var base_url = "data/geolookup/";
-      return base_url + station_code + ".json";
-      */
+      // var base_url = "data/geolookup/";
+      // return base_url + station_code + ".json";
     },
 
     // get station weather info
     stationUrl: function(station_code, api_key){
       var base_url = "http://api.wunderground.com/api/"+api_key+"/conditions/q/";
       return base_url + station_code + ".json?" + "callback=myCallback";
-      /*
-      var base_url = "data/conditions/";
-      return base_url + station_code + ".php";
-      */
+      // var base_url = "data/conditions/";
+      // return base_url + station_code + ".php";
     },
 
     formatStationsData: function(response){
@@ -45,11 +42,9 @@ sf.plugins.wunderground = {
       switch(current.pressure_trend){
         case "+": 
           current["pressure_trend"] = "↑"; 
-          current["trend"] = 0; 
         break;
         case "-": 
           current["pressure_trend"] = "↓"; 
-          current["trend"] = 1; 
         break;
         case "0": 
           current["pressure_trend"] = ""; 
