@@ -10,14 +10,9 @@
     <!-- CHART CONTAINER                              -->
     <div id="display1" class="chartContainer splitflap">
 
-      <!-- parameters -->
-      <div class="chartPrefs" style="display:none;">
-        <input type="hidden" name="id" value="<?php echo $_GET["id"] ?>" />    <!-- the type of data you want from the service -->
-      </div>
-      
       <ul id="chart1" class="chart">
         
-        <h1>@<?php echo $_GET["id"] ?></h1>
+        <h1><?php echo $_GET["q"] ?></h1>
   
         <!-- Header: 30px/char, 15px/separator, 120px/logo -->
         <div class="header" style="width:120px;margin-left:0px;">Time</div>
@@ -147,7 +142,7 @@
         var board = new Board;
         
         var container = $("#display1");
-        var id = container.find("input[name=id]").val();
+        var q = container.find("input[name=q]").val();
 
         var dataOptions = {
           "sort": container.find("input[name=sort]").val(),
@@ -157,7 +152,7 @@
         // create the chart object (a backbone Collection)
         var tweets = new Rows;
         tweets.dataOptions = dataOptions;
-        tweets.url = sf.plugins.twitter.url(id);
+        tweets.url = sf.plugins.twitter.url();
         tweets.sync = function(method, model, options){  
           options.timeout = 10000;  
           options.dataType = "jsonp";  

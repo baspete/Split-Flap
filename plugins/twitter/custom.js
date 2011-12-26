@@ -4,15 +4,10 @@ sf.plugins.twitter = {
   dataType: 'jsonp',
 
     // get tweets
-    url: function(id){
+    url: function(){
       var base_url = "http://search.twitter.com/search.json";
-      var from = "from:"+id;
-      console.log(id)
-      var data = {
-        "q": from,
-        "rpp": 6
-      };
-      return base_url + "?" + $.param(data);
+      var searchString = window.location.search; // pick up the query from the URL
+      return base_url + searchString + "&rpp=6"; // limit to 6 items (12 rows available)
     },
 
     formatData: function(response){
@@ -32,6 +27,7 @@ sf.plugins.twitter = {
         timestamp = hrs.toString() + mins.toString();
 
         // split the tweet text into rows of 40 chars each
+        // and add each row to newResponse[] 
         // with a timestamp only on the first one
         var text = response.results[i].text;
         var rows = text.match(/.{1,40}/g);
@@ -43,6 +39,7 @@ sf.plugins.twitter = {
           timestamp = "";
           newResponse.push(row);
         }
+        // and a blank row between tweets
         var blankRow = {
           "text":" "
         }
