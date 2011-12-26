@@ -32,7 +32,7 @@ sf.display = {
   // a character and when prepended by "c" gives the class name which will
   // be applied to display that character.
   FullDrum: function() {
-    this.order = [' ','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','0','1','2','3','4','5','6','7','8','9','.',',','?','!','/','\'','+','-',':','@'];
+    this.order = [' ','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','0','1','2','3','4','5','6','7','8','9','.',',','?','!','/','\'','+','-',':','@','#'];
   },
   CharDrum: function() {
     this.order = [' ','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','.',','];
@@ -170,7 +170,7 @@ sf.display = {
     // punctuation has special class names
     // TODO: can we be more efficient here? This method gets called a lot!
     switch(i) {
-      case " ": c = "csp"; break;
+      case " ": c = "csp";  break;
       case ".": c = "cper"; break;
       case ",": c = "ccom"; break;
       case "?": c = "cque"; break;
@@ -180,7 +180,8 @@ sf.display = {
       case "+": c = "cplu"; break;
       case "-": c = "cmin"; break;
       case ":": c = "ccol"; break;
-      case "@": c = "cat"; break;
+      case "@": c = "cat";  break;
+      case "#": c = "chsh"; break;
     }
     container.fadeOut(50, function(){
       container.removeClass().addClass(c);
