@@ -132,8 +132,8 @@ a {
 .splitflap .full span.capo { background-position: -1075px 0px; } /* ' */
 .splitflap .full span.cplu { background-position: -1100px 0px; } /* + */
 .splitflap .full span.cmin { background-position: -1125px 0px; } /* - */
-.splitflap .full span.cup  { background-position: -1150px 0px; } /* ↑ */
-.splitflap .full span.cdn  { background-position: -1175px 0px; } /* ↓ */
+.splitflap .full span.ccol  { background-position: -1150px 0px; } /* ↑ */
+.splitflap .full span.cat  { background-position: -1175px 0px; } /* ↓ */
 /* NUMBERS ONLY DRUM */
 .splitflap .number span.csp { background-position: -25px 0px; } /* space */
 .splitflap .number span.c0 { background-position: -700px 0px; } /* 0 */

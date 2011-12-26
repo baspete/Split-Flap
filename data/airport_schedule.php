@@ -5,9 +5,9 @@
 //     "results": [ 
 //       { 
 //         "source" : "arrivals",
-//         "data" : { 
-//           "101" : {"scheduled":"0728", "city":"London", "airline":"0", "gate":"C21", "status":"1", "remarks":"est 2130+"}
-//         }
+//         "data" : [
+//           {"flight:101", "scheduled":"0728", "city":"London", "airline":"0", "gate":"C21", "status":"1", "remarks":"est 2130+"}
+//         ]
 //       } 
 //     ] 
 //   }

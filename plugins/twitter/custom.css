@@ -1,0 +1,9 @@
+.splitflap {
+  width: 1440px;
+  overflow: none;
+  white-space: nowrap;
+  margin: 0px;
+}
+.splitflap .group {
+  margin-right: 30px;
+}

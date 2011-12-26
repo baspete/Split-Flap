@@ -32,7 +32,7 @@ sf.display = {
   // a character and when prepended by "c" gives the class name which will
   // be applied to display that character.
   FullDrum: function() {
-    this.order = [' ','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','0','1','2','3','4','5','6','7','8','9','.',',','?','!','/','\'','+','-','↑','↓'];
+    this.order = [' ','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','0','1','2','3','4','5','6','7','8','9','.',',','?','!','/','\'','+','-',':','@'];
   },
   CharDrum: function() {
     this.order = [' ','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','.',','];
@@ -179,8 +179,8 @@ sf.display = {
       case "'": c = "capo"; break;
       case "+": c = "cplu"; break;
       case "-": c = "cmin"; break;
-      case "↑": c = "cup"; break;
-      case "↓": c = "cdn"; break;
+      case ":": c = "ccol"; break;
+      case "@": c = "cat"; break;
     }
     container.fadeOut(50, function(){
       container.removeClass().addClass(c);
