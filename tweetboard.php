@@ -1,41 +1,39 @@
 <html>
   <head>
     <link rel="stylesheet" href="css/base.css"/>
-    <link rel="stylesheet" href="plugins/twitter/custom.css"/>
+
   </head>
   <body>
   
-
     <!-- ============================================ -->
-    <!-- CHART CONTAINER                              -->
+    <!-- CONTAINER                                    -->
     <div id="display1" class="chartContainer splitflap">
 
-      <ul id="chart1" class="chart">
+      <ul id="board">
         
         <h1><?php echo $_GET["q"] ?></h1>
   
         <!-- Header: 30px/char, 15px/separator, 120px/logo -->
-        <div class="header" style="width:120px;margin-left:0px;">Time</div>
-        <div class="header" style="width:120px;margin-left:0px;">Tweet</div>
+        <div class="header" style="width:65px;margin-left:0px;"></div>
+        <div class="header" style="width:120px;">Time</div>
+        <div class="header" style="width:120px;">Tweet</div>
 
         <!-- rows will be placed here dynamically from #row_template -->
         
       </ul>
 
     </div>
-    <!-- END CHART CONTAINER                          -->
+    <!-- END CONTAINER                                -->
     <!-- ============================================ -->
-
-    <script type="text/javascript" src="js/jquery-1.7.1-min.js"></script>
-    <script type="text/javascript" src="js/underscore.js"></script>
-    <script type="text/javascript" src="js/backbone.js"></script>
-    <script type="text/javascript" src="js/split-flap.js"></script>
-    <script type="text/javascript" src="plugins/twitter/custom.js"></script>
 
     <!-- ============================================ -->
     <!-- ROW TEMPLATE                                 -->
     <script type="text/template" id="row_template">
       <li class="row">
+        <div class="group status" style="margin-right:20px;"> <!-- lights -->
+          <div class="s0"></div>
+          <div class="s1"></div>
+        </div>
         <div class="group timestamp"> <!-- timestamp -->
           <div class="number"><span></span></div>
           <div class="number"><span></span></div>
@@ -99,9 +97,6 @@
           <div class="full"><span></span></div>
 
           <div class="full"><span></span></div>
-          <div class="full"><span></span></div>
-          <div class="full"><span></span></div>
-          <div class="full"><span></span></div>
 
         </div>
       </li>
@@ -109,54 +104,29 @@
     <!-- END ROW TEMPLATE                             -->
     <!-- ============================================ -->
 
+    <!-- ============================================ -->
+    <!-- JS LIBRARIES                                 -->
+    <script type="text/javascript" src="js/jquery-1.7.1-min.js"></script>
+    <script type="text/javascript" src="js/underscore.js"></script>
+    <script type="text/javascript" src="js/backbone.js"></script>
+    <script type="text/javascript" src="js/split-flap.js"></script>
+
+    <!-- ============================================ -->
+    <!-- CUSTOM CSS FOR THIS BOARD                    -->
+    <link rel="stylesheet" href="plugins/twitter/custom1080.css"/>
+
+    <!-- ============================================ -->
+    <!-- CUSTOM JS FOR THIS BOARD                     -->
+    <script type="text/javascript" src="plugins/twitter/custom.js"></script>
     <script type="text/javascript">
-
-      // This View generates the empty markup for the rows
-      // It is only called once, at document.ready()
-      var Board = Backbone.View.extend({
-        el: $("#chart1"),
-        template: _.template($('#row_template').html()),
-        initialize: function(){
-          this.render();
-          this.el.find(".row").each(function(){
-            sf.display.initRow($(this));
-          })
-        },
-        render: function() {
-          this.el.find(".row").remove();
-          for(var i=0;i<(sf.local.numRows?sf.local.numRows:3);i++){
-            this.el.append(this.template());
-          }
-          return this;
-        }
-      });
-
-      // This Collection is used to hold the datset for this board. 
-      var Rows = Backbone.Collection.extend({
-        update: function(container){
-          this.fetch({
-            success: function(response){
-               sf.display.loadSequentially(response.toJSON(), container) // TODO: should this know about this method?
-            }
-          });
-        },
-        parse: function(json){
-          return(sf.plugins.twitter.formatData(json)); // normalize this data 
-        }
-      });
-
-      // Utility method to clear the board
-      $("#clear").click(function(){
-        sf.display.clear($('#display1'));
-      });
 
       $(document).ready(function() {
         
         // Set the number of rows to create (defaults to 3).
-        sf.local.numRows = 15;
+        sf.local.numRows = 14;
 
         // generate the empty rows markup (a backbone View)
-        var board = new Board;
+        var board = new sf.Board;
         
         var container = $("#display1");
         var q = container.find("input[name=q]").val();
@@ -167,7 +137,7 @@
         };
         
         // create the chart object (a backbone Collection)
-        var tweets = new Rows;
+        var tweets = new sf.Rows;
         tweets.dataOptions = dataOptions;
         tweets.url = sf.plugins.twitter.url();
         tweets.sync = function(method, model, options){  

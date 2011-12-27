@@ -45,6 +45,43 @@ sf.util = {
 };
 
 /* ********************************************************************* */
+/* BACKBONE COLLECTIONS, MODELS AND VIEWS                                */
+
+// This View generates the empty markup for the rows
+// It is only called once, at document.ready()
+sf.Board = Backbone.View.extend({
+  el: $("#board"),
+  template: _.template($('#row_template').html()),
+  initialize: function(){
+    this.render();
+    this.el.find(".row").each(function(){
+      sf.display.initRow($(this));
+    })
+  },
+  render: function() {
+    this.el.find(".row").remove();
+    for(var i=0;i<(sf.local.numRows?sf.local.numRows:3);i++){
+      this.el.append(this.template());
+    }
+    return this;
+  }
+});
+
+// This Collection is used to hold the datset for this board. 
+sf.Rows = Backbone.Collection.extend({
+  update: function(container){
+    this.fetch({
+      success: function(response){
+         sf.display.loadSequentially(response.toJSON(), container) // TODO: should this know about this method?
+      }
+    });
+  },
+  parse: function(json){
+    return(sf.plugins.twitter.formatData(json)); // normalize this data 
+  }
+});
+
+/* ********************************************************************* */
 /* DISPLAY METHODS                                                       */
 
 sf.display = {
