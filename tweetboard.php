@@ -86,6 +86,23 @@
           <div class="full"><span></span></div>
           <div class="full"><span></span></div>
           <div class="full"><span></span></div>
+
+          <div class="full"><span></span></div>
+          <div class="full"><span></span></div>
+          <div class="full"><span></span></div>
+          <div class="full"><span></span></div>
+          <div class="full"><span></span></div>
+          <div class="full"><span></span></div>
+          <div class="full"><span></span></div>
+          <div class="full"><span></span></div>
+          <div class="full"><span></span></div>
+          <div class="full"><span></span></div>
+
+          <div class="full"><span></span></div>
+          <div class="full"><span></span></div>
+          <div class="full"><span></span></div>
+          <div class="full"><span></span></div>
+
         </div>
       </li>
     </script>
@@ -136,7 +153,7 @@
       $(document).ready(function() {
         
         // Set the number of rows to create (defaults to 3).
-        sf.local.numRows = 13;
+        sf.local.numRows = 15;
 
         // generate the empty rows markup (a backbone View)
         var board = new Board;

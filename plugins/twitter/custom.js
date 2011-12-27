@@ -7,14 +7,14 @@ sf.plugins.twitter = {
     url: function(){
       var base_url = "http://search.twitter.com/search.json";
       var searchString = window.location.search; // pick up the query from the URL
-      return base_url + searchString + "&rpp=6"; // limit to 6 items (12 rows available)
+      return base_url + searchString + "&rpp=8"; // limit to this many items
     },
 
     formatData: function(response){
       var newResponse = [];
       for(var i=0;i<response.results.length;i++){
 
-        // get the timestamp
+        // Get the timestamp
         var timestamp = new Date(response.results[i].created_at);
         var hrs = timestamp.getHours();
         if(hrs < 10){
@@ -26,11 +26,9 @@ sf.plugins.twitter = {
         }
         timestamp = hrs.toString() + mins.toString();
 
-        // split the tweet text into rows of 40 chars each
-        // and add each row to newResponse[] 
+        // Split the tweet text into rows and add each row to newResponse[] 
         // with a timestamp only on the first one
-        var text = response.results[i].text;
-        var rows = text.match(/.{1,40}/g);
+        var rows = sf.util.splitString(response.results[i].text, 54); // 54 chars for HD display
         for(var j=0;j<rows.length;j++){
           var row = {
             "timestamp":timestamp,
@@ -39,12 +37,14 @@ sf.plugins.twitter = {
           timestamp = "";
           newResponse.push(row);
         }
-        // and a blank row between tweets
+        // Add a blank row between tweets
         var blankRow = {
-          "text":" "
+          "timestamp":"",
+          "text":""
         }
         newResponse.push(blankRow);
       }
       return newResponse;
-    }	
+    }
+
 };

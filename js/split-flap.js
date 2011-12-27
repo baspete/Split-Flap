@@ -22,6 +22,28 @@ Array.prototype.rotate = (function() {
   };
 })();
 
+sf.util = {
+  
+  // Function splits string into array of substrings of len or less. 
+  // Splits happen at spaces.
+  splitString: function(str,len){
+    var arr = [];
+    var words = str.split(" ");
+    var line = words[0];
+    for(var i=1;i<words.length;i++){
+      if(line.length + words[i].length + 1 < len + 1){
+        line = line + " " + words[i];
+      } else {
+        arr.push(line);
+        line = words[i];
+      }
+    }
+    arr.push(line); // push the last line into the array
+    return arr;
+  }
+
+};
+
 /* ********************************************************************* */
 /* DISPLAY METHODS                                                       */
 
@@ -77,7 +99,7 @@ sf.display = {
         if (i < rows.length) {
           loop(i); 
         }
-       }, 500);
+       }, 1500);
     };
     loop();
   },
