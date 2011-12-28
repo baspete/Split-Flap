@@ -3,12 +3,14 @@ sf.display.ImageDrum = function() {
 };
 
 sf.plugins.airport =  {
+
+  dataType: "json",
   
   // input: map of parameters
   // output: url
-  url: function(params){
+  url: function(options){
     var base_url = "data/airport_schedule.php";
-    return base_url + "?" + params.serialize();
+    return base_url + "?data="+options.data;
   },
 
   formatData: function(data){

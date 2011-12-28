@@ -9,7 +9,6 @@ sf.display.ImageDrum = function() {
 sf.plugins.wunderground = {
  	
   dataType: 'jsonp',
-  // dataType: 'json',
 
     // get nearby stations
     stationsUrl: function(station_code, api_key){
@@ -38,18 +37,6 @@ sf.plugins.wunderground = {
 
     formatStationData: function(json){
       var current = json["current_observation"];
-      // Modify "pressure_trend" to show arrows/space instead of +/-/0
-      switch(current.pressure_trend){
-        case "+": 
-          current["pressure_trend"] = "↑"; 
-        break;
-        case "-": 
-          current["pressure_trend"] = "↓"; 
-        break;
-        case "0": 
-          current["pressure_trend"] = ""; 
-        break;
-      }
       // add a status field, based on the last time updated
       var age = Math.round((new Date() - new Date(current["observation_time_rfc822"])) / (60*1000));
       if(age < 30){

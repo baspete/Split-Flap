@@ -25,7 +25,7 @@ Array.prototype.rotate = (function() {
 sf.util = {
   
   // Function splits string into array of substrings of len or less. 
-  // Splits happen at spaces.
+  // Splits happen at the last space.
   splitString: function(str,len){
     var arr = [];
     var words = str.split(" ");
@@ -38,7 +38,8 @@ sf.util = {
         line = words[i];
       }
     }
-    arr.push(line); // push the last line into the array
+    // push the last line into the array
+    arr.push(line); 
     return arr;
   }
 
@@ -50,25 +51,52 @@ sf.util = {
 // This View generates the empty markup for the rows
 // It is only called once, at document.ready()
 sf.Board = Backbone.View.extend({
-  el: $("#board"),
-  template: _.template($('#row_template').html()),
-  initialize: function(){
-    this.render();
-    this.el.find(".row").each(function(){
-      sf.display.initRow($(this));
-    })
-  },
   render: function() {
     this.el.find(".row").remove();
-    for(var i=0;i<(sf.local.numRows?sf.local.numRows:3);i++){
+    for(var i=0;i<(sf.options.numRows);i++){
       this.el.append(this.template());
-    }
+    };
+    this.el.find(".row").each(function(){
+      sf.display.initRow($(this));
+    });
     return this;
   }
 });
 
+sf.board = {
+
+  // Generate the markup for and initialize a blank board
+  init: function(options){
+    var board = new sf.Board;
+    board.el =  options.container;
+    board.template = _.template(options.template.html())
+    board.render();
+  },
+
+  // Utility method to clear the board.
+  clear: function() {
+    var container = arguments[0],
+        rows = container.find(".row"),
+        i=0,
+        stagger = sf.options.stagger ? sf.options.stagger : 1000;
+    var loop = function() {
+      setTimeout(function () {
+        var groups = $(rows[i]).find(".group");
+        groups.each(function(){
+          sf.display.loadGroup(" ",$(this));
+        })
+        i++;
+        if (i < rows.length) {
+          loop(i); 
+        }
+       }, stagger);
+    };
+    loop();
+   }
+};
+
 // This Collection is used to hold the datset for this board. 
-sf.Rows = Backbone.Collection.extend({
+sf.Items = Backbone.Collection.extend({
   update: function(container){
     this.fetch({
       success: function(response){
@@ -77,9 +105,46 @@ sf.Rows = Backbone.Collection.extend({
     });
   },
   parse: function(json){
-    return(sf.plugins.twitter.formatData(json)); // normalize this data 
+    return(sf.plugins[sf.options.plugin].formatData(json)); // normalize this data 
   }
 });
+
+sf.items = {
+  
+  // Get the data for a board and load it
+  init: function(options) {
+    // create the Collection
+    var items = new sf.Items;
+    items.url = sf.plugins[options.plugin].url(options);
+
+    // check if we're using jsonp
+    if(sf.plugins[options.plugin].dataType ==="jsonp"){
+      items.sync = function(method, model, options){  
+        options.timeout = 10000;  
+        options.dataType = "jsonp";  
+        return Backbone.sync(method, model, options);  
+      };
+    }
+
+    // pick up any sorting options
+    if(options.order && options.sort){
+      items.comparator = function(item){
+        if(options.order === "desc"){
+          return -item.get(options.sort);
+        } else {
+          return item.get(options.sort);
+        }
+      };
+    }
+
+    // update the chart (and set a refresh interval)
+    items.update(options.container);
+    setInterval(function(){
+      items.update(options.container);
+    }, options.refreshInterval); 
+  }
+
+},
 
 /* ********************************************************************* */
 /* DISPLAY METHODS                                                       */
@@ -99,8 +164,9 @@ sf.display = {
   NumDrum: function() {
     this.order = [' ','0','1','2','3','4','5','6','7','8','9','.',','];
   },
-  // ImageDrum is empty here. Override in plugins/<plugin_name>/custom.js
-  ImageDrum: function() {}, 
+  ImageDrum: function() { 
+    this.order = []; // Intentionally empty here. Override in plugins/<plugin_name>/custom.js
+  }, 
 
   initRow: function(row) { // expects the jQuery DOM object
     // For each character, construct a drum array and
@@ -126,7 +192,8 @@ sf.display = {
     var input = arguments[0],
         container = arguments[1],
         rows = container.find(".row"),
-        i=0;
+        i=0,
+        stagger = sf.options.stagger ? sf.options.stagger : 1000;
     var loop = function() {
       setTimeout(function () {
         if(input[i]) {
@@ -136,7 +203,7 @@ sf.display = {
         if (i < rows.length) {
           loop(i); 
         }
-       }, 1500);
+       }, stagger);
     };
     loop();
   },
@@ -245,29 +312,7 @@ sf.display = {
     container.fadeOut(50, function(){
       container.removeClass().addClass(c);
     }).fadeIn(50);
-  },
-
-  // Utility method to clear the board.
-  // It goes through every group in every row,
-  // calling loadGroup() with an empty string.
-  clear: function() {
-    var container = arguments[0],
-        rows = container.find(".row"),
-        i=0;
-    var loop = function() {
-      setTimeout(function () {
-        var groups = $(rows[i]).find(".group");
-        groups.each(function(){
-          sf.display.loadGroup(" ",$(this));
-        })
-        i++;
-        if (i < rows.length) {
-          loop(i); 
-        }
-       }, 500);
-    };
-    loop();
-   }
+  }
 
 };
 /* END DISPLAY METHODS                                                   */
