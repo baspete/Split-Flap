@@ -115,10 +115,9 @@
 
         // OPTIONAL
         "maxResults":      12,                 // number of items to retrieve from service
-        "data":            $("#board").find("input[name=data]").val(),   
-        "sort":            $("#board").find("input[name=sort]").val(),  
-        "order":           $("#board").find("input[name=order]").val(), 
-
+        "data":            $("#board").find("input[name=data]").val(),
+        "sort":            $("#board").find("input[name=sort]").val(),
+        "order":           $("#board").find("input[name=order]").val(),
         "refreshInterval": 30000,              // how often to refresh the display (ms)
         "stagger":         1500                // delay between loading rows (ms)
       };
@@ -126,6 +125,7 @@
       $(document).ready(function() {
         sf.board.init(sf.options);
         sf.items.init(sf.options);
+        sf.items.load(sf.options);
        });
       
     </script>

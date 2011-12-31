@@ -20,6 +20,7 @@ a {
 .splitflap .header {
   float: left;
   font-size: 1.3em;
+  font-weight: bold;
   text-align: center;
   margin-bottom: 20px;
 }

@@ -41,6 +41,21 @@ sf.util = {
     // push the last line into the array
     arr.push(line); 
     return arr;
+  },
+
+  // Methods for getting query parameters out of the URL
+  getUrlParams: function(){
+    var vars = [], param;
+    var params = window.location.href.slice(window.location.href.indexOf('?') + 1, window.location.href.indexOf('#')).split('&');
+    for(var i = 0; i < params.length; i++) {
+      param = params[i].split('=');
+      vars.push(param[0]);
+      vars[param[0]] = param[1];
+    }
+    return vars;
+  },
+  getUrlParam: function(name){
+    return $.getUrlParams()[name];
   }
 
 };
@@ -50,6 +65,7 @@ sf.util = {
 
 // This View generates the empty markup for the rows
 // It is only called once, at document.ready()
+// By default it sets 12 rows. Set sf.options.numRows to change this.
 sf.Board = Backbone.View.extend({
   render: function() {
     this.el.find(".row").remove();
@@ -69,7 +85,8 @@ sf.board = {
   init: function(options){
     var board = new sf.Board;
     board.el =  options.container;
-    board.template = _.template(options.template.html())
+    board.template = _.template(options.template.html());
+    sf.options.numRows = sf.options.numRows ? sf.options.numRows : 12; // default 12 rows
     board.render();
   },
 
@@ -97,10 +114,10 @@ sf.board = {
 
 // This Collection is used to hold the datset for this board. 
 sf.Items = Backbone.Collection.extend({
-  update: function(container){
+  update: function(options){
     this.fetch({
       success: function(response){
-         sf.display.loadSequentially(response.toJSON(), container) // TODO: should this know about this method?
+        sf.display.loadSequentially(response.toJSON(), options.container);
       }
     });
   },
@@ -114,7 +131,7 @@ sf.items = {
   // Get the data for a board and load it
   init: function(options) {
     // create the Collection
-    var items = new sf.Items;
+    items = new sf.Items; // NOTE GLOBAL!
     items.url = sf.plugins[options.plugin].url(options);
 
     // check if we're using jsonp
@@ -136,12 +153,19 @@ sf.items = {
         }
       };
     }
+  },
 
-    // update the chart (and set a refresh interval)
-    items.update(options.container);
-    setInterval(function(){
-      items.update(options.container);
-    }, options.refreshInterval); 
+  load: function(options){
+
+    // get the data and load the chart
+    items.update(options);
+
+    // If user has specified a refresh interval, setInterval()
+    if(options.refreshInterval){
+      setInterval(function(){
+        items.update(options);
+      }, options.refreshInterval); 
+    }
   }
 
 },

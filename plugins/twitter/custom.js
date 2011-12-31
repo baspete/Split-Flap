@@ -7,7 +7,7 @@ sf.plugins.twitter = {
   url: function(options){
     var base_url = "http://search.twitter.com/search.json";
     // pick up the query from the page URL
-    var searchString = window.location.search; 
+    var searchString = window.location.search;
     // optionally limit results
     var maxResults = options.maxResults ? options.maxResults : options.numRows;
     return base_url + searchString + "&rpp=" + maxResults;
@@ -17,6 +17,9 @@ sf.plugins.twitter = {
     var newResponse = [];
     for(var i=0;i<response.results.length;i++){
       // console.log("Tweet Data:",response.results[i]);
+
+      // Get the author
+      var from_user = response.results[i].from_user;
 
       // Get the timestamp
       var today = new Date().getDate();
@@ -41,7 +44,8 @@ sf.plugins.twitter = {
 
       // Split the tweet text into rows and add each row to newResponse[] 
       // with a timestamp only on the first one
-      var rows = sf.util.splitString(response.results[i].text, 50); // 50 chars for HD display
+      var text = response.results[i].from_user+": "+response.results[i].text;
+      var rows = sf.util.splitString(text, 50); // 50 chars for HD display
       for(var j=0;j<rows.length;j++){
         var row = {
           "timestamp":timestamp,
@@ -49,6 +53,7 @@ sf.plugins.twitter = {
           "status":status
         };
         timestamp = "";
+        from_user = "";
         status = "";
         newResponse.push(row);
       }
