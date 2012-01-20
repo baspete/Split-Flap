@@ -4,7 +4,7 @@ INTRODUCTION
 This is a simulation of a split-flap display (often called a Solari board)
 designed to run in a web browser. It dynamically loads JSON data from a data
 source and renders that data as characters and images on the board. Individual
-characters are animated using CSS sprites.
+characters are animated using CSS sprites. 
 
 The look and feel are fully configurable by changing the markup and using
 different sprite images.
