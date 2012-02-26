@@ -38,7 +38,7 @@ $arrivals = array(
     4 => array("flight"=>rand(1,2000),"scheduled"=>randomTime(),"city"=>"Edinburgh","airline"=>randomAirline(),"gate"=>"A12","status"=>"0","remarks"=>""),
     5 => array("flight"=>rand(1,2000),"scheduled"=>randomTime(),"city"=>"Frankfurt","airline"=>randomAirline(),"gate"=>"B2","status"=>"0","remarks"=>""),
     6 => array("flight"=>rand(1,2000),"scheduled"=>randomTime(),"city"=>"Galveston","airline"=>randomAirline(),"gate"=>"B14","status"=>"0","remarks"=>""),
-    7 => array("flight"=>rand(1,2000),"scheduled"=>randomTime(),"city"=>"Houston","airline"=>randomAirline(),"gate"=>"C6","status"=>"0","remarks"=>""),
+    7 => array("flight"=>rand(1,2000),"scheduled"=>randomTime(),"city"=>"Havana","airline"=>randomAirline(),"gate"=>"C6","status"=>"0","remarks"=>""),
     8 => array("flight"=>rand(1,2000),"scheduled"=>randomTime(),"city"=>"Indianapolis","airline"=>randomAirline(),"gate"=>"D16","status"=>"0","remarks"=>""),
     9 => array("flight"=>rand(1,2000),"scheduled"=>randomTime(),"city"=>"Jakarta","airline"=>randomAirline(),"gate"=>"A6","status"=>"0","remarks"=>""),
     10 => array("flight"=>rand(1,2000),"scheduled"=>randomTime(),"city"=>"Karachi","airline"=>randomAirline(),"gate"=>"C7","status"=>"0","remarks"=>""),
@@ -50,7 +50,7 @@ $departures = array(
   "source" => "departures",
   "data" => array( 
     0 => array("flight"=>rand(1,2000),"scheduled"=>randomTime(),"city"=>"Ouagadougou","airline"=>randomAirline(),"gate"=>"C21","status"=>"1","est 2130+"),
-    1 => array("flight"=>rand(1,2000),"scheduled"=>randomTime(),"city"=>"Panama City","airline"=>randomAirline(),"gate"=>"A7","status"=>"0","remarks"=>""),
+    1 => array("flight"=>rand(1,2000),"scheduled"=>randomTime(),"city"=>"Prague","airline"=>randomAirline(),"gate"=>"A7","status"=>"0","remarks"=>""),
     2 => array("flight"=>rand(1,2000),"scheduled"=>randomTime(),"city"=>"Quanduc","airline"=>randomAirline(),"gate"=>"A18","status"=>"0","remarks"=>""),
     3 => array("flight"=>rand(1,2000),"scheduled"=>randomTime(),"city"=>"Rotterdam","airline"=>randomAirline(),"gate"=>"D44","status"=>"1","cancelled"),
     4 => array("flight"=>rand(1,2000),"scheduled"=>randomTime(),"city"=>"Seoul","airline"=>randomAirline(),"gate"=>"A12","status"=>"0","remarks"=>""),
