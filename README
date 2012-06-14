@@ -61,7 +61,7 @@ elements animate at once and slow your processor.
 The individual elements' animation speed is set in the fadeIn() and fadeOut()
 functions in sf.chart.splitFlap.show()
 
-The data type, sort criteria, and max number of results are set in the hiddin
+The data type, sort criteria, and max number of results are set in the hidden
 <input> elements in arrivals.html
 
 /data/airport_schedule.php is just an example. Currently it's randomly setting
