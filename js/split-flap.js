@@ -6,7 +6,7 @@ sf.local = {};
 
 // Namespace for plugin-specific javascript,
 // to be loaded later in separate files
-sf.plugins = {}; 
+sf.plugins = {};
 
 /* ********************************************************************* */
 /* HOUSEKEEPING                                                          */
@@ -23,8 +23,8 @@ Array.prototype.rotate = (function() {
 })();
 
 sf.util = {
-  
-  // Function splits string into array of substrings of len or less. 
+
+  // Function splits string into array of substrings of len or less.
   // Splits happen at the last space.
   splitString: function(str,len){
     var arr = [];
@@ -39,7 +39,7 @@ sf.util = {
       }
     }
     // push the last line into the array
-    arr.push(line); 
+    arr.push(line);
     return arr;
   },
 
@@ -91,11 +91,13 @@ sf.board = {
   },
 
   // Utility method to clear the board.
-  clear: function() {
-    var container = arguments[0],
-        rows = container.find(".row"),
-        i=0,
-        stagger = sf.options.stagger ? sf.options.stagger : 1000;
+  // It goes through every group in every row,
+  // calling loadGroup() with an empty string.
+  // When it gets to the last row it reloads the page.
+  // NOTE: Use this to avoid memory leaks -- call it every hour or so.
+  clear: function(container) {
+    var rows = container.find(".row"),
+        i=0;
     var loop = function() {
       setTimeout(function () {
         var groups = $(rows[i]).find(".group");
@@ -104,30 +106,63 @@ sf.board = {
         })
         i++;
         if (i < rows.length) {
-          loop(i); 
+          loop(i);
+        } else {
+          // give it 10 seconds to finish clearing
+          // the board, then reload the page.
+          setTimeout(function(){
+            window.location.reload();
+          }, 10*1000)
         }
-       }, stagger);
+       }, 500);
     };
     loop();
    }
+
 };
 
-// This Collection is used to hold the datset for this board. 
+// This Collection is used to hold the datset for this board.
+// If there's more results than rows, it will page the results
+// at options.pageInterval.
 sf.Items = Backbone.Collection.extend({
   update: function(options){
     this.fetch({
       success: function(response){
-        sf.display.loadSequentially(response.toJSON(), options.container);
+        var results = response.toJSON(),
+            maxResults = options.maxResults ? options.maxResults : 24,
+            numResults = results.length <= maxResults ? results.length : maxResults,
+            numRows = options.numRows,
+            numPages = Math.ceil(numResults/numRows),
+            pageInterval = options.pageInterval ? options.pageInterval : 30000,
+            i=0,page=0;
+            // Load initial results
+            sf.display.loadSequentially(results.slice(i,i+numRows),options.container);
+            // console.log("results at page",page,"index",i,results.slice(i,i+numRows));
+            i += numRows;
+            page++;
+            // This recursive function loops through the results by page
+            loop = function() {
+              setTimeout(function () {
+                sf.display.loadSequentially(results.slice(i,i+numRows),options.container);
+                // console.log("results at page",page,"index",i,results.slice(i,i+numRows));
+                i += numRows;
+                page++;
+                if (page < numPages) {
+                  loop(i);
+                }
+               }, pageInterval);
+            };
+        loop();
       }
     });
   },
   parse: function(json){
-    return(sf.plugins[sf.options.plugin].formatData(json)); // normalize this data 
+    return(sf.plugins[sf.options.plugin].formatData(json)); // normalize this data
   }
 });
 
 sf.items = {
-  
+
   // Get the data for a board and load it
   init: function(options) {
     // create the Collection
@@ -136,10 +171,10 @@ sf.items = {
 
     // check if we're using jsonp
     if(sf.plugins[options.plugin].dataType ==="jsonp"){
-      items.sync = function(method, model, options){  
-        options.timeout = 10000;  
-        options.dataType = "jsonp";  
-        return Backbone.sync(method, model, options);  
+      items.sync = function(method, model, options){
+        options.timeout = 10000;
+        options.dataType = "jsonp";
+        return Backbone.sync(method, model, options);
       };
     }
 
@@ -157,14 +192,26 @@ sf.items = {
 
   load: function(options){
 
-    // get the data and load the chart
+    // Set a count to keep track of how many times the page has been refreshed.
+    // When count has reached options.pageReloadAt, clear the board and reload the window.
+    var count = 1;
+    var pageReloadAt = options.pageReloadAt ? options.pageReloadAt : 120;
+
+    // Get the initial data and load the chart
     items.update(options);
 
     // If user has specified a refresh interval, setInterval()
     if(options.refreshInterval){
       setInterval(function(){
-        items.update(options);
-      }, options.refreshInterval); 
+
+        if(count < pageReloadAt){
+          items.update(options);
+          count = count + 1;
+        } else {
+          sf.board.clear(options.container);
+        }
+
+      }, options.refreshInterval);
     }
   }
 
@@ -188,9 +235,9 @@ sf.display = {
   NumDrum: function() {
     this.order = [' ','0','1','2','3','4','5','6','7','8','9','.',','];
   },
-  ImageDrum: function() { 
+  ImageDrum: function() {
     this.order = []; // Intentionally empty here. Override in plugins/<plugin_name>/custom.js
-  }, 
+  },
 
   initRow: function(row) { // expects the jQuery DOM object
     // For each character, construct a drum array and
@@ -225,7 +272,7 @@ sf.display = {
         }
         i++;
         if (i < rows.length) {
-          loop(i); 
+          loop(i);
         }
        }, stagger);
     };
@@ -248,7 +295,7 @@ sf.display = {
       }
     }
   },
-  
+
   loadGroup: function() {
     // load a string into a group of display elements
     var input = arguments[0], // the input (which may be a string or a int)
@@ -258,24 +305,24 @@ sf.display = {
         strLen = elements.size(),
         i, characters;
     // ###################################
-    // STATUS INDICATORS    
+    // STATUS INDICATORS
     // Add the class "on" to the correct element
-    if(target.hasClass("status")) { 
+    if(target.hasClass("status")) {
       target.find("div").removeClass("on");
       target.find(".s"+input).addClass("on");
 
     // ###################################
-    // IMAGES  
+    // IMAGES
     // Only one display element--no need to iterate
     } else if(target.find(".image").length > 0){
       sf.display.change(target.find("span"), input, false);
 
     // ###################################
-    // NORMAL CHARACTERS    
+    // NORMAL CHARACTERS
     // otherwise, this group is composed of split-flap character or number elements
-    } else {  
+    } else {
       input = input.toUpperCase();
-      // get individual characters and pad the array 
+      // get individual characters and pad the array
       // with spaces (to clear any existing characters)
       characters = input.split("");
       for(i=0;i<strLen;i++) {
@@ -293,7 +340,7 @@ sf.display = {
     }
 
   },
-  
+
   change: function() {
     var container = arguments[0],
         c = arguments[1], // the new character
@@ -310,7 +357,7 @@ sf.display = {
     // rotate the dom element's stored array to the new order for next time
     container.data("order", values.rotate(index));
   },
-  
+
   show: function() {
     var container = arguments[0],
         i = arguments[1],
@@ -320,7 +367,7 @@ sf.display = {
     // punctuation has special class names
     // TODO: can we be more efficient here? This method gets called a lot!
     switch(i) {
-      case " ": c = "csp";  break;
+      case " ": c = "csp"; break;
       case ".": c = "cper"; break;
       case ",": c = "ccom"; break;
       case "?": c = "cque"; break;
@@ -329,9 +376,9 @@ sf.display = {
       case "'": c = "capo"; break;
       case "+": c = "cplu"; break;
       case "-": c = "cmin"; break;
-      case ":": c = "ccol"; break;
-      case "@": c = "cat";  break;
-      case "#": c = "chsh"; break;
+      case "↑": c = "cup"; break;
+      case "↓": c = "cdn"; break;
+      case "%": c = "cpct"; break;
     }
     container.fadeOut(50, function(){
       container.removeClass().addClass(c);

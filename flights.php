@@ -8,7 +8,7 @@
 
   </head>
   <body>
-  
+
     <!-- ============================================ -->
     <!-- CONTAINER                                    -->
     <div id="board" class="chartContainer splitflap">
@@ -17,7 +17,7 @@
       <input type="hidden" name="data" value="<?php echo $_GET["data"] ?>" />    <!-- the type of data you want from the service -->
       <input type="hidden" name="sort" value="<?php echo $_GET["sort"] ?>" />    <!-- the data group to sort by -->
       <input type="hidden" name="order" value="<?php echo $_GET["order"] ?>" />  <!-- sort order (default is ascending) -->
-      
+
       <h1><?php echo $_GET["data"] ?></h1>
 
       <!-- Header: 30px/char, 15px/separator, 120px/logo -->
@@ -29,7 +29,7 @@
       <div class="header" style="width:270px;margin-left:30px;text-align:left;">Remarks</div>
 
       <!-- rows will be placed here dynamically from #row_template -->
-        
+
     </div>
     <!-- END CONTAINER                                -->
     <!-- ============================================ -->
@@ -114,12 +114,14 @@
         "numRows":         12,                 // number of rows
 
         // OPTIONAL
-        "maxResults":      12,                 // number of items to retrieve from service
+        "maxResults":      24,                 // number of items to retrieve from service
         "data":            $("#board").find("input[name=data]").val(),
         "sort":            $("#board").find("input[name=sort]").val(),
         "order":           $("#board").find("input[name=order]").val(),
-        "refreshInterval": 30000,              // how often to refresh the display (ms)
-        "stagger":         1500                // delay between loading rows (ms)
+        "refreshInterval": 60000,              // how often to refresh the display (ms)
+        "pageInterval":    30000,              // delay between pages (ms)
+        "stagger":         1500,               // delay between loading rows (ms)
+        "pageReloadAt":    120                 // number of refreshes before clearing & reloading window
       };
 
       $(document).ready(function() {
@@ -127,7 +129,7 @@
         sf.items.init(sf.options);
         sf.items.load(sf.options);
        });
-      
+
     </script>
 
   </body>
