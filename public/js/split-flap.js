@@ -391,7 +391,7 @@ sf.Items = Backbone.Collection.extend({
      * @param {string} input The string to display for this group of elements
      * @param {object} target A JQuery DOM Object representing a group of elements
      */
-    loadGroup: function(input, target) {
+    loadGroup: (input, target) => {
       const elements = target.find('span').closest('div'), // may have separators, so check for spans
         strLen = elements.length;
       // ###################################
@@ -436,7 +436,7 @@ sf.Items = Backbone.Collection.extend({
      * @param {string} c What to display
      * @param {boolean} isChar True if this is supposed to be a character (not an image);
      */
-    change: function(container, c, isChar) {
+    change: (container, c, isChar) => {
       let index, i;
       // get the curent order of the display element's drum
       var values = container.data('order');
@@ -450,12 +450,14 @@ sf.Items = Backbone.Collection.extend({
       container.data('order', values.rotate(index));
     },
 
-    show: function() {
-      var container = arguments[0],
-        i = arguments[1],
-        isChar = arguments[2],
-        c;
-      c = isChar ? 'c' + i : i; // character class names are preceded by "c"
+    /**
+     * This function displays a character in a <span> element
+     * @param {object} container A JQuery DOM Object
+     * @param {string} i The character to show
+     * @param {boolean} isChar True if this is supposed to be a character (not an image);
+     */
+    show: (container, i, isChar) => {
+      let c = isChar ? 'c' + i : i; // character class names are preceded by "c"
       // punctuation has special class names
       // TODO: can we be more efficient here? This method gets called a lot!
       switch (i) {
@@ -497,7 +499,7 @@ sf.Items = Backbone.Collection.extend({
           break;
       }
       container
-        .fadeOut(50, function() {
+        .fadeOut(50, () => {
           container.removeClass().addClass(c);
         })
         .fadeIn(50);
