@@ -1,5 +1,5 @@
 sf.display.ImageDrum = function() {
-  this.order = [
+  return [
     ' ',
     'AFL',
     'AAL',

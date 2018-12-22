@@ -99,7 +99,7 @@ app.use('/api/flights', (req, res) => {
     data: []
   };
 
-  for (let i = 0; i < 12; i++) {
+  for (let i = 0; i < 5; i++) {
     let msg = getRandomMessage();
     let status = msg === 'delayed' ? 1 : 0;
     r.data.push({

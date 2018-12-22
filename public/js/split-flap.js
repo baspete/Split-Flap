@@ -11,12 +11,12 @@ sf.plugins = {};
 /* ********************************************************************* */
 /* HOUSEKEEPING                                                          */
 
-Array.prototype.rotate = (function() {
-  var unshift = Array.prototype.unshift,
+Array.prototype.rotate = (() => {
+  let unshift = Array.prototype.unshift,
     splice = Array.prototype.splice;
   return function(count) {
-    var len = this.length >>> 0,
-      count = count >> 0;
+    let len = this.length >>> 0;
+    count = count >> 0;
     unshift.apply(this, splice.call(this, count % len, len));
     return this;
   };
@@ -25,11 +25,11 @@ Array.prototype.rotate = (function() {
 sf.util = {
   // Function splits string into array of substrings of len or less.
   // Splits happen at the last space.
-  splitString: function(str, len) {
-    var arr = [];
-    var words = str.split(' ');
-    var line = words[0];
-    for (var i = 1; i < words.length; i++) {
+  splitString: (str, len) => {
+    let arr = [];
+    const words = str.split(' ');
+    const line = words[0];
+    for (let i = 1; i < words.length; i++) {
       if (line.length + words[i].length + 1 < len + 1) {
         line = line + ' ' + words[i];
       } else {
@@ -43,7 +43,7 @@ sf.util = {
   },
 
   // Methods for getting query parameters out of the URL
-  getUrlParams: function() {
+  getUrlParams: () => {
     var vars = [],
       param;
     var params = window.location.href
@@ -52,15 +52,12 @@ sf.util = {
         window.location.href.indexOf('#')
       )
       .split('&');
-    for (var i = 0; i < params.length; i++) {
+    for (let i = 0; i < params.length; i++) {
       param = params[i].split('=');
       vars.push(param[0]);
       vars[param[0]] = param[1];
     }
     return vars;
-  },
-  getUrlParam: function(name) {
-    return $.getUrlParams()[name];
   }
 };
 
@@ -76,17 +73,16 @@ sf.Board = Backbone.View.extend({
     for (var i = 0; i < sf.options.numRows; i++) {
       this.el.append(this.template());
     }
-    this.el.find('.row').each(function() {
-      sf.display.initRow($(this));
+    this.el.find('.row').each((idx, row) => {
+      sf.display.initRow($(row));
     });
-    return this;
   }
 });
 
 sf.board = {
   // Generate the markup for and initialize a blank board
-  init: function(options) {
-    var board = new sf.Board();
+  init: options => {
+    let board = new sf.Board();
     board.el = options.container;
     board.template = _.template(options.template.html());
     sf.options.numRows = sf.options.numRows ? sf.options.numRows : 12; // default 12 rows
@@ -98,15 +94,14 @@ sf.board = {
   // calling loadGroup() with an empty string.
   // When it gets to the last row it reloads the page.
   // NOTE: Use this to avoid memory leaks -- call it every hour or so.
-  clear: function(container) {
-    var rows = container.find('.row'),
-      i = 0;
-    var loop = function() {
+  // BETTER NOTE: Or, just don't cause memory leaks...
+  clear: container => {
+    const rows = container.find('.row'),
+      stagger = sf.options.stagger ? sf.options.stagger : 1000;
+    let i = 0;
+    const loop = function() {
       setTimeout(function() {
-        var groups = $(rows[i]).find('.group');
-        groups.each(function() {
-          sf.display.loadGroup(' ', $(this));
-        });
+        sf.board.clearRow(rows[i]);
         i++;
         if (i < rows.length) {
           loop(i);
@@ -115,11 +110,18 @@ sf.board = {
           // the board, then reload the page.
           setTimeout(function() {
             window.location.reload();
-          }, 10 * 1000);
+          }, 10000);
         }
-      }, 500);
+      }, stagger);
     };
     loop();
+  },
+  // Clears an individual row
+  clearRow: function(row) {
+    var groups = $(row).find('.group');
+    groups.each(function() {
+      sf.display.loadGroup(' ', $(this));
+    });
   }
 };
 
@@ -130,21 +132,22 @@ sf.Items = Backbone.Collection.extend({
   update: function(options) {
     this.fetch({
       success: function(response) {
-        var results = response.toJSON(),
+        const results = response.toJSON(),
           maxResults = options.maxResults ? options.maxResults : 24,
           numResults =
             results.length <= maxResults ? results.length : maxResults,
           numRows = options.numRows,
           numPages = Math.ceil(numResults / numRows),
-          pageInterval = options.pageInterval ? options.pageInterval : 30000,
-          i = 0,
+          pageInterval = options.pageInterval ? options.pageInterval : 30000;
+
+        let i = 0,
           page = 0;
+
         // Load initial results
         sf.display.loadSequentially(
           results.slice(i, i + numRows),
           options.container
         );
-        // console.log("results at page",page,"index",i,results.slice(i,i+numRows));
         i += numRows;
         page++;
         // This recursive function loops through the results by page
@@ -154,7 +157,6 @@ sf.Items = Backbone.Collection.extend({
               results.slice(i, i + numRows),
               options.container
             );
-            // console.log("results at page",page,"index",i,results.slice(i,i+numRows));
             i += numRows;
             page++;
             if (page < numPages) {
@@ -173,14 +175,15 @@ sf.Items = Backbone.Collection.extend({
 
 (sf.items = {
   // Get the data for a board and load it
-  init: function(options) {
+  init: options => {
     // create the Collection
     items = new sf.Items(); // NOTE GLOBAL!
     items.url = sf.plugins[options.plugin].url(options);
 
     // check if we're using jsonp
+    // TODO: do we still need this? It's 2019!
     if (sf.plugins[options.plugin].dataType === 'jsonp') {
-      items.sync = function(method, model, options) {
+      items.sync = (method, model, options) => {
         options.timeout = 10000;
         options.dataType = 'jsonp';
         return Backbone.sync(method, model, options);
@@ -189,7 +192,7 @@ sf.Items = Backbone.Collection.extend({
 
     // pick up any sorting options
     if (options.order && options.sort) {
-      items.comparator = function(item) {
+      items.comparator = item => {
         if (options.order === 'desc') {
           return -item.get(options.sort);
         } else {
@@ -199,18 +202,18 @@ sf.Items = Backbone.Collection.extend({
     }
   },
 
-  load: function(options) {
+  load: options => {
     // Set a count to keep track of how many times the page has been refreshed.
     // When count has reached options.pageReloadAt, clear the board and reload the window.
-    var count = 1;
-    var pageReloadAt = options.pageReloadAt ? options.pageReloadAt : 120;
+    let count = 1;
+    const pageReloadAt = options.pageReloadAt ? options.pageReloadAt : 120;
 
     // Get the initial data and load the chart
     items.update(options);
 
     // If user has specified a refresh interval, setInterval()
     if (options.refreshInterval) {
-      setInterval(function() {
+      setInterval(() => {
         if (count < pageReloadAt) {
           items.update(options);
           count = count + 1;
@@ -230,7 +233,7 @@ sf.Items = Backbone.Collection.extend({
     // a character and when prepended by "c" gives the class name which will
     // be applied to display that character.
     FullDrum: function() {
-      this.order = [
+      return [
         ' ',
         'A',
         'B',
@@ -282,7 +285,7 @@ sf.Items = Backbone.Collection.extend({
       ];
     },
     CharDrum: function() {
-      this.order = [
+      return [
         ' ',
         'A',
         'B',
@@ -315,94 +318,82 @@ sf.Items = Backbone.Collection.extend({
       ];
     },
     NumDrum: function() {
-      this.order = [
-        ' ',
-        '0',
-        '1',
-        '2',
-        '3',
-        '4',
-        '5',
-        '6',
-        '7',
-        '8',
-        '9',
-        '.',
-        ','
-      ];
+      return [' ', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', ','];
     },
     ImageDrum: function() {
-      this.order = []; // Intentionally empty here. Override in plugins/<plugin_name>/custom.js
+      return []; // Intentionally empty here. Override in plugins/<plugin_name>/custom.js
     },
 
-    initRow: function(row) {
-      // expects the jQuery DOM object
-      // For each character, construct a drum array and
+    initRow: row => {
+      // Expects a jQuery DOM object for 'row'.
+      // For each character, grab a new drum array and
       // attach that array to the element's .data() object
-      row.find('span').each(function() {
-        var parent = $(this).closest('div');
-        if (parent.hasClass('number')) {
-          var drum = new sf.display.NumDrum(); // Numbers only
-        } else if (parent.hasClass('character')) {
-          var drum = new sf.display.CharDrum(); // Characters only
-        } else if (parent.hasClass('image')) {
-          var drum = new sf.display.ImageDrum(); // Images
-        } else {
-          var drum = new sf.display.FullDrum(); // The full set
+      row.find('span').each((index, span) => {
+        switch ($(span).closest('div')[0].className) {
+          case 'number':
+            $(span).data('order', new sf.display.NumDrum()); // Numbers only
+            break;
+          case 'character':
+            $(span).data('order', new sf.display.CharDrum()); // Characters only
+            break;
+          case 'image':
+            $(span).data('order', new sf.display.ImageDrum()); // Images
+            break;
+          default:
+            $(span).data('order', new sf.display.FullDrum()); // The full set
         }
-        $(this).data('order', drum.order);
         // Finally, set each character to a space.
-        sf.display.change($(this), ' ');
+        sf.display.change($(span), ' ');
       });
     },
 
-    loadSequentially: function() {
-      var input = arguments[0],
-        container = arguments[1],
-        rows = container.find('.row'),
-        i = 0,
+    loadSequentially: (input, container) => {
+      const rows = container.find('.row'),
         stagger = sf.options.stagger ? sf.options.stagger : 1000;
-      var loop = function() {
+      let i = 0;
+      function loop() {
         setTimeout(function() {
           if (input[i]) {
             sf.display.loadRow(input[i], $(rows[i]));
+          } else {
+            console.log('clearing row', i + 1);
+            sf.board.clearRow(rows[i]);
           }
           i++;
           if (i < rows.length) {
             loop(i);
           }
         }, stagger);
-      };
+      }
       loop();
     },
 
-    loadRow: function() {
-      var input = arguments[0],
-        row = arguments[1], // the row object
-        key,
-        group;
+    /**
+     * Load the data for a row
+     * @param {object} data The JSON for this row
+     * @param {object} row A JQuery DOM object representing a row
+     */
+    loadRow: (data, row) => {
+      console.log('Row Data', data);
       // load the keys array into the .[key] groups
-      for (key in input) {
-        if (input.hasOwnProperty(key)) {
-          group = row.find('.' + key);
-          if (group.length > 0) {
-            sf.display.loadGroup(input[key], group);
-            // put that value into that group's data store
-            group.data('contents', input[key]);
-          }
+      for (let key in data) {
+        let group = row.find(`.${key}`);
+        if (group.length > 0) {
+          sf.display.loadGroup(data[key].toString(), group);
+          // put that value into that group's data store
+          group.data('contents', data[key]);
         }
       }
     },
 
-    loadGroup: function() {
-      // load a string into a group of display elements
-      var input = arguments[0], // the input (which may be a string or a int)
-        input = input + '', // force it into a string
-        target = arguments[1], // the group object
-        elements = target.find('span').closest('div'), // may have separators, so check for spans
-        strLen = elements.length,
-        i,
-        characters;
+    /**
+     * Load a string into a group
+     * @param {string} input The string to display for this group of elements
+     * @param {object} target A JQuery DOM Object representing a group of elements
+     */
+    loadGroup: function(input, target) {
+      const elements = target.find('span').closest('div'), // may have separators, so check for spans
+        strLen = elements.length;
       // ###################################
       // STATUS INDICATORS
       // Add the class "on" to the correct element
@@ -421,10 +412,10 @@ sf.Items = Backbone.Collection.extend({
         // otherwise, this group is composed of split-flap character or number elements
       } else {
         input = input.toUpperCase();
+        let characters = input.split('');
         // get individual characters and pad the array
         // with spaces (to clear any existing characters)
-        characters = input.split('');
-        for (i = 0; i < strLen; i++) {
+        for (let i = 0; i < strLen; i++) {
           if (typeof characters[i] === 'undefined') {
             characters[i] = ' ';
           }
@@ -432,19 +423,21 @@ sf.Items = Backbone.Collection.extend({
         // trim the array to the number of display elements
         characters = characters.slice(0, strLen);
         // assign them to the display elements
-        for (var i = 0; i < characters.length; i++) {
+        for (let i = 0; i < characters.length; i++) {
           // TODO: is there a more efficient way to do this?
           sf.display.change($(elements[i]).find('span'), characters[i], true);
         }
       }
     },
 
-    change: function() {
-      var container = arguments[0],
-        c = arguments[1], // the new character
-        isChar = arguments[2], // true if this is an character (not an image)
-        index,
-        i;
+    /**
+     * Change a container from one character or image to another
+     * @param {object} container A JQuery DOM Object
+     * @param {string} c What to display
+     * @param {boolean} isChar True if this is supposed to be a character (not an image);
+     */
+    change: function(container, c, isChar) {
+      let index, i;
       // get the curent order of the display element's drum
       var values = container.data('order');
       // how many times do we need to increment the drum?

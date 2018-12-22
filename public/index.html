@@ -113,7 +113,7 @@
         plugin: 'airport', // board type
         container: $('#board'), // where to put the board
         template: $('#row_template'), // template markup
-        numRows: 12, // number of rows
+        numRows: 4, // number of rows
 
         // OPTIONAL
         maxResults: 24, // number of items to retrieve from service
@@ -126,10 +126,10 @@
         order: $('#board')
           .find('input[name=order]')
           .val(),
-        refreshInterval: 60000, // how often to refresh the display (ms)
-        pageInterval: 30000, // delay between pages (ms)
+        refreshInterval: 30000, // how often to refresh the display (ms)
+        pageInterval: 10000, // delay between pages (ms)
         stagger: 1500, // delay between loading rows (ms)
-        pageReloadAt: 120 // number of refreshes before clearing & reloading window
+        pageReloadAt: 1 // number of refreshes before clearing & reloading window
       };
 
       $(document).ready(function() {
