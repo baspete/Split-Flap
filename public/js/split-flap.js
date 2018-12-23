@@ -281,7 +281,9 @@ sf.Items = Backbone.Collection.extend({
         '-',
         ':',
         '@',
-        '#'
+        '#',
+        '↑',
+        '↓'
       ];
     },
     CharDrum: function() {
@@ -437,13 +439,12 @@ sf.Items = Backbone.Collection.extend({
      * @param {boolean} isChar True if this is supposed to be a character (not an image);
      */
     change: (container, c, isChar) => {
-      let index, i;
       // get the curent order of the display element's drum
-      var values = container.data('order');
+      let values = container.data('order');
       // how many times do we need to increment the drum?
-      index = values.indexOf(c);
+      let index = values.indexOf(c);
       // increment the drum
-      for (i = 0; i < index; i++) {
+      for (let i = 0; i < index; i++) {
         sf.display.show(container, values[i + 1], isChar);
       }
       // rotate the dom element's stored array to the new order for next time
@@ -487,6 +488,15 @@ sf.Items = Backbone.Collection.extend({
           break;
         case '-':
           c = 'cmin';
+          break;
+        case ':':
+          c = 'ccol';
+          break;
+        case '@':
+          c = 'cat';
+          break;
+        case '#':
+          c = 'chsh';
           break;
         case '↑':
           c = 'cup';

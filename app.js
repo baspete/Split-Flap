@@ -76,19 +76,7 @@ function getRandomTime() {
 }
 
 function getRandomMessage() {
-  let m = [
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    `${getRandomInt(30)}m early`,
-    `delayed`
-  ];
-  return m[getRandomInt(10)];
+  return "↑↓:@#,./'+-";
 }
 
 // ========================================================================
