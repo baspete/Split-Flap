@@ -4,19 +4,16 @@
 
     <!-- ============================================ -->
     <!-- CUSTOM CSS FOR THIS BOARD -->
-    <link rel="stylesheet" href="plugins/airport/custom.css" />
+    <link rel="stylesheet" href="plugins/arrivals/custom.css" />
   </head>
   <body>
     <!-- ============================================ -->
     <!-- CONTAINER -->
     <div id="board" class="chartContainer splitflap">
-      <!-- parameters -->
-      <input type="hidden" name="data" value="arrivals" />
-      <!-- the type of data you want from the service -->
-      <input type="hidden" name="sort" value="scheduled" />
       <!-- the data group to sort by -->
-      <input type="hidden" name="order" value="asc" />
+      <input type="hidden" name="sort" value="scheduled" />
       <!-- sort order (default is ascending) -->
+      <input type="hidden" name="order" value="asc" />
 
       <h1>Arrivals</h1>
 
@@ -107,12 +104,12 @@
 
     <!-- ============================================ -->
     <!-- CUSTOM JS FOR THIS BOARD -->
-    <script type="text/javascript" src="plugins/airport/custom.js"></script>
+    <script type="text/javascript" src="plugins/arrivals/custom.js"></script>
     <script type="text/javascript">
       // CUSTOMIZATION OPTIONS
       sf.options = {
         // REQUIRED
-        plugin: 'airport', // board type
+        plugin: 'arrivals', // board type
         container: $('#board'), // where to put the board
         template: $('#row_template'), // template markup
         numRows: 12, // number of rows

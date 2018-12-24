@@ -14,13 +14,13 @@ sf.display.ImageDrum = function() {
   ];
 };
 
-sf.plugins.airport = {
+sf.plugins.arrivals = {
   dataType: 'json',
 
   // input: map of parameters
   // output: url
   url: function(options) {
-    var base_url = 'api/flights';
+    var base_url = 'api/arrivals';
     return base_url + '?data=' + options.data;
   },
 
