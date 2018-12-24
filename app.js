@@ -52,14 +52,24 @@ function getTail() {
     'x',
     'y',
     'z'
-  ][getRandomInt(26)];
-  return `N${getRandomInt(9999)}${c}`;
+  ];
+  return `N${getRandomInt(9999)}${c[getRandomInt(c.length - 1)]}`;
 }
 
 function getAirline() {
-  return ['AFL', 'AAL', 'BAW', 'DAL', 'UAE', 'KLM', 'DLH', 'RYR', 'UAL', 'AWE'][
-    getRandomInt(10)
+  const airlines = [
+    'AFL',
+    'AAL',
+    'BAW',
+    'DAL',
+    'UAE',
+    'KLM',
+    'DLH',
+    'RYR',
+    'UAL',
+    'AWE'
   ];
+  return airlines[getRandomInt(airlines.length - 1)];
 }
 
 function getTime() {
@@ -87,7 +97,7 @@ function getGate() {
 }
 
 function getCity() {
-  return [
+  const cities = [
     'Atlanta',
     'Baltimore',
     'Charleston',
@@ -108,7 +118,8 @@ function getCity() {
     'Roanoake',
     'San Diego',
     'Tallahassee'
-  ][getRandomInt(20)];
+  ];
+  return cities[getRandomInt(20)];
 }
 
 function getTime() {
@@ -121,8 +132,10 @@ function getTime() {
   return `${hrs}${mins}`;
 }
 
-function getMessage() {
-  return "↑↓:@#,./'+-";
+function getRemarks() {
+  return `${
+    aircraftTypes[getRandomInt(aircraftTypes.length - 1)]
+  } ${getCity()}`;
 }
 
 function getAltChange() {
@@ -138,19 +151,22 @@ app.use('/api/adsb', (req, res) => {
   };
 
   for (let i = 0; i < 18; i++) {
+    const isAirline = getRandomInt(10) > 3 ? true : false;
+    const airline = isAirline ? getAirline() : '';
+    const flight = isAirline ? getFlight() : getTail();
+    const remarks = isAirline ? getRemarks() : '';
     r.data.push({
-      airline: getAirline(),
-      flight: getTail(),
+      airline,
+      flight,
       type: getType(),
       distance: getRandomInt(500) / 10,
       altitude: getRandomInt(35000),
+      altChange: getAltChange(),
       airspeed: getRandomInt(480),
       bearing: getRandomInt(359),
-      altChange: getAltChange(),
-      remarks: 'hello'
+      remarks
     });
   }
-
   res.json(r);
 });
 
@@ -160,7 +176,7 @@ app.use('/api/arrivals', (req, res) => {
   };
 
   for (let i = 0; i < 18; i++) {
-    let msg = getMessage();
+    let msg = getRemarks();
     let status = getRandomInt(10) > 5 ? 1 : 0;
     r.data.push({
       airline: getAirline(),

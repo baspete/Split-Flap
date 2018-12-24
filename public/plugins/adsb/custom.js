@@ -60,14 +60,14 @@ sf.plugins.adsb = {
     }
   },
 
-  getAltitudeChangeString: c => {
-    if (c > 0) {
-      return '↑';
-    } else if (c < 0) {
-      return '↓';
-    } else {
-      return '';
+  getAltitudeString: (alt, change) => {
+    let c = ' ';
+    if (change > 0) {
+      c = '↑';
+    } else if (change < 0) {
+      c = '↓';
     }
+    return `${alt.toString().padStart(5, ' ')}${c}`;
   },
 
   formatData: response => {
@@ -77,10 +77,11 @@ sf.plugins.adsb = {
         aircraft.distance,
         aircraft.bearing
       );
-      aircraft['altitude-chg-str'] = sf.plugins.adsb.getAltitudeChangeString(
+
+      aircraft['altitude-str'] = sf.plugins.adsb.getAltitudeString(
+        aircraft.altitude,
         aircraft.altChange
       );
-      aircraft['altitude-str'] = aircraft.altitude.toString().padStart(5, ' ');
       aircraft['airspeed-str'] = aircraft.airspeed.toString().padStart(3, ' ');
     }
     return response.data;
