@@ -29,7 +29,7 @@ npm install
 node app.js
 ```
 
-Navigate to `http://locahost:8080/arrivals.html` in your browser.
+Navigate to `http://locahost:8080/arrivals.html` or `http://locahost:8080/adsb.html` in your browser.
 
 ## Customization
 
