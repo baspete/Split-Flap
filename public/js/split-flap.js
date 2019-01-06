@@ -1,4 +1,7 @@
-﻿// Home Sweet Global Namespace
+﻿/* eslint-disable no-console */
+/* global $ _ Backbone */
+
+// Home Sweet Global Namespace
 var sf = {};
 
 // Namespace for objects defined and used locally in templates
@@ -21,45 +24,6 @@ Array.prototype.rotate = (() => {
     return this;
   };
 })();
-
-sf.util = {
-  // Function splits string into array of substrings of len or less.
-  // Splits happen at the last space.
-  splitString: (str, len) => {
-    let arr = [];
-    const words = str.split(' ');
-    const line = words[0];
-    for (let i = 1; i < words.length; i++) {
-      if (line.length + words[i].length + 1 < len + 1) {
-        line = line + ' ' + words[i];
-      } else {
-        arr.push(line);
-        line = words[i];
-      }
-    }
-    // push the last line into the array
-    arr.push(line);
-    return arr;
-  },
-
-  // Methods for getting query parameters out of the URL
-  getUrlParams: () => {
-    var vars = [],
-      param;
-    var params = window.location.href
-      .slice(
-        window.location.href.indexOf('?') + 1,
-        window.location.href.indexOf('#')
-      )
-      .split('&');
-    for (let i = 0; i < params.length; i++) {
-      param = params[i].split('=');
-      vars.push(param[0]);
-      vars[param[0]] = param[1];
-    }
-    return vars;
-  }
-};
 
 /* ********************************************************************* */
 /* BACKBONE COLLECTIONS, MODELS AND VIEWS                                */
@@ -89,15 +53,14 @@ sf.board = {
     board.render();
   },
 
-  // Utility method to clear the board.
+  // Utility method to reset the board.
   // It goes through every group in every row,
   // calling loadGroup() with an empty string.
   // When it gets to the last row it reloads the page.
-  // NOTE: Use this to avoid memory leaks -- call it every hour or so.
-  // BETTER NOTE: Or, just don't cause memory leaks...
-  clear: container => {
-    console.log('clear container');
-    stagger = sf.options.stagger ? sf.options.stagger : 1000;
+  reset: () => {
+    console.log('Resetting Board');
+    const stagger = sf.options.stagger ? sf.options.stagger : 1000;
+    const rows = sf.options.container.find('.row');
     let i = 0;
     const loop = function() {
       setTimeout(function() {
@@ -131,15 +94,16 @@ sf.board = {
 // at options.pageInterval.
 sf.Items = Backbone.Collection.extend({
   update: function(options) {
+    console.log('Fetching Data', items.url);
     this.fetch({
       success: function(response) {
         const results = response.toJSON(),
-          maxResults = options.maxResults ? options.maxResults : 24,
+          numRows = options.numRows,
+          maxResults = options.maxResults || options.numRows,
           numResults =
             results.length <= maxResults ? results.length : maxResults,
-          numRows = options.numRows,
           numPages = Math.ceil(numResults / numRows),
-          pageInterval = options.pageInterval ? options.pageInterval : 30000;
+          pageInterval = options.pageInterval || 30000;
 
         let i = 0,
           page = 0;
@@ -152,8 +116,10 @@ sf.Items = Backbone.Collection.extend({
         i += numRows;
         page++;
         // This recursive function loops through the results by page
-        loop = function() {
-          setTimeout(function() {
+        // After it's finished the last page it updates the items
+        // and renders a new page.
+        function paginate() {
+          setTimeout(() => {
             sf.display.loadSequentially(
               results.slice(i, i + numRows),
               options.container
@@ -161,11 +127,23 @@ sf.Items = Backbone.Collection.extend({
             i += numRows;
             page++;
             if (page < numPages) {
-              loop(i);
+              paginate(i);
+            } else {
+              setTimeout(() => {
+                items.update(options);
+              }, pageInterval);
             }
           }, pageInterval);
-        };
-        loop();
+        }
+
+        // Paginate if necessary
+        if (page < numPages) {
+          paginate();
+        } else {
+          setTimeout(() => {
+            items.update(options);
+          }, pageInterval);
+        }
       }
     });
   },
@@ -203,322 +181,312 @@ sf.Items = Backbone.Collection.extend({
     }
   },
 
+  // Get the initial data and load the chart
   load: options => {
-    // Set a count to keep track of how many times the page has been refreshed.
-    // When count has reached options.pageReloadAt, clear the board and reload the window.
-    let count = 1;
-    const pageReloadAt = options.pageReloadAt ? options.pageReloadAt : 120;
-
-    // Get the initial data and load the chart
     items.update(options);
-
-    // If user has specified a refresh interval, setInterval()
-    if (options.refreshInterval) {
-      setInterval(() => {
-        if (count < pageReloadAt) {
-          items.update(options);
-          count = count + 1;
-        } else {
-          sf.board.clear(options.container);
-        }
-      }, options.refreshInterval);
-    }
   }
 }),
-/* ********************************************************************* */
-/* DISPLAY METHODS                                                       */
+  /* ********************************************************************* */
+  /* DISPLAY METHODS                                                       */
 
-(sf.display = {
-  // DRUM ARRAYS
-  // These contain the character sets for each drum. Each position represents
-  // a character and when prepended by "c" gives the class name which will
-  // be applied to display that character.
-  FullDrum: function() {
-    return [
-      ' ',
-      'A',
-      'B',
-      'C',
-      'D',
-      'E',
-      'F',
-      'G',
-      'H',
-      'I',
-      'J',
-      'K',
-      'L',
-      'M',
-      'N',
-      'O',
-      'P',
-      'Q',
-      'R',
-      'S',
-      'T',
-      'U',
-      'V',
-      'W',
-      'X',
-      'Y',
-      'Z',
-      '0',
-      '1',
-      '2',
-      '3',
-      '4',
-      '5',
-      '6',
-      '7',
-      '8',
-      '9',
-      '.',
-      ',',
-      '?',
-      '!',
-      '/',
-      '\'',
-      '+',
-      '-',
-      ':',
-      '@',
-      '#',
-      '↑',
-      '↓'
-    ];
-  },
-  CharDrum: function() {
-    return [
-      ' ',
-      'A',
-      'B',
-      'C',
-      'D',
-      'E',
-      'F',
-      'G',
-      'H',
-      'I',
-      'J',
-      'K',
-      'L',
-      'M',
-      'N',
-      'O',
-      'P',
-      'Q',
-      'R',
-      'S',
-      'T',
-      'U',
-      'V',
-      'W',
-      'X',
-      'Y',
-      'Z',
-      '.',
-      ','
-    ];
-  },
-  NumDrum: function() {
-    return [' ', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', ','];
-  },
-  ImageDrum: function() {
-    return []; // Intentionally empty here. Override in plugins/<plugin_name>/custom.js
-  },
+  (sf.display = {
+    // DRUM ARRAYS
+    // These contain the character sets for each drum. Each position represents
+    // a character and when prepended by "c" gives the class name which will
+    // be applied to display that character.
+    FullDrum: function() {
+      return [
+        ' ',
+        'A',
+        'B',
+        'C',
+        'D',
+        'E',
+        'F',
+        'G',
+        'H',
+        'I',
+        'J',
+        'K',
+        'L',
+        'M',
+        'N',
+        'O',
+        'P',
+        'Q',
+        'R',
+        'S',
+        'T',
+        'U',
+        'V',
+        'W',
+        'X',
+        'Y',
+        'Z',
+        '0',
+        '1',
+        '2',
+        '3',
+        '4',
+        '5',
+        '6',
+        '7',
+        '8',
+        '9',
+        '.',
+        ',',
+        '?',
+        '!',
+        '/',
+        "'",
+        '+',
+        '-',
+        ':',
+        '@',
+        '#',
+        '↑',
+        '↓'
+      ];
+    },
+    CharDrum: function() {
+      return [
+        ' ',
+        'A',
+        'B',
+        'C',
+        'D',
+        'E',
+        'F',
+        'G',
+        'H',
+        'I',
+        'J',
+        'K',
+        'L',
+        'M',
+        'N',
+        'O',
+        'P',
+        'Q',
+        'R',
+        'S',
+        'T',
+        'U',
+        'V',
+        'W',
+        'X',
+        'Y',
+        'Z',
+        '.',
+        ','
+      ];
+    },
+    NumDrum: function() {
+      return [' ', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', ','];
+    },
+    ImageDrum: function() {
+      return []; // Intentionally empty here. Override in plugins/<plugin_name>/custom.js
+    },
 
-  initRow: row => {
-    // Expects a jQuery DOM object for 'row'.
-    // For each character, grab a new drum array and
-    // attach that array to the element's .data() object
-    row.find('span').each((index, span) => {
-      switch ($(span).closest('div')[0].className) {
-      case 'number':
-        $(span).data('order', new sf.display.NumDrum()); // Numbers only
-        break;
-      case 'character':
-        $(span).data('order', new sf.display.CharDrum()); // Characters only
-        break;
-      case 'image':
-        $(span).data('order', new sf.display.ImageDrum()); // Images
-        break;
-      default:
-        $(span).data('order', new sf.display.FullDrum()); // The full set
+    initRow: row => {
+      // Expects a jQuery DOM object for 'row'.
+      // For each character, grab a new drum array and
+      // attach that array to the element's .data() object
+      row.find('span').each((index, span) => {
+        switch ($(span).closest('div')[0].className) {
+          case 'number':
+            $(span).data('order', new sf.display.NumDrum()); // Numbers only
+            break;
+          case 'character':
+            $(span).data('order', new sf.display.CharDrum()); // Characters only
+            break;
+          case 'image':
+            $(span).data('order', new sf.display.ImageDrum()); // Images
+            break;
+          default:
+            $(span).data('order', new sf.display.FullDrum()); // The full set
+        }
+        // Finally, set each character to a space.
+        sf.display.change($(span), ' ');
+      });
+    },
+
+    loadSequentially: (input, container) => {
+      const rows = container.find('.row'),
+        stagger = sf.options.stagger ? sf.options.stagger : 1000;
+      let i = 0;
+      function loop() {
+        setTimeout(function() {
+          if (input[i]) {
+            console.log(`Row ${i + 1}:`, input[i]);
+            sf.display.loadRow(input[i], $(rows[i]));
+          } else {
+            console.log(`Row ${i + 1}: Empty`);
+            sf.board.clearRow(rows[i]);
+          }
+          i++;
+          if (i < rows.length) {
+            loop(i);
+          }
+        }, stagger);
       }
-      // Finally, set each character to a space.
-      sf.display.change($(span), ' ');
-    });
-  },
+      loop();
+    },
 
-  loadSequentially: (input, container) => {
-    const rows = container.find('.row'),
-      stagger = sf.options.stagger ? sf.options.stagger : 1000;
-    let i = 0;
-    function loop() {
-      setTimeout(function() {
-        if (input[i]) {
-          console.log(`Row ${i + 1}:`, input[i]);
-          sf.display.loadRow(input[i], $(rows[i]));
-        } else {
-          console.log(`Row ${i + 1}: Empty`);
-          sf.board.clearRow(rows[i]);
-        }
-        i++;
-        if (i < rows.length) {
-          loop(i);
-        }
-      }, stagger);
-    }
-    loop();
-  },
-
-  /**
+    /**
      * Load the data for a row
      * @param {object} data The JSON for this row
      * @param {object} row A JQuery DOM object representing a row
      */
-  loadRow: (data, row) => {
-    // load the keys array into the .[key] groups
-    for (let key in data) {
-      let group = row.find(`.${key}`);
-      if (group.length > 0 && data[key]) {
-        sf.display.loadGroup(data[key].toString(), group);
-        // put that value into that group's data store
-        group.data('contents', data[key]);
-      }
-    }
-  },
+    loadRow: (data, row) => {
+      // Find all the available groups in this row
+      const groups = row.find('.group');
+      groups.each(group => {
+        // Get the data class name for this group
+        // This *should* always be the second class.
+        // If there's no data for this group use an empty
+        // string so we replace what was there before.
+        const c = $(groups[group])
+          .attr('class')
+          .split(/\s+/)[1];
+        const d = data[c] ? data[c] : '';
+        // Load this group for display
+        sf.display.loadGroup(d.toString(), $(groups[group]));
+        // Put that value into the group's data store
+        $(groups[group]).data('contents', d);
+      });
+    },
 
-  /**
+    /**
      * Load a string into a group
      * @param {string} input The string to display for this group of elements
      * @param {object} target A JQuery DOM Object representing a group of elements
      */
-  loadGroup: (input, target) => {
-    const elements = target.find('span').closest('div'), // may have separators, so check for spans
-      strLen = elements.length;
+    loadGroup: (input, target) => {
+      const elements = target.find('span').closest('div'), // may have separators, so check for spans
+        strLen = elements.length;
       // ###################################
       // STATUS INDICATORS
       // Add the class "on" to the correct element
-    if (target.hasClass('status')) {
-      target.find('div').removeClass('on');
-      target.find('.s' + input).addClass('on');
+      if (target.hasClass('status')) {
+        target.find('div').removeClass('on');
+        target.find('.s' + input).addClass('on');
 
-      // ###################################
-      // IMAGES
-      // Only one display element--no need to iterate
-    } else if (target.find('.image').length > 0) {
-      sf.display.change(target.find('span'), input, false);
+        // ###################################
+        // IMAGES
+        // Only one display element--no need to iterate
+      } else if (target.find('.image').length > 0) {
+        sf.display.change(target.find('span'), input, false);
 
-      // ###################################
-      // NORMAL CHARACTERS
-      // otherwise, this group is composed of split-flap character or number elements
-    } else {
-      input = input.toUpperCase();
-      let characters = input.split('');
-      // get individual characters and pad the array
-      // with spaces (to clear any existing characters)
-      for (let i = 0; i < strLen; i++) {
-        if (typeof characters[i] === 'undefined') {
-          characters[i] = ' ';
+        // ###################################
+        // NORMAL CHARACTERS
+        // otherwise, this group is composed of split-flap character or number elements
+      } else {
+        input = input.toUpperCase();
+        let characters = input.split('');
+        // get individual characters and pad the array
+        // with spaces (to clear any existing characters)
+        for (let i = 0; i < strLen; i++) {
+          if (typeof characters[i] === 'undefined') {
+            characters[i] = ' ';
+          }
+        }
+        // trim the array to the number of display elements
+        characters = characters.slice(0, strLen);
+        // assign them to the display elements
+        for (let i = 0; i < characters.length; i++) {
+          // TODO: is there a more efficient way to do this?
+          sf.display.change($(elements[i]).find('span'), characters[i], true);
         }
       }
-      // trim the array to the number of display elements
-      characters = characters.slice(0, strLen);
-      // assign them to the display elements
-      for (let i = 0; i < characters.length; i++) {
-        // TODO: is there a more efficient way to do this?
-        sf.display.change($(elements[i]).find('span'), characters[i], true);
-      }
-    }
-  },
+    },
 
-  /**
+    /**
      * Change a container from one character or image to another
      * @param {object} container A JQuery DOM Object
      * @param {string} c What to display
      * @param {boolean} isChar True if this is supposed to be a character (not an image);
      */
-  change: (container, c, isChar) => {
-    // get the curent order of the display element's drum
-    let values = container.data('order');
-    // how many times do we need to increment the drum?
-    let index = values.indexOf(c);
-    // set it to blank if character is missing from drum
-    if (index === -1) {
-      index = values.indexOf(' ');
-    }
-    // increment the drum
-    for (let i = 0; i < index; i++) {
-      sf.display.show(container, values[i + 1], isChar);
-    }
-    // rotate the dom element's stored array to the new order for next time
-    container.data('order', values.rotate(index));
-  },
+    change: (container, c, isChar) => {
+      // get the curent order of the display element's drum
+      let values = container.data('order');
+      // how many times do we need to increment the drum?
+      let index = values.indexOf(c);
+      // set it to blank if character is missing from drum
+      if (index === -1) {
+        index = values.indexOf(' ');
+      }
+      // increment the drum
+      for (let i = 0; i < index; i++) {
+        sf.display.show(container, values[i + 1], isChar);
+      }
+      // rotate the dom element's stored array to the new order for next time
+      container.data('order', values.rotate(index));
+    },
 
-  /**
+    /**
      * This function displays a character in a <span> element
      * @param {object} container A JQuery DOM Object
      * @param {string} i The character to show
      * @param {boolean} isChar True if this is supposed to be a character (not an image);
      */
-  show: (container, i, isChar) => {
-    let c = isChar ? 'c' + i : i; // character class names are preceded by "c"
-    // punctuation has special class names
-    // TODO: can we be more efficient here? This method gets called a lot!
-    switch (i) {
-    case ' ':
-      c = 'csp';
-      break;
-    case '.':
-      c = 'cper';
-      break;
-    case ',':
-      c = 'ccom';
-      break;
-    case '?':
-      c = 'cque';
-      break;
-    case '!':
-      c = 'cexc';
-      break;
-    case '/':
-      c = 'csla';
-      break;
-    case '\'':
-      c = 'capo';
-      break;
-    case '+':
-      c = 'cplu';
-      break;
-    case '-':
-      c = 'cmin';
-      break;
-    case ':':
-      c = 'ccol';
-      break;
-    case '@':
-      c = 'cat';
-      break;
-    case '#':
-      c = 'chsh';
-      break;
-    case '↑':
-      c = 'cup';
-      break;
-    case '↓':
-      c = 'cdn';
-      break;
-    case '%':
-      c = 'cpct';
-      break;
+    show: (container, i, isChar) => {
+      let c = isChar ? 'c' + i : i; // character class names are preceded by "c"
+      // punctuation has special class names
+      // TODO: can we be more efficient here? This method gets called a lot!
+      switch (i) {
+        case ' ':
+          c = 'csp';
+          break;
+        case '.':
+          c = 'cper';
+          break;
+        case ',':
+          c = 'ccom';
+          break;
+        case '?':
+          c = 'cque';
+          break;
+        case '!':
+          c = 'cexc';
+          break;
+        case '/':
+          c = 'csla';
+          break;
+        case "'":
+          c = 'capo';
+          break;
+        case '+':
+          c = 'cplu';
+          break;
+        case '-':
+          c = 'cmin';
+          break;
+        case ':':
+          c = 'ccol';
+          break;
+        case '@':
+          c = 'cat';
+          break;
+        case '#':
+          c = 'chsh';
+          break;
+        case '↑':
+          c = 'cup';
+          break;
+        case '↓':
+          c = 'cdn';
+          break;
+        case '%':
+          c = 'cpct';
+          break;
+      }
+      container
+        .fadeOut(50, () => {
+          container.removeClass().addClass(c);
+        })
+        .fadeIn(50);
     }
-    container
-      .fadeOut(50, () => {
-        container.removeClass().addClass(c);
-      })
-      .fadeIn(50);
-  }
-});
+  });
 /* END DISPLAY METHODS                                                   */
 /* ********************************************************************* */
