@@ -1,18 +1,20 @@
 # Virtual Split-Flap Display
 
+![Screenshot](thumbnail.png)
+
 This is a simulation of a split-flap display (often called a Solari board) designed to run in a web browser. It dynamically loads JSON data from a data source and renders that data as characters and images on the board. Individual characters are animated using CSS sprites.
 
 The look and feel are fully configurable by changing the markup and using different sprite images, and the included files are simply examples intended to get you started with your own project.
 
 ## Application Structure
 
-`/public/js` - The client-side code is in `split-flap.js`. This code expects jquery, underscore and backbone to be available. Copies have been included for convenience.
+`/public/js` - The client-side code is in `split-flap.js`. This code loads jquery, underscore and backbone from dnjs.cloudflare.com. You may wish to change this if your application will run disconnected.
 
-`/public/img` - Image sprites. Customize these to change the look of the split flap elements or utilize different character sets.
+`/public/img` - Image sprites. Customize these to change the look of the split flap elements or utilize different character sets or status indicators. I've included the .pxd file(s) so you can edit these in Pixelmator.
 
-`/public/css` - The base styles for this application. These can be extended or overridden by adding your own in `/public/plugins`.
+`/public/css` - The base styles for this application. These can be extended or overridden by adding your own in `/public/plugins`. Note how the `.full`, `.character` and `.number` definitions here define different (sub)sets of images on the character sprites. If you edit the character sprites you must also edit these classes to match.
 
-`/public/adsb.html` & `public/arrivals.html` - Example HTML to render into the browser. Customize to your needs.
+`public/index.html` - Example HTML to render into the browser. This is where you define the layout of your board and define some basic constants.
 
 `/public/plugins` - Custom Javascript, CSS and images. Use these as a starting point to connect to new data sources, change the look and feel, etc.
 
