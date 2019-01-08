@@ -1,0 +1,365 @@
+body {
+  background: #0f0f0f;
+  color: #fff;
+  font-family: helvetica, sans-serif;
+}
+a {
+  color: #fff;
+  text-decoration: none;
+}
+.splitflap {
+  width: 1400px;
+  overflow: none;
+  white-space: nowrap;
+  margin: 20px 10px;
+}
+.splitflap h1 {
+  text-transform: uppercase;
+  font-size: 2.5em;
+}
+.splitflap .header {
+  float: left;
+  font-size: 1.3em;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.splitflap .row {
+  clear: both;
+  height: 60px;
+}
+.splitflap .group {
+  float: left;
+  margin-right: 30px;
+}
+.splitflap .separator {
+  float: left;
+  height: 40px;
+  width: 15px;
+  font-weight: bold;
+  font-size: 1.8em;
+}
+.splitflap .status {
+  margin-right: 0;
+}
+.splitflap .status div {
+  float: left;
+  margin: 10px 10px 0 0;
+  width: 18px;
+  height: 18px;
+}
+.splitflap .status div.on {
+  background-position: -18px 0;
+}
+.splitflap .status .sA {
+  background: url('../img/lights_green.png') no-repeat;
+}
+.splitflap .status .sB {
+  background: url('../img/lights_red.png') no-repeat;
+}
+.splitflap .full,
+.splitflap .number,
+.splitflap .character {
+  float: left;
+  margin-right: 5px;
+  width: 25px;
+  height: 40px;
+  background: url('../img/split-flap-letters-yellow-sm-full.png') no-repeat;
+  background-position: 0px 0px;
+}
+.splitflap .full span,
+.splitflap .number span,
+.splitflap .character span {
+  width: 25px;
+  height: 40px;
+  display: block;
+  background: url('../img/split-flap-letters-yellow-sm-full.png') no-repeat;
+  background-position: -25px 0px; /* start with a space */
+}
+
+/* SPACE AND TRANSITION IMAGES */
+.splitflap span.ctrn {
+  background-position: 0px 0px;
+} /* transition */
+.splitflap span.csp {
+  background-position: -25px 0px;
+} /* space */
+/* FULL SET DRUM */
+.splitflap .full span.csp {
+  background-position: -25px 0px;
+} /* space */
+.splitflap .full span.cA {
+  background-position: -50px 0px;
+} /* A */
+.splitflap .full span.cB {
+  background-position: -75px 0px;
+}
+.splitflap .full span.cC {
+  background-position: -100px 0px;
+}
+.splitflap .full span.cD {
+  background-position: -125px 0px;
+}
+.splitflap .full span.cE {
+  background-position: -150px 0px;
+}
+.splitflap .full span.cF {
+  background-position: -175px 0px;
+}
+.splitflap .full span.cG {
+  background-position: -200px 0px;
+}
+.splitflap .full span.cH {
+  background-position: -225px 0px;
+}
+.splitflap .full span.cI {
+  background-position: -250px 0px;
+}
+.splitflap .full span.cJ {
+  background-position: -275px 0px;
+}
+.splitflap .full span.cK {
+  background-position: -300px 0px;
+}
+.splitflap .full span.cL {
+  background-position: -325px 0px;
+}
+.splitflap .full span.cM {
+  background-position: -350px 0px;
+}
+.splitflap .full span.cN {
+  background-position: -375px 0px;
+}
+.splitflap .full span.cO {
+  background-position: -400px 0px;
+}
+.splitflap .full span.cP {
+  background-position: -425px 0px;
+}
+.splitflap .full span.cQ {
+  background-position: -450px 0px;
+}
+.splitflap .full span.cR {
+  background-position: -475px 0px;
+}
+.splitflap .full span.cS {
+  background-position: -500px 0px;
+}
+.splitflap .full span.cT {
+  background-position: -525px 0px;
+}
+.splitflap .full span.cU {
+  background-position: -550px 0px;
+}
+.splitflap .full span.cV {
+  background-position: -575px 0px;
+}
+.splitflap .full span.cW {
+  background-position: -600px 0px;
+}
+.splitflap .full span.cX {
+  background-position: -625px 0px;
+}
+.splitflap .full span.cY {
+  background-position: -650px 0px;
+}
+.splitflap .full span.cZ {
+  background-position: -675px 0px;
+} /* Z */
+.splitflap .full span.c0 {
+  background-position: -700px 0px;
+} /* 0 */
+.splitflap .full span.c1 {
+  background-position: -725px 0px;
+}
+.splitflap .full span.c2 {
+  background-position: -750px 0px;
+}
+.splitflap .full span.c3 {
+  background-position: -775px 0px;
+}
+.splitflap .full span.c4 {
+  background-position: -800px 0px;
+}
+.splitflap .full span.c5 {
+  background-position: -825px 0px;
+}
+.splitflap .full span.c6 {
+  background-position: -850px 0px;
+}
+.splitflap .full span.c7 {
+  background-position: -875px 0px;
+}
+.splitflap .full span.c8 {
+  background-position: -900px 0px;
+}
+.splitflap .full span.c9 {
+  background-position: -925px 0px;
+} /* 9 */
+.splitflap .full span.cper {
+  background-position: -950px 0px;
+} /* . */
+.splitflap .full span.ccom {
+  background-position: -975px 0px;
+} /* , */
+.splitflap .full span.cque {
+  background-position: -1000px 0px;
+} /* ? */
+.splitflap .full span.cexc {
+  background-position: -1025px 0px;
+} /* ! */
+.splitflap .full span.csla {
+  background-position: -1050px 0px;
+} /* / */
+.splitflap .full span.capo {
+  background-position: -1075px 0px;
+} /* ' */
+.splitflap .full span.cplu {
+  background-position: -1100px 0px;
+} /* + */
+.splitflap .full span.cmin {
+  background-position: -1125px 0px;
+} /* - */
+.splitflap .full span.ccol {
+  background-position: -1150px 0px;
+} /* : */
+.splitflap .full span.cat {
+  background-position: -1175px 0px;
+} /* @ */
+.splitflap .full span.chsh {
+  background-position: -1200px 0px;
+} /* # */
+.splitflap .full span.cup {
+  background-position: -1225px 0px;
+} /* ↓ */
+.splitflap .full span.cdn {
+  background-position: -1250px 0px;
+} /* ↓ */
+/* NUMBERS ONLY DRUM */
+.splitflap .number span.csp {
+  background-position: -25px 0px;
+} /* space */
+.splitflap .number span.c0 {
+  background-position: -700px 0px;
+} /* 0 */
+.splitflap .number span.c1 {
+  background-position: -725px 0px;
+}
+.splitflap .number span.c2 {
+  background-position: -750px 0px;
+}
+.splitflap .number span.c3 {
+  background-position: -775px 0px;
+}
+.splitflap .number span.c4 {
+  background-position: -800px 0px;
+}
+.splitflap .number span.c5 {
+  background-position: -825px 0px;
+}
+.splitflap .number span.c6 {
+  background-position: -850px 0px;
+}
+.splitflap .number span.c7 {
+  background-position: -875px 0px;
+}
+.splitflap .number span.c8 {
+  background-position: -900px 0px;
+}
+.splitflap .number span.c9 {
+  background-position: -925px 0px;
+} /* 9 */
+.splitflap .number span.cper {
+  background-position: -950px 0px;
+} /* . */
+.splitflap .number span.ccom {
+  background-position: -975px 0px;
+} /* , */
+/* CHARACTERS ONLY DRUM */
+.splitflap .character span.csp {
+  background-position: -25px 0px;
+} /* space */
+.splitflap .character span.cA {
+  background-position: -50px 0px;
+} /* A */
+.splitflap .character span.cB {
+  background-position: -75px 0px;
+}
+.splitflap .character span.cC {
+  background-position: -100px 0px;
+}
+.splitflap .character span.cD {
+  background-position: -125px 0px;
+}
+.splitflap .character span.cE {
+  background-position: -150px 0px;
+}
+.splitflap .character span.cF {
+  background-position: -175px 0px;
+}
+.splitflap .character span.cG {
+  background-position: -200px 0px;
+}
+.splitflap .character span.cH {
+  background-position: -225px 0px;
+}
+.splitflap .character span.cI {
+  background-position: -250px 0px;
+}
+.splitflap .character span.cJ {
+  background-position: -275px 0px;
+}
+.splitflap .character span.cK {
+  background-position: -300px 0px;
+}
+.splitflap .character span.cL {
+  background-position: -325px 0px;
+}
+.splitflap .character span.cM {
+  background-position: -350px 0px;
+}
+.splitflap .character span.cN {
+  background-position: -375px 0px;
+}
+.splitflap .character span.cO {
+  background-position: -400px 0px;
+}
+.splitflap .character span.cP {
+  background-position: -425px 0px;
+}
+.splitflap .character span.cQ {
+  background-position: -450px 0px;
+}
+.splitflap .character span.cR {
+  background-position: -475px 0px;
+}
+.splitflap .character span.cS {
+  background-position: -500px 0px;
+}
+.splitflap .character span.cT {
+  background-position: -525px 0px;
+}
+.splitflap .character span.cU {
+  background-position: -550px 0px;
+}
+.splitflap .character span.cV {
+  background-position: -575px 0px;
+}
+.splitflap .character span.cW {
+  background-position: -600px 0px;
+}
+.splitflap .character span.cX {
+  background-position: -625px 0px;
+}
+.splitflap .character span.cY {
+  background-position: -650px 0px;
+}
+.splitflap .character span.cZ {
+  background-position: -675px 0px;
+} /* Z */
+.splitflap .character span.cper {
+  background-position: -950px 0px;
+} /* . */
+.splitflap .character span.ccom {
+  background-position: -975px 0px;
+} /* , */

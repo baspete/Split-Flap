@@ -1,0 +1,136 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="css/base.css" />
+
+    <!-- ============================================ -->
+    <!-- CUSTOM CSS FOR THIS BOARD -->
+    <link rel="stylesheet" href="plugins/arrivals/custom.css" />
+  </head>
+  <body>
+    <!-- ============================================ -->
+    <!-- CONTAINER -->
+    <div id="board" class="chartContainer splitflap">
+      <h1>Arrivals</h1>
+
+      <!-- Header: 30px/char, 15px/separator, 120px/logo -->
+      <div class="header" style="width:120px;margin-left:0px;">Airline</div>
+      <div class="header" style="width:120px;margin-left:30px;">Flight</div>
+      <div class="header" style="width:360px;margin-left:30px;text-align:left;">
+        City
+      </div>
+      <div class="header" style="width:90px;margin-left:30px;">Gate</div>
+      <div class="header" style="width:135px;margin-left:30px;">Scheduled</div>
+      <div class="header" style="width:270px;margin-left:30px;text-align:left;">
+        Remarks
+      </div>
+
+      <!-- rows will be placed here dynamically from #row_template -->
+    </div>
+    <!-- END CONTAINER -->
+    <!-- ============================================ -->
+
+    <!-- ============================================ -->
+    <!-- ROW TEMPLATE -->
+    <script type="text/template" id="row_template">
+      <div class="row">
+        <div class="group airline"> <!-- airline -->
+          <div class="image"><span></span></div>
+        </div>
+        <div class="group flight"> <!-- flight number -->
+          <div class="number"><span></span></div>
+          <div class="number"><span></span></div>
+          <div class="number"><span></span></div>
+          <div class="number"><span></span></div>
+        </div>
+        <div class="group city"> <!-- city -->
+          <div class="character"><span></span></div>
+          <div class="character"><span></span></div>
+          <div class="character"><span></span></div>
+          <div class="character"><span></span></div>
+          <div class="character"><span></span></div>
+          <div class="character"><span></span></div>
+          <div class="character"><span></span></div>
+          <div class="character"><span></span></div>
+          <div class="character"><span></span></div>
+          <div class="character"><span></span></div>
+          <div class="character"><span></span></div>
+          <div class="character"><span></span></div>
+        </div>
+        <div class="group gate"> <!-- gate -->
+          <div class="character"><span></span></div>
+          <div class="number"><span></span></div>
+          <div class="number"><span></span></div>
+        </div>
+        <div class="group scheduled"> <!-- scheduled -->
+          <div class="number"><span></span></div>
+          <div class="number"><span></span></div>
+          <div class="separator">:</div>
+          <div class="number"><span></span></div>
+          <div class="number"><span></span></div>
+        </div>
+        <div class="group remarks"> <!-- remarks -->
+          <div class="full"><span></span></div>
+          <div class="full"><span></span></div>
+          <div class="full"><span></span></div>
+          <div class="full"><span></span></div>
+          <div class="full"><span></span></div>
+          <div class="full"><span></span></div>
+          <div class="full"><span></span></div>
+          <div class="full"><span></span></div>
+          <div class="full"><span></span></div>
+          <div class="full"><span></span></div>
+          <div class="full"><span></span></div>
+        </div>
+        <div class="group status"> <!-- lights -->
+          <div class="sA"></div>
+          <div class="sB"></div>
+        </div>
+      </div>
+    </script>
+    <!-- END ROW TEMPLATE -->
+    <!-- ============================================ -->
+
+    <!-- ============================================ -->
+    <!-- JS LIBRARIES -->
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.3.3/backbone-min.js"
+    ></script>
+    <script type="text/javascript" src="js/split-flap.js"></script>
+
+    <!-- ============================================ -->
+    <!-- CUSTOM JS FOR THIS BOARD -->
+    <script type="text/javascript" src="plugins/arrivals/custom.js"></script>
+    <script type="text/javascript">
+      // CUSTOMIZATION OPTIONS
+      sf.options = {
+        // REQUIRED
+        plugin: 'arrivals', // Plugin to load
+        container: $('#board'), // Where in the DOM to put the board
+        template: $('#row_template'), // Where in the DOM to find the row template
+        numRows: 12, // number of rows
+
+        // OPTIONAL
+        sort: 'scheduled', // the column to sort by
+        order: 'asc', // the order to sort by
+        maxResults: 24, // number of items to retrieve from service
+        pageInterval: 30000, // delay between pages (ms)
+        stagger: 2000 // delay between loading rows (ms)
+      };
+
+      $(document).ready(function() {
+        sf.board.init(sf.options);
+        sf.items.init(sf.options);
+        sf.items.load(sf.options);
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,80 @@
+/* AIRLINE LOGOS DRUM */
+.splitflap .image {
+  float: left;
+  margin-right: 5px;
+  width: 115px;
+  height: 40px;
+  background: url('airline_logos.png') no-repeat;
+  background-position: 0px 0px;
+}
+.splitflap .image span {
+  width: 115px;
+  height: 40px;
+  display: block;
+  background: url('airline_logos.png') no-repeat;
+  background-position: 0px -40px; /* start with a blank */
+}
+
+.splitflap .image span.ctrn {
+  background-position: 0px 0px;
+} /* transition */
+.splitflap .image span.csp {
+  background-position: 0px -40px;
+} /* blank */
+.splitflap .image span.SWA {
+  background-position: 0px -80px;
+} /* southwest */
+.splitflap .image span.AAL {
+  background-position: 0px -120px;
+} /* american */
+.splitflap .image span.BAW {
+  background-position: 0px -160px;
+} /* british airways */
+.splitflap .image span.DAL {
+  background-position: 0px -200px;
+} /* delta */
+.splitflap .image span.UAE {
+  background-position: 0px -240px;
+} /* emirates */
+.splitflap .image span.KLM {
+  background-position: 0px -280px;
+} /* klm */
+.splitflap .image span.DLH {
+  background-position: 0px -320px;
+} /* lufthansa */
+.splitflap .image span.ASA {
+  background-position: 0px -360px;
+} /* alaska */
+.splitflap .image span.UAL {
+  background-position: 0px -400px;
+} /* united */
+.splitflap .image span.FDX {
+  background-position: 0px -440px;
+} /* fedex */
+.splitflap .image span.PXM {
+  background-position: 0px -480px;
+} /* westair (Fedex Short Haul) */
+.splitflap .image span.SKW {
+  background-position: 0px -520px;
+} /* skywest */
+.splitflap .image span.JBU {
+  background-position: 0px -560px;
+} /* jetblue */
+.splitflap .image span.ACA {
+  background-position: 0px -600px;
+} /* air canada */
+.splitflap .image span.QXE {
+  background-position: 0px -640px;
+} /* horizon air */
+.splitflap .image span.NKS {
+  background-position: 0px -680px;
+} /* spirit */
+.splitflap .image span.VIR {
+  background-position: 0px -720px;
+} /* virgin atlantic */
+.splitflap .image span.LXJ {
+  background-position: 0px -760px;
+} /* flexjet */
+.splitflap .image span.QFA {
+  background-position: 0px -800px;
+} /* qantas */
