@@ -4,7 +4,7 @@
   "description": "A Simulated Split-Flap display",
   "main": "app.js",
   "repository": "https://github.com/baspete/Split-Flap.git",
-  "author": "Pete Butler <pete.butler@ge.com>",
+  "author": "Pete Butler <pbutler@basdesign.com>",
   "license": "MIT",
   "dependencies": {
     "express": "^4.16.4"
