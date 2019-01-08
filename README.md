@@ -4,8 +4,6 @@ This is a simulation of a split-flap display (often called a Solari board) desig
 
 The look and feel are fully configurable by changing the markup and using different sprite images, and the included files are simply examples intended to get you started with your own project.
 
-There are two example client-side files in the /public directory, arrivals.html and adsb.html. Arrivals.html simulates a typical arrivals board, and adsb.html is designed to display information from an ADS-B running dump1080.
-
 ## Application Structure
 
 `/public/js` - The client-side code is in `split-flap.js`. This code expects jquery, underscore and backbone to be available. Copies have been included for convenience.
@@ -29,7 +27,7 @@ npm install
 node app.js
 ```
 
-Navigate to `http://locahost:8080/arrivals.html` or `http://locahost:8080/adsb.html` in your browser.
+Navigate to `http://locahost:8080` in your browser.
 
 ## Customization
 
@@ -41,17 +39,38 @@ The row refresh cascade interval is set in the setTimeout() function in sf.chart
 
 The individual elements' animation speed is set in the fadeIn() and fadeOut() functions in sf.chart.splitFlap.show()
 
-The sort criteria, and max number of results are set in the hidden `<input>` elements in arrivals.html
-
 ## Data
 
-`app.js` exposes two API routes: `/api/arrivals` and `/api/adsb` which demonstrate sending data to `split-flap.js`. For example, the ADS-B service returns something like:
+The example Node app at `app.js` exposes an API route at `/api/arrivals` which demonstrates sending data to `split-flap.js`.
 
 ```
 {
-    "data":[
-        {"airline":"BAW","flight":188,"type":"A320","distance":30.6,"altitude":32057,"altChange":0,"airspeed":252,"bearing":240,"remarks":"B77W Ontario"},
-        {"airline":"","flight":"N4361r","type":"A332","distance":4.3,"altitude":12226,"altChange":-1,"airspeed":1,"bearing":92,"remarks":"KOAK"}
+    data: [
+        {
+            airline: "JBU",
+            flight: 541,
+            city: "Durban",
+            gate: "A20",
+            scheduled: "0233",
+            status: "A"
+        },
+        {
+            airline: "SWA",
+            flight: 1367,
+            city: "Roanoake",
+            gate: "B13",
+            scheduled: "1416",
+            status: "B",
+            remarks: "Delayed 13M"
+        },
+        {
+            airline: "JBU",
+            flight: 1685,
+            city: "Charleston",
+            gate: "A18",
+            scheduled: "0042",
+            status: "A"
+        }
     ]
 }
 ```

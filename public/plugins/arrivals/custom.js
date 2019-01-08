@@ -1,27 +1,33 @@
 sf.display.ImageDrum = function() {
   return [
     ' ',
-    'AFL',
+    'SWA',
     'AAL',
     'BAW',
     'DAL',
     'UAE',
     'KLM',
     'DLH',
-    'RYR',
+    'ASA',
     'UAL',
-    'AWE'
+    'FDX',
+    'PXM',
+    'SKW',
+    'JBU',
+    'ACA',
+    'QXE',
+    'NKS',
+    'VIR',
+    'LXJ',
+    'QFA'
   ];
 };
 
 sf.plugins.arrivals = {
   dataType: 'json',
 
-  // input: map of parameters
-  // output: url
   url: function(options) {
-    var base_url = 'api/arrivals';
-    return base_url + '?data=' + options.data;
+    return 'api/arrivals';
   },
 
   formatData: function(response) {

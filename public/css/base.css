@@ -1,7 +1,7 @@
 body {
   background: #0f0f0f;
   color: #fff;
-  font-family: helvetica;
+  font-family: helvetica, sans-serif;
 }
 a {
   color: #fff;
@@ -51,10 +51,10 @@ a {
 .splitflap .status div.on {
   background-position: -18px 0;
 }
-.splitflap .status .s0 {
+.splitflap .status .sA {
   background: url('../img/lights_green.png') no-repeat;
 }
-.splitflap .status .s1 {
+.splitflap .status .sB {
   background: url('../img/lights_red.png') no-repeat;
 }
 .splitflap .full,
