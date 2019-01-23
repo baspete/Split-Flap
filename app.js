@@ -1,67 +1,35 @@
 /* global require console process Promise module */
 
 const express = require('express'),
+  moment = require('moment'),
   app = express();
+
+// This array holds the city names for which you want to show "Now Boarding"
+const hostCities = ['Durham', 'New York'];
+// This array holds the list of all cities and the airlies which fly to them.
+// Airlines available on the image sprite are:
+// 'SWA','AAL','BAW','DAL','UAE','KLM','DLH','ASA','UAL','FDX',
+// 'PXM','SKW','JBU','ACA','QXE','NKS','VIR','LXJ','QFA'
+const cities = [
+  { name: 'Durham', airlines: ['SWA', 'JBU', 'AAL', 'UAL'] },
+  {
+    name: 'New York',
+    airlines: ['JBU', 'AAL', 'UAL', 'BAW', 'DAL', 'VIR']
+  },
+  { name: 'London', airlines: ['BAW', 'UAL', 'DAL', 'VIR'] },
+  { name: 'Los Angeles', airlines: ['SWA', 'UAL', 'SKW', 'ASA', 'AAL'] },
+  { name: 'Melbourne', airlines: ['QFA', 'UAL', 'AAL'] },
+  { name: 'Shanghai', airlines: ['BAW', 'QXE', 'UAE'] },
+  { name: 'Sydney', airlines: ['BAW', 'QFA', 'UAE'] },
+  { name: 'Hong Kong', airlines: ['BAW', 'KLM', 'UAE'] },
+  { name: 'Dubai', airlines: ['BAW', 'UAL', 'UAE'] },
+  { name: 'Colombo', airlines: ['BAW', 'QFA', 'VIR'] },
+  { name: 'Buenos Aires', airlines: ['BAW', 'NKS', 'UAE'] },
+  { name: 'Nanhai', airlines: ['BAW', 'ACA', 'UAE'] }
+];
 
 function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
-}
-
-function getTail() {
-  let c = [
-    'a',
-    'b',
-    'c',
-    'd',
-    'e',
-    'f',
-    'g',
-    'h',
-    'i',
-    'j',
-    'k',
-    'l',
-    'm',
-    'n',
-    'o',
-    'p',
-    'q',
-    'r',
-    's',
-    't',
-    'u',
-    'v',
-    'w',
-    'x',
-    'y',
-    'z'
-  ];
-  return `N${getRandomInt(9999)}${c[getRandomInt(c.length - 1)]}`;
-}
-
-function getAirline() {
-  const airlines = [
-    'SWA',
-    'AAL',
-    'BAW',
-    'DAL',
-    'UAE',
-    'KLM',
-    'DLH',
-    'ASA',
-    'UAL',
-    'FDX',
-    'PXM',
-    'SKW',
-    'JBU',
-    'ACA',
-    'QXE',
-    'NKS',
-    'VIR',
-    'LXJ',
-    'QFA'
-  ];
-  return airlines[getRandomInt(airlines.length - 1)];
 }
 
 function getTime() {
@@ -80,37 +48,11 @@ function getHeading() {
 
 function getGate() {
   const t = ['A', 'B', 'C'][getRandomInt(2)];
-  const g = getRandomInt(30);
+  const g = getRandomInt(29) + 1; // There's no gate zero
   return `${t}${g}`;
 }
 
-function getCity() {
-  const cities = [
-    'Atlanta',
-    'Baltimore',
-    'Charleston',
-    'Durban',
-    'Edinburgh',
-    'Frankfurt',
-    'Galveston',
-    'Havana',
-    'Iowa City',
-    'Jakarta',
-    'Karachi',
-    'Los Angeles',
-    'Mexico City',
-    'Nairobi',
-    'Ontario',
-    'Pittsburgh',
-    'Quebec City',
-    'Roanoake',
-    'San Diego',
-    'Tallahassee'
-  ];
-  return cities[getRandomInt(20)];
-}
-
-function getTime() {
+function getRandomTime() {
   let hrs = getRandomInt(23)
     .toString()
     .padStart(2, '0');
@@ -123,25 +65,37 @@ function getTime() {
 // ========================================================================
 // API
 
-app.use('/api/arrivals', (req, res) => {
+app.use('/api/flights', (req, res) => {
   let r = {
     data: []
   };
 
-  for (let i = 0; i < 18; i++) {
-    // Create the data for a row.
+  // Iterate through the cities array and add fake data for each one
+  for (let i = 0; i < cities.length; i++) {
+    let isHostCity = hostCities.indexOf(cities[i].name) > -1 ? true : false;
+
+    // Add this flight
     let data = {
-      airline: getAirline(),
+      city: cities[i].name,
+      airline: cities[i].airlines[getRandomInt(cities[i].airlines.length)],
       flight: getFlight(),
-      city: getCity(),
       gate: getGate(),
-      scheduled: getTime()
+      scheduled: isHostCity
+        ? moment()
+            .add(30, 'minutes')
+            .format('HHmm')
+        : getRandomTime(), // 30 minutes from now for host cities; random for others
+      remarks: isHostCity ? 'Now Boarding' : '',
+      status: isHostCity ? 'A' : null
     };
 
     // Let's add an occasional delayed flight.
-    data.status = getRandomInt(10) > 7 ? 'B' : 'A';
-    if (data.status === 'B') {
-      data.remarks = `Delayed ${getRandomInt(50)}M`;
+    if (!isHostCity) {
+      let status = getRandomInt(10) === 1 ? 'B' : 'A'; // 10% of the time
+      if (status === 'B') {
+        data.status = status;
+        data.remarks = `Delayed ${getRandomInt(40) + 10}M`;
+      }
     }
 
     // Add the row the the response.
