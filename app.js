@@ -25,12 +25,14 @@ const express = require('express'),
 // 'VIR' - Virgin Atlantic
 // 'LXJ' - FlexJet
 // 'QFA' - Qantas
+//
+// If you want to show a city as 'Boarding Now', add isBoarding:true.
 const cities = [
-  { name: 'Durham', airlines: ['SWA', 'JBU', 'AAL', 'UAL'], isHost: true },
+  { name: 'Durham', airlines: ['SWA', 'JBU', 'AAL', 'UAL'], isBoarding: true },
   {
     name: 'New York',
     airlines: ['JBU', 'AAL', 'UAL', 'BAW', 'DAL', 'VIR'],
-    isHost: true
+    isBoarding: true
   },
   { name: 'London', airlines: ['BAW', 'UAL', 'DAL', 'VIR'] },
   { name: 'Los Angeles', airlines: ['SWA', 'UAL', 'SKW', 'ASA', 'AAL'] },
@@ -102,21 +104,21 @@ app.use('/api/flights', (req, res) => {
       airline: city.airlines[getRandomInt(city.airlines.length)],
       flight: getFlight(),
       gate: getGate(),
-      // For host cities, the departure time will be a random number
+      // For currently boarding cities, the departure time will be a random number
       // from 10 to 30 minutes from now. For other cities it will be
       // a random time from 00:00 - 23:59.
-      scheduled: city.isHost
+      scheduled: city.isBoarding
         ? moment()
             .add(getRandomInt(20) + 10, 'minutes')
             .format('HHmm')
         : getRandomTime(),
       // Host cities are boarding now
-      remarks: city.isHost ? 'Now Boarding' : '',
-      status: city.isHost ? 'A' : null
+      remarks: city.isBoarding ? 'Now Boarding' : '',
+      status: city.isBoarding ? 'A' : null
     };
 
-    // Let's add an occasional delayed flight for non-host cities 10% of the time.
-    if (!city.isHost) {
+    // Let's add an occasional delayed flight for non-boarding cities 10% of the time.
+    if (!city.isBoarding) {
       let status = getRandomInt(10) === 1 ? 'B' : 'A';
       if (status === 'B') {
         data.status = status;
