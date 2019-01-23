@@ -4,26 +4,42 @@ const express = require('express'),
   moment = require('moment'),
   app = express();
 
-// This array holds the city names for which you want to show "Now Boarding"
-const hostCities = ['Durham', 'New York'];
 // This array holds the list of all cities and the airlies which fly to them.
 // Airlines available on the image sprite are:
-// 'SWA','AAL','BAW','DAL','UAE','KLM','DLH','ASA','UAL','FDX',
-// 'PXM','SKW','JBU','ACA','QXE','NKS','VIR','LXJ','QFA'
+// 'SWA' - Southwest Airlines
+// 'AAL' - American Airlines
+// 'BAW' - British Airways
+// 'DAL' - Delta airlines
+// 'UAE' - Emirates
+// 'KLM' - KLM
+// 'DLH' - Lufthansa
+// 'ASA' - Alaska Airlines
+// 'UAL' - United Airlines
+// 'FDX' - Fedex
+// 'PXM' - Fedex
+// 'SKW' - Skywest
+// 'JBU' - Jet Blue
+// 'ACA' - Air Canada
+// 'QXE' - Horizon Airlines
+// 'NKS' - Spirit Airlines
+// 'VIR' - Virgin Atlantic
+// 'LXJ' - FlexJet
+// 'QFA' - Qantas
 const cities = [
-  { name: 'Durham', airlines: ['SWA', 'JBU', 'AAL', 'UAL'] },
+  { name: 'Durham', airlines: ['SWA', 'JBU', 'AAL', 'UAL'], isHost: true },
   {
     name: 'New York',
-    airlines: ['JBU', 'AAL', 'UAL', 'BAW', 'DAL', 'VIR']
+    airlines: ['JBU', 'AAL', 'UAL', 'BAW', 'DAL', 'VIR'],
+    isHost: true
   },
   { name: 'London', airlines: ['BAW', 'UAL', 'DAL', 'VIR'] },
   { name: 'Los Angeles', airlines: ['SWA', 'UAL', 'SKW', 'ASA', 'AAL'] },
   { name: 'Melbourne', airlines: ['QFA', 'UAL', 'AAL'] },
   { name: 'Shanghai', airlines: ['BAW', 'QXE', 'UAE'] },
   { name: 'Sydney', airlines: ['BAW', 'QFA', 'UAE'] },
-  { name: 'Hong Kong', airlines: ['BAW', 'KLM', 'UAE'] },
-  { name: 'Dubai', airlines: ['BAW', 'UAL', 'UAE'] },
-  { name: 'Colombo', airlines: ['BAW', 'QFA', 'VIR'] },
+  { name: 'Hong Kong', airlines: ['BAW', 'KLM', 'UAE', 'DLH'] },
+  { name: 'Dubai', airlines: ['BAW', 'UAL', 'UAE', 'KLM'] },
+  { name: 'Colombo', airlines: ['BAW', 'QFA', 'VIR', 'KLM'] },
   { name: 'Buenos Aires', airlines: ['BAW', 'NKS', 'UAE'] },
   { name: 'Nanhai', airlines: ['BAW', 'ACA', 'UAE'] }
 ];
@@ -47,7 +63,7 @@ function getHeading() {
 }
 
 function getGate() {
-  const t = ['A', 'B', 'C'][getRandomInt(2)];
+  const t = ['A', 'B', 'C'][getRandomInt(3)];
   const g = getRandomInt(29) + 1; // There's no gate zero
   return `${t}${g}`;
 }
@@ -65,43 +81,54 @@ function getRandomTime() {
 // ========================================================================
 // API
 
+// This Endpoint will return a list of flights corresponding to the
+// list of cities in the 'cities' array above.
+// The browser application will sort these as defined by the 'sort' and
+// 'order' attributes in sf.options (defined in index.html).
 app.use('/api/flights', (req, res) => {
+  // This will hold the data this API returns
   let r = {
     data: []
   };
 
   // Iterate through the cities array and add fake data for each one
   for (let i = 0; i < cities.length; i++) {
-    let isHostCity = hostCities.indexOf(cities[i].name) > -1 ? true : false;
+    const city = cities[i];
 
     // Add this flight
     let data = {
-      city: cities[i].name,
-      airline: cities[i].airlines[getRandomInt(cities[i].airlines.length)],
+      city: city.name,
+      // Pick an airline randomly from this city's 'airlines' array
+      airline: city.airlines[getRandomInt(city.airlines.length)],
       flight: getFlight(),
       gate: getGate(),
-      scheduled: isHostCity
+      // For host cities, the departure time will be a random number
+      // from 10 to 30 minutes from now. For other cities it will be
+      // a random time from 00:00 - 23:59.
+      scheduled: city.isHost
         ? moment()
-            .add(30, 'minutes')
+            .add(getRandomInt(20) + 10, 'minutes')
             .format('HHmm')
-        : getRandomTime(), // 30 minutes from now for host cities; random for others
-      remarks: isHostCity ? 'Now Boarding' : '',
-      status: isHostCity ? 'A' : null
+        : getRandomTime(),
+      // Host cities are boarding now
+      remarks: city.isHost ? 'Now Boarding' : '',
+      status: city.isHost ? 'A' : null
     };
 
-    // Let's add an occasional delayed flight.
-    if (!isHostCity) {
-      let status = getRandomInt(10) === 1 ? 'B' : 'A'; // 10% of the time
+    // Let's add an occasional delayed flight for non-host cities 10% of the time.
+    if (!city.isHost) {
+      let status = getRandomInt(10) === 1 ? 'B' : 'A';
       if (status === 'B') {
         data.status = status;
         data.remarks = `Delayed ${getRandomInt(40) + 10}M`;
       }
     }
 
-    // Add the row the the response.
+    // Add this flight to the response.
     r.data.push(data);
   }
 
+  // OK, we're done. Return the response.
   res.json(r);
 });
 

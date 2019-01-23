@@ -120,14 +120,14 @@
         plugin: 'flights', // Plugin to load
         container: $('#board'), // Where in the DOM to put the board
         template: $('#row_template'), // Where in the DOM to find the row template
-        numRows: 12, // number of rows
+        numRows: 12, // Number of rows. If there are more results than this we'll get multiple pages.
 
         // OPTIONAL
-        sort: 'scheduled', // the column to sort by
-        order: 'asc', // the order to sort by
-        maxResults: 24, // number of items to retrieve from service
-        pageInterval: 30000, // delay between pages (ms)
-        stagger: 2000 // delay between loading rows (ms)
+        sort: 'scheduled', // The column to sort by
+        order: 'asc', // The order to sort by. Values are 'asc' and 'desc'
+        maxResults: 24, // Max number of items to retrieve from service and display
+        pageInterval: 120000, // delay between pages (ms)
+        stagger: 2500 // delay between loading rows (ms)
       };
 
       $(document).ready(function() {
