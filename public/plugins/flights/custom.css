@@ -1,3 +1,9 @@
+/* Custom display size */
+.splitflap {
+  width: 1520;
+  margin: 40px auto;
+}
+
 /* AIRLINE LOGOS DRUM */
 .splitflap .image {
   float: left;

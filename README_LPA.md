@@ -12,7 +12,7 @@ If you want to display more rows on the screen, change the `numRows` attribute i
 
 If you want to show more data, increase the number of items in the `cities` array in app.js. If this number is larger than the `numRows` value in public/index.html the display will paginate the results--up to the `maxResults` value set in public/index.html.
 
-If you want to change the number of characters on each row, edit the "ROW TEMPLATE" section of public/index.html, adding or removing characters as needed. You'll probably also want to change the inline CSS `width` attributes up in the "CONTAINER" part of the same file.
+If you want to change the number of characters on each row, edit the "ROW TEMPLATE" section of public/index.html, adding or removing characters as needed. You'll probably also want to change the inline CSS `width` attributes up in the "CONTAINER" part of the same file. You may also want to change the width setting of the `splitflap` CSS class in public/plugins/flights/custom.css.
 
 ## Questions
 

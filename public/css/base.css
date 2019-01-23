@@ -8,10 +8,9 @@ a {
   text-decoration: none;
 }
 .splitflap {
-  width: 1520;
   overflow: none;
   white-space: nowrap;
-  margin: 40px auto;
+  margin: 20px 10px;
 }
 .splitflap h1 {
   text-transform: uppercase;
